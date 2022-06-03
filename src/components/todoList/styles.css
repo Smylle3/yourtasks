@@ -1,0 +1,138 @@
+.todo-page {
+    margin: 0 11em;
+    padding: 1em;
+    /* box-shadow: 0px 1px 10px -3px gray; */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.todo-form {
+    margin-top: 1em;
+    margin-bottom: 2em;
+
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 3em;
+}
+
+.modal-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.todo-input {
+    width: 70%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: text;
+    padding: 0 1em;
+    box-shadow: 0px 1px 10px -3px gray;
+    border-radius: 5px;
+    color: #808080;
+}
+
+.todo-input p {
+    margin: 0;
+}
+
+.title-task {
+    border: 0 none;
+    outline: 0;
+
+    margin-bottom: 1em;
+    font-size: xx-large;
+}
+
+.desc-task {
+    border: 0 none;
+    outline: 0;
+    margin-bottom: 1em;
+    padding: 0.5em;
+    border: 1px solid white;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.desc-task:focus {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.button-form-modal {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 1em 0;
+}
+
+.my-button {
+    border: 0 none;
+    outline: 0;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    transition: 0.4s;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.my-button:hover {
+    opacity: 0.7;
+}
+
+.cancel-button-modal {
+    background-color: rgb(252, 104, 104);
+}
+
+.confirm-button-modal {
+    background-color: rgb(106, 194, 106);
+}
+
+.date {
+    border: 1px solid gray;
+}
+
+.todo-tasks {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+}
+
+.todo-task {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 0.5em;
+}
+
+.todo-task p,
+.todo-task h3 {
+    margin: 0;
+}
+
+.todo-task button {
+    border: 0 none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 5px;
+}
+
+.todo-task button:hover {
+    background-color: #000;
+    color: #fff;
+}
