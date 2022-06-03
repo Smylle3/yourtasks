@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/authContext";
+import useMobile from "../../functions/useMobile";
 import { useNavigate } from "react-router-dom";
 import { BsListCheck, BsCalendarDate, BsClock } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
@@ -11,6 +12,7 @@ export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
     const { user } = useAuth();
     const navigate = useNavigate();
+    const isMobile = useMobile();
 
     function handleNabigation(page) {
         navigate(page);
@@ -22,14 +24,15 @@ export default function NavBar() {
         return (
             <div className="container-navbar">
                 <div className="image-logo">
-                    <img alt="logo" src={logo} className="logo-image" />YOURTASKS
+                    <img alt="logo" src={logo} className="logo-image" />
+                    {isMobile ? null : <>YOURTASKS</>}
                 </div>
                 <div
                     className={`buttom ${page === "/" ? "selected" : null}`}
                     onClick={() => handleNabigation("/")}
                 >
                     <BsListCheck className="icon" />
-                    Todo
+                    {isMobile ? null : <>Todo</>}
                 </div>
                 <div
                     className={`buttom ${
@@ -38,7 +41,7 @@ export default function NavBar() {
                     onClick={() => handleNabigation("/calendar")}
                 >
                     <BsCalendarDate className="icon" />
-                    Calendar
+                    {isMobile ? null : <>Calendar</>}
                 </div>
                 <div
                     className={`buttom ${
@@ -47,11 +50,11 @@ export default function NavBar() {
                     onClick={() => handleNabigation("/pomodoro")}
                 >
                     <BsClock className="icon" />
-                    Pomodoro
+                    {isMobile ? null : <>Pomodoro</>}
                 </div>
                 <div className="user-profile buttom">
                     <AiOutlineUser className="icon" />
-                    {user.displayName}
+                    {isMobile ? null : user.displayName}
                 </div>
             </div>
         );
