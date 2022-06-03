@@ -1,0 +1,62 @@
+.container-navbar {
+    margin: 1em 10em;
+    height: 13vh;
+    box-shadow: 0px 1px 10px -3px gray;
+    border-radius: 5px;
+
+    font-weight: 200;
+    font-size: 1.1em;
+    cursor: default;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 4em;
+}
+
+.buttom {
+    cursor: pointer;
+    transition: 0.5s;
+    border-bottom: 1px solid white;
+    display: flex;
+    align-items: center;
+}
+
+.buttom:hover {
+    border-bottom: 1px solid gray;
+    transition: 0.5s;
+    font-weight: 500;
+}
+
+.selected {
+    font-weight: 500;
+    border-bottom: 1px solid gray;
+}
+
+.logo-image {
+    width: 2em;
+}
+
+.user-profile {
+    border: 1px solid gray;
+    padding: 0.5em;
+    border-radius: 5px;
+    font-weight: 400;
+}
+
+.user-profile:hover {
+    font-weight: 400;
+    background-color: #000;
+    color: #fff;
+}
+
+.icon {
+    margin-right: 0.5em;
+}
+
+.image-logo {
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+}
