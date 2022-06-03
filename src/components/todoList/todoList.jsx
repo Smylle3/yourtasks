@@ -1,6 +1,7 @@
 import { CheckOutlined, DeleteFilled, EnterOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import MyModal from "./myModal";
+import EmptyImage from "../../assets/EmptyImage.jpg";
 import "./styles.css";
 
 export default function TodoList() {
@@ -37,25 +38,29 @@ export default function TodoList() {
                     <EnterOutlined style={{ cursor: "pointer" }} />
                 </div>
             </form>
-            <nav className="todo-tasks">
-                {allTask.map((task, id) => (
-                    <section className="todo-task" key={id}>
-                        <div
-                            onClick={() => showModal("info", id)}
-                            className="todo-content-info"
-                        >
-                            <h3>{task.title}</h3>
-                            <p>Até: {task.date}</p>
-                        </div>
-                        <button>
-                            <CheckOutlined />
-                        </button>
-                        <button onClick={() => showModal("delete", id)}>
-                            <DeleteFilled />
-                        </button>
-                    </section>
-                ))}
-            </nav>
+            {allTask.length > 0 ? (
+                <nav className="todo-tasks">
+                    {allTask.map((task, id) => (
+                        <section className="todo-task" key={id}>
+                            <div
+                                onClick={() => showModal("info", id)}
+                                className="todo-content-info"
+                            >
+                                <h3>{task.title}</h3>
+                                <p>Até: {task.date}</p>
+                            </div>
+                            <button>
+                                <CheckOutlined />
+                            </button>
+                            <button onClick={() => showModal("delete", id)}>
+                                <DeleteFilled />
+                            </button>
+                        </section>
+                    ))}
+                </nav>
+            ) : (
+                <img className="emprty-image" alt="backImg" src={EmptyImage} />
+            )}
             <MyModal
                 isModalVisible={isModalVisible}
                 handleOk={handleOk}
