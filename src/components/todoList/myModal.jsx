@@ -5,11 +5,13 @@ export default function MyModal({
     isModalVisible,
     handleOk,
     handleCancel,
-    setTask,
-    task,
-    setAllTask,
     setIsModalVisible,
-    create,
+    task,
+    setTask,
+    allTask,
+    setAllTask,
+    typeModal,
+    deleteId,
 }) {
     function handleSend(isOption, event) {
         event.preventDefault();
@@ -25,8 +27,14 @@ export default function MyModal({
         }
     }
 
-    switch (create) {
-        case true:
+    const handleDelete = (event) => {
+        event.preventDefault();
+        allTask.splice(deleteId, 1);
+        setIsModalVisible(false);
+    };
+
+    switch (typeModal) {
+        case "create":
             return (
                 <Modal
                     title={task.title.length > 0 ? task.title : "Nova tarefa"}
@@ -91,27 +99,66 @@ export default function MyModal({
                     </form>
                 </Modal>
             );
-        case false:
+        case "info":
             return (
                 <Modal
-                    title="Deletar tarefa?"
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    footer={null}
+                    width={300}
+                >
+                    <div className="info-modal">
+                        <h1 className="title-info">
+                            {allTask[deleteId].title}
+                        </h1>
+                        <p className="desc-info">
+                            {allTask[deleteId].description}
+                        </p>
+                        <div className="date-info">
+                            <p>Data de conclusão:</p>
+                            <p>{allTask[deleteId].date}</p>
+                        </div>
+                        <button
+                            onClick={(e) => handleSend("cancel", e)}
+                            className="cancel-button-modal my-button"
+                        >
+                            FECHAR
+                        </button>
+                    </div>
+                </Modal>
+            );
+        case "delete":
+            return (
+                <Modal
+                    title={
+                        allTask.length > 0
+                            ? `Deletar ${allTask[deleteId].title}`
+                            : `Deletar`
+                    }
                     visible={isModalVisible}
                     onOk={handleOk}
                     onCancel={handleCancel}
                     footer={null}
                     width={250}
                 >
-                    <form className="modal-form">
-                        <div className="button-form-modal">
-                            <button className="confirm-button-modal my-button">
-                                CANCELAR
-                            </button>
-                            <button className="cancel-button-modal my-button">
-                                DELETAR
-                            </button>
-                        </div>
-                    </form>
+                    <div className="buttons-delete-task">
+                        <button
+                            onClick={(e) => handleDelete(e)}
+                            className="cancel-button-modal my-button"
+                        >
+                            DELETAR
+                        </button>
+                        <button
+                            onClick={() => setIsModalVisible(false)}
+                            className="confirm-button-modal my-button"
+                        >
+                            CANCELAR
+                        </button>
+                    </div>
                 </Modal>
             );
+        default:
+            break;
     }
 }
