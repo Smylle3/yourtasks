@@ -5,22 +5,20 @@ import "./styles.css";
 
 export default function TodoList() {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [isCreate, setIsCreate] = useState(false);
+    const [typeModal, setTypeModal] = useState(false);
+    const [deleteId, setDeleteId] = useState(false);
+    const [allTask, setAllTask] = useState([]);
     const [task, setTask] = useState({
         title: "",
         description: "",
         date: "",
         isDone: false,
     });
-    const [allTask, setAllTask] = useState([
-        { title: "Atvididade1", description: "Descrição1", date: "12/12/1202" },
-        { title: "Atvididade2", description: "Descrição2", date: "56/42/2322" },
-        { title: "Atvididade3", description: "Descrição3", date: "23/98/7889" },
-    ]);
 
-    const showModal = (create) => {
-        setIsCreate(create);
+    const showModal = (type, id) => {
         setIsModalVisible(true);
+        setTypeModal(type);
+        setDeleteId(id);
     };
 
     const handleOk = () => {
@@ -31,15 +29,10 @@ export default function TodoList() {
         setIsModalVisible(false);
     };
 
-    const handleDelete = (id, action) => {
-        if (action) {
-        }
-    };
-
     return (
         <div className="todo-page">
             <form className="todo-form">
-                <div className="todo-input" onClick={() => showModal(true)}>
+                <div className="todo-input" onClick={() => showModal("create")}>
                     <p>Insira aqui uma nova tarefa...</p>
                     <EnterOutlined style={{ cursor: "pointer" }} />
                 </div>
@@ -47,12 +40,17 @@ export default function TodoList() {
             <nav className="todo-tasks">
                 {allTask.map((task, id) => (
                     <section className="todo-task" key={id}>
-                        <h3>{task.title}</h3>
-                        <p>Até: {task.date}</p>
-                        <button onClick={() => handleDelete(id, false)}>
+                        <div
+                            onClick={() => showModal("info", id)}
+                            className="todo-content-info"
+                        >
+                            <h3>{task.title}</h3>
+                            <p>Até: {task.date}</p>
+                        </div>
+                        <button>
                             <CheckOutlined />
                         </button>
-                        <button onClick={() => showModal(false)}>
+                        <button onClick={() => showModal("delete", id)}>
                             <DeleteFilled />
                         </button>
                     </section>
@@ -63,11 +61,12 @@ export default function TodoList() {
                 handleOk={handleOk}
                 handleCancel={handleCancel}
                 setIsModalVisible={setIsModalVisible}
-                create={isCreate}
                 task={task}
                 setTask={setTask}
                 allTask={allTask}
                 setAllTask={setAllTask}
+                typeModal={typeModal}
+                deleteId={deleteId}
             />
         </div>
     );
