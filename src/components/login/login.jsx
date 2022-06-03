@@ -1,23 +1,65 @@
+import React, { useEffect, useState } from "react";
 import { GithubFilled, GoogleOutlined } from "@ant-design/icons";
-import React from "react";
 import logo from "../../assets/logo192.png";
+import { signInWithPopup } from "firebase/auth";
+import { auth, googleProvider, gitProvider } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/authContext";
 
 export default function Login() {
-  return (
-    <div id="login-page">
-      <div id="login-card">
-        <div id="login-title">
-          <img alt="logo" src={logo} />
-          <h2>Bem vindo ao ConverSa</h2>
-          <img alt="logo" src={logo} />
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+    const { user } = useAuth();
+
+    useEffect(() => {
+        if (user) navigate("/");
+    }, [user]);
+
+    async function handleLogin(type) {
+        setLoading(true);
+        try {
+            if (type === "google") await signInWithPopup(auth, googleProvider);
+            else if (type === "github")
+                await signInWithPopup(auth, gitProvider);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+            navigate("/");
+        }
+    }
+
+    return (
+        <div id="login-page">
+            <div id="login-card">
+                <div id="login-title">
+                    <img alt="logo" src={logo} />
+                    <h2>Bem vindo ao YourTasks</h2>
+                    <img alt="logo" src={logo} />
+                </div>
+                {loading ? (
+                    <>
+                        <div className="loading google">Aguarde...</div>
+                        <div className="loading github">Aguarde...</div>
+                    </>
+                ) : (
+                    <>
+                        <div
+                            className="login-button google"
+                            onClick={() => handleLogin("google")}
+                        >
+                            <GoogleOutlined />
+                            Login com Google
+                        </div>
+                        <div
+                            className="login-button github"
+                            onClick={() => handleLogin("github")}
+                        >
+                            <GithubFilled /> Login com GitHub
+                        </div>
+                    </>
+                )}
+            </div>
         </div>
-        <div className="login-button google">
-          <GoogleOutlined /> Login com Google
-        </div>
-        <div className="login-button github">
-          <GithubFilled /> Login com GitHub
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
