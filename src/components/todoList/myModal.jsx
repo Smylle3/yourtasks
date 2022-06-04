@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 
 export default function MyModal({
     isModalVisible,
@@ -17,6 +17,14 @@ export default function MyModal({
         event.preventDefault();
         if (isOption === "cancel") setIsModalVisible(false);
         else {
+            if (
+                task.title.length === 0 ||
+                task.description.length === 0 ||
+                task.date.length === 0
+            ) {
+                message.error("Preencha todos os campos corretamente!");
+                return;
+            }
             setAllTask((arr) => [...arr, task]);
             setTask({
                 title: "",
