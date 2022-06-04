@@ -5,6 +5,8 @@ import EmptyImage from "../../assets/EmptyImage.jpg";
 import "./styles.css";
 import { useAuth } from "../../context/authContext";
 import { Spin } from "antd";
+import moment from "moment";
+import 'moment/locale/pt-br'
 
 export default function TodoList() {
     const { user } = useAuth();
@@ -54,7 +56,11 @@ export default function TodoList() {
                                     className="todo-content-info"
                                 >
                                     <h3>{task.title}</h3>
-                                    <p>Até: {task.date}</p>
+                                    <p>
+                                        {moment(task.date)
+                                            .startOf("ss")
+                                            .fromNow()}
+                                    </p>
                                 </div>
                                 <button>
                                     <CheckOutlined />
