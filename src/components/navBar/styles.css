@@ -90,4 +90,12 @@
     .icon {
         margin-right: 0;
     }
+
+    .container-navbar {
+        position: fixed;
+        margin: 0;
+        bottom: 1em;
+        left: 1.5em;
+        right: 1.5em;
+    }
 }
