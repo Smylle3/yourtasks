@@ -5,6 +5,7 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider, gitProvider } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
+import { Spin } from "antd";
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
@@ -39,8 +40,8 @@ export default function Login() {
                 </div>
                 {loading ? (
                     <>
-                        <div className="loading google">Aguarde...</div>
-                        <div className="loading github">Aguarde...</div>
+                        <div className="loading google"><Spin /></div>
+                        <div className="loading github"><Spin /></div>
                     </>
                 ) : (
                     <>
