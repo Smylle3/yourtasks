@@ -7,6 +7,10 @@ import { AiOutlineUser } from "react-icons/ai";
 
 import logo from "../../assets/logo192.png";
 import "./styles.css";
+import { Popover } from "antd";
+import { LogoutOutlined } from "@ant-design/icons";
+import { signOut } from "firebase/auth";
+import { auth } from "../../config/firebase";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
@@ -18,6 +22,19 @@ export default function NavBar() {
         navigate(page);
         setPage(page);
     }
+
+    function handleLogout() {
+        signOut(auth)
+    }
+
+    const content = (
+        <div>
+            <button className="logout-button" onClick={handleLogout} >
+                <LogoutOutlined className="icon-logout" /> LogOut
+            </button>
+        </div>
+    );
+
     if (!user) {
         return null;
     } else {
@@ -52,10 +69,12 @@ export default function NavBar() {
                     <BsClock className="icon" />
                     {isMobile ? null : <>Pomodoro</>}
                 </div>
-                <div className="user-profile buttom">
-                    <AiOutlineUser className="icon" />
-                    {isMobile ? null : user.displayName}
-                </div>
+                <Popover content={content} title="Usuário" trigger="click">
+                    <div className="user-profile buttom">
+                        <AiOutlineUser className="icon" />
+                        {isMobile ? null : user.displayName}
+                    </div>
+                </Popover>
             </div>
         );
     }
