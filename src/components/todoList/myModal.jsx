@@ -1,5 +1,5 @@
 import React from "react";
-import { message, Modal } from "antd";
+import { DatePicker, message, Modal } from "antd";
 
 export default function MyModal({
     isModalVisible,
@@ -76,19 +76,17 @@ export default function MyModal({
                             className="desc-task"
                             placeholder="Descrição..."
                         />
-                        <label>Data de conclusão</label>
-                        <input
-                            onChange={(e) =>
+                        <label>Data e hora prevista para conclusão:</label>
+                        <DatePicker
+                            format="YYYY-MM-DD HH:mm:ss"
+                            onChange={(ev, e) =>
                                 setTask({
                                     title: task.title,
                                     description: task.description,
-                                    date: e.target.value,
+                                    date: e,
                                 })
                             }
-                            value={task.date}
-                            id="myDate"
-                            type="date"
-                            className="desc-task date"
+                            showTime
                         />
                         <div className="button-form-modal">
                             <button
