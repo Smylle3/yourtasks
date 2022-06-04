@@ -188,6 +188,22 @@
         padding: 1em;
         min-height: 70vh;
     }
+
+    .todo-form {
+        position: fixed;
+        width: auto;
+        margin: 0;
+        bottom: 8em;
+        left: 1.5em;
+        right: 1.5em;
+    }
+
+    .todo-tasks {
+        margin-top: 5em;
+    }
+    .emprty-image {
+        margin-top: 5em;
+    }
 }
 
 .spin {
