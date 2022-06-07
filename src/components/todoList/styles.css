@@ -103,32 +103,40 @@
 }
 
 .todo-tasks {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     cursor: default;
     overflow-y: scroll;
     height: 57vh;
     border-bottom: 1px solid rgba(128, 128, 128, 0.3);
-    margin-top: 1em;
+    padding-top: 1em;
+}
+
+.todo-task:hover {
+    box-shadow: 0px 0px 10px -3px #000;
 }
 
 .todo-task {
+    width: 70%;
     border: 1px solid black;
     border-radius: 5px;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin-bottom: 1em;
     padding: 0.5em;
     cursor: pointer;
+    transition: 0.5s;
 }
 
-.todo-task p,
-.todo-task h3 {
+.todo-task p, .todo-task h3 {
     margin: 0;
-    max-width: 25%;
+    width: 50%;
+    word-wrap: break-word;
+    background-color: #fff;
 }
 
 .todo-task button {
@@ -148,9 +156,17 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.todo-content-info p,
+.todo-content-info h3 {
+    margin: 0;
+    width: 50%;
+    word-wrap: break-word;
+    background-color: #fff;
 }
 
 .info-modal .desc-info,
@@ -224,6 +240,28 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.date-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.date-pickerC {
+    width: 100%;
+}
+
+.date-picker {
+    cursor: pointer;
+    transition: 0.5s;
+    border-bottom: 1px solid #fff;
+    width: fit-content;
+    margin-bottom: 1em;
+}
+
+.date-picker:hover {
+    border-bottom: 1px solid #808080;
 }
 
 @media (max-width: 930px) {
