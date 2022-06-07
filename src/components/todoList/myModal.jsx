@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { DatePicker, message, Modal } from "antd";
+import moment from "moment";
 
 export default function MyModal({
     isModalVisible,
@@ -14,15 +15,13 @@ export default function MyModal({
     typeModal,
     deleteId,
 }) {
+    const [hasDate, setHasDate] = useState(false);
+
     function handleSend(isOption, event) {
         event.preventDefault();
         if (isOption === "cancel") setIsModalVisible(false);
         else {
-            if (
-                task.title.length === 0 ||
-                task.description.length === 0 ||
-                task.date.length === 0
-            ) {
+            if (task.title.length === 0 || task.description.length === 0) {
                 message.error("Preencha todos os campos corretamente!");
                 return;
             }
@@ -35,12 +34,6 @@ export default function MyModal({
             setIsModalVisible(false);
         }
     }
-
-    const handleDelete = (event) => {
-        event.preventDefault();
-        allTask.splice(deleteId, 1);
-        setIsModalVisible(false);
-    };
 
     if (typeModal === "create") {
         return (
@@ -76,18 +69,29 @@ export default function MyModal({
                         className="desc-task"
                         placeholder="Descrição..."
                     />
-                    <label>Data e hora prevista para conclusão:</label>
-                    <DatePicker
-                        format="YYYY-MM-DD HH:mm:ss"
-                        onChange={(ev, e) =>
-                            setTask({
-                                title: task.title,
-                                description: task.description,
-                                date: e,
-                            })
-                        }
-                        showTime
-                    />
+                    <div className="date-group">
+                        <label
+                            className="date-picker"
+                            onClick={() => setHasDate(!hasDate)}
+                        >
+                            {hasDate
+                                ? `Não definir data para conclusão`
+                                : `Definir uma data para a conclusão`}
+                        </label>
+                        {hasDate ? (
+                            <DatePicker
+                                className="date-pickeC"
+                                format="YYYY-MM-DD"
+                                onChange={(ev, e) =>
+                                    setTask({
+                                        title: task.title,
+                                        description: task.description,
+                                        date: e,
+                                    })
+                                }
+                            />
+                        ) : null}
+                    </div>
                     <div className="button-form-modal">
                         <button
                             onClick={(e) => handleSend("cancel", e)}
@@ -117,10 +121,12 @@ export default function MyModal({
                 <div className="info-modal">
                     <h1 className="title-info">{allTask[deleteId].title}</h1>
                     <p className="desc-info">{allTask[deleteId].description}</p>
-                    <div className="date-info">
-                        <p>Data para conclusão</p>
-                        <p>{allTask[deleteId].date}</p>
-                    </div>
+                    {allTask[deleteId].date.length === 0 ? null : (
+                        <div className="date-info">
+                            <p>Data para conclusão</p>
+                            <p>{allTask[deleteId].date}</p>
+                        </div>
+                    )}
                     <button
                         onClick={(e) => handleSend("cancel", e)}
                         className="cancel-button-modal my-button"
@@ -147,44 +153,18 @@ export default function MyModal({
                         {allTaskDone[deleteId].description}
                     </p>
                     <div className="date-info">
-                        <p>Data de criação:</p>
-                        <p>{allTaskDone[deleteId].date}</p>
+                        <p>Data de conclusão:</p>
+                        <p>
+                            {moment(allTaskDone[deleteId].date).format(
+                                "DD  MMMM YYYY, h:mm a"
+                            )}
+                        </p>
                     </div>
                     <button
                         onClick={(e) => handleSend("cancel", e)}
                         className="cancel-button-modal my-button"
                     >
                         FECHAR
-                    </button>
-                </div>
-            </Modal>
-        );
-    } else if (typeModal === "delete") {
-        return (
-            <Modal
-                title={
-                    allTask.length > 0
-                        ? `Deletar ${allTask[deleteId].title}`
-                        : `Deletar`
-                }
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={null}
-                width={250}
-            >
-                <div className="buttons-delete-task">
-                    <button
-                        onClick={(e) => handleDelete(e)}
-                        className="cancel-button-modal my-button"
-                    >
-                        DELETAR
-                    </button>
-                    <button
-                        onClick={() => setIsModalVisible(false)}
-                        className="confirm-button-modal my-button"
-                    >
-                        CANCELAR
                     </button>
                 </div>
             </Modal>
