@@ -17,6 +17,7 @@ import "moment/locale/pt-br";
 
 export default function TodoList() {
     const { user } = useAuth();
+    const [change, setChange] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [typeModal, setTypeModal] = useState(false);
     const [doneTab, setDoneTab] = useState("to do");
@@ -46,8 +47,11 @@ export default function TodoList() {
 
     useEffect(() => {
         localStorage.setItem("todo", JSON.stringify(allTask));
+    }, [allTask.length]);
+
+    useEffect(() => {
         localStorage.setItem("done", JSON.stringify(allTaskDone));
-    }, [allTask.length, allTaskDone.length]);
+    }, [allTaskDone.length]);
 
     const showModal = (type, id) => {
         setIsModalVisible(true);
@@ -64,9 +68,17 @@ export default function TodoList() {
     };
 
     const setIsDone = (id) => {
-        setAllTaskDone((arr) => [...arr, allTask[id]]);
+        allTask[id].date = moment();
+        const doneTask = allTask[id];
+        setAllTaskDone((arr) => [...arr, doneTask]);
         allTask.splice(id, 1);
     };
+
+    const handleDelete = (id) => {
+        allTask.splice(id, 1);
+        setChange(!change);
+    };
+
     if (user) {
         return (
             <div className="todo-page">
@@ -114,16 +126,19 @@ export default function TodoList() {
                                             <p>
                                                 {moment(task.date)
                                                     .startOf("ss")
-                                                    .fromNow()}
+                                                    .fromNow() ===
+                                                "Data inválida"
+                                                    ? "N/D"
+                                                    : moment(task.date)
+                                                          .startOf("ss")
+                                                          .fromNow()}
                                             </p>
                                         </div>
                                         <button onClick={() => setIsDone(id)}>
                                             <CheckOutlined />
                                         </button>
                                         <button
-                                            onClick={() =>
-                                                showModal("delete", id)
-                                            }
+                                            onClick={() => handleDelete(id)}
                                         >
                                             <DeleteFilled />
                                         </button>
@@ -143,20 +158,19 @@ export default function TodoList() {
                         {allTaskDone.length > 0 ? (
                             <nav className="todo-tasks">
                                 {allTaskDone.map((task, id) => (
-                                    <section className="todo-task" key={id}>
-                                        <div
-                                            onClick={() =>
-                                                showModal("infoDone", id)
-                                            }
-                                            className="todo-content-info"
-                                        >
-                                            <h3>{task.title}</h3>
-                                            <p>
-                                                {moment(task.date)
-                                                    .startOf("ss")
-                                                    .fromNow()}
-                                            </p>
-                                        </div>
+                                    <section
+                                        className="todo-task"
+                                        key={id}
+                                        onClick={() =>
+                                            showModal("infoDone", id)
+                                        }
+                                    >
+                                        <h3>{task.title}</h3>
+                                        <p>
+                                            {moment(task.date)
+                                                .startOf("ss")
+                                                .fromNow()}
+                                        </p>
                                     </section>
                                 ))}
                             </nav>
