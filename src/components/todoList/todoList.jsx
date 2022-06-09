@@ -74,8 +74,8 @@ export default function TodoList() {
         allTask.splice(id, 1);
     };
 
-    const handleDelete = (id) => {
-        allTask.splice(id, 1);
+    const handleDelete = (id, isDone) => {
+        isDone ? allTaskDone.splice(id, 1) : allTask.splice(id, 1);
         setChange(!change);
     };
 
@@ -91,24 +91,6 @@ export default function TodoList() {
                         <EnterOutlined style={{ cursor: "pointer" }} />
                     </div>
                 </form>
-                <nav className="nav-select-type">
-                    <section
-                        onClick={() => setDoneTab("to do")}
-                        className={`nav-select-button ${
-                            doneTab === "to do" ? "tab-select" : null
-                        }`}
-                    >
-                        <BorderOutlined /> A fazer
-                    </section>
-                    <section
-                        onClick={() => setDoneTab("done")}
-                        className={`nav-select-button ${
-                            doneTab === "done" ? "tab-select" : null
-                        }`}
-                    >
-                        <CheckSquareOutlined /> Feito
-                    </section>
-                </nav>
 
                 {doneTab === "to do" ? (
                     <>
@@ -128,7 +110,7 @@ export default function TodoList() {
                                                     .startOf("ss")
                                                     .fromNow() ===
                                                 "Data inválida"
-                                                    ? "N/D"
+                                                    ? null
                                                     : moment(task.date)
                                                           .startOf("ss")
                                                           .fromNow()}
@@ -158,19 +140,27 @@ export default function TodoList() {
                         {allTaskDone.length > 0 ? (
                             <nav className="todo-tasks">
                                 {allTaskDone.map((task, id) => (
-                                    <section
-                                        className="todo-task"
-                                        key={id}
-                                        onClick={() =>
-                                            showModal("infoDone", id)
-                                        }
-                                    >
-                                        <h3>{task.title}</h3>
-                                        <p>
-                                            {moment(task.date)
-                                                .startOf("ss")
-                                                .fromNow()}
-                                        </p>
+                                    <section className="todo-task" key={id}>
+                                        <div
+                                            onClick={() =>
+                                                showModal("infoDone", id)
+                                            }
+                                            className="todo-content-info"
+                                        >
+                                            <h3>{task.title}</h3>
+                                            <p>
+                                                {moment(task.date)
+                                                    .startOf("ss")
+                                                    .fromNow()}
+                                            </p>
+                                        </div>
+                                        <button
+                                            onClick={() =>
+                                                handleDelete(id, true)
+                                            }
+                                        >
+                                            <DeleteFilled />
+                                        </button>
                                     </section>
                                 ))}
                             </nav>
@@ -183,6 +173,25 @@ export default function TodoList() {
                         )}
                     </>
                 )}
+
+                <nav className="nav-select-type">
+                    <section
+                        onClick={() => setDoneTab("to do")}
+                        className={`nav-select-button ${
+                            doneTab === "to do" ? "tab-select" : null
+                        }`}
+                    >
+                        <BorderOutlined /> A fazer
+                    </section>
+                    <section
+                        onClick={() => setDoneTab("done")}
+                        className={`nav-select-button ${
+                            doneTab === "done" ? "tab-select" : null
+                        }`}
+                    >
+                        <CheckSquareOutlined /> Feito
+                    </section>
+                </nav>
 
                 <MyModal
                     isModalVisible={isModalVisible}
