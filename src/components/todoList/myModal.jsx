@@ -21,8 +21,8 @@ export default function MyModal({
         event.preventDefault();
         if (isOption === "cancel") setIsModalVisible(false);
         else {
-            if (task.title.length === 0 || task.description.length === 0) {
-                message.error("Preencha todos os campos corretamente!");
+            if (task.title.length === 0) {
+                message.error("Adicione ao menos um título!");
                 return;
             }
             setAllTask((arr) => [...arr, task]);
@@ -109,7 +109,7 @@ export default function MyModal({
                 </form>
             </Modal>
         );
-    } else if (typeModal === "info") {
+    } else if (typeModal === "info" && allTask[deleteId]) {
         return (
             <Modal
                 visible={isModalVisible}
@@ -120,7 +120,11 @@ export default function MyModal({
             >
                 <div className="info-modal">
                     <h1 className="title-info">{allTask[deleteId].title}</h1>
-                    <p className="desc-info">{allTask[deleteId].description}</p>
+                    {allTask[deleteId].description.length === 0 ? null : (
+                        <p className="desc-info">
+                            {allTask[deleteId].description}
+                        </p>
+                    )}
                     {allTask[deleteId].date.length === 0 ? null : (
                         <div className="date-info">
                             <p>Data para conclusão</p>
@@ -136,7 +140,7 @@ export default function MyModal({
                 </div>
             </Modal>
         );
-    } else if (typeModal === "infoDone") {
+    } else if (typeModal === "infoDone" && allTaskDone[deleteId]) {
         return (
             <Modal
                 visible={isModalVisible}
@@ -149,9 +153,11 @@ export default function MyModal({
                     <h1 className="title-info">
                         {allTaskDone[deleteId].title}
                     </h1>
-                    <p className="desc-info">
-                        {allTaskDone[deleteId].description}
-                    </p>
+                    {allTaskDone[deleteId].description.length === 0 ? null : (
+                        <p className="desc-info">
+                            {allTaskDone[deleteId].description}
+                        </p>
+                    )}
                     <div className="date-info">
                         <p>Data de conclusão:</p>
                         <p>
