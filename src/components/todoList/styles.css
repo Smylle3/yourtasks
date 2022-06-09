@@ -1,7 +1,6 @@
 .todo-page {
     margin: 0 11em;
     padding: 1em;
-    /* box-shadow: 0px 1px 10px -3px gray; */
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -109,7 +108,6 @@
     cursor: default;
     overflow-y: scroll;
     height: 57vh;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
     padding-top: 1em;
 }
 
@@ -289,6 +287,7 @@
     .todo-tasks {
         margin-top: 2em;
         width: 100%;
+        justify-content: end;
     }
 
     .todo-task {
@@ -296,10 +295,25 @@
     }
 
     .nav-select-type {
-        width: 100%;
+        position: fixed;
+        width: auto;
+        margin: 0;
+        bottom: 13em;
+        left: 0em;
+        right: 0em;
+        margin: 0 1em;
     }
 
     .emprty-image {
         margin-top: 7em;
+    }
+
+    .end-barr {
+        position: fixed;
+        bottom: 17em;
+        left: 0em;
+        right: 0em;
+        margin: 0 1em;
+        border: 1px solid rgba(128, 128, 128, 0.2);
     }
 }
