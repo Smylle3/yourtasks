@@ -3,7 +3,6 @@ import {
     CheckOutlined,
     CheckSquareOutlined,
     DeleteFilled,
-    EnterOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import MyModal from "./myModal";
@@ -14,6 +13,7 @@ import { useAuth } from "../../context/authContext";
 import { Spin } from "antd";
 import moment from "moment";
 import "moment/locale/pt-br";
+import MenuPlus from "../menuPlus/menuPlus";
 
 export default function TodoList() {
     const { user } = useAuth();
@@ -28,6 +28,11 @@ export default function TodoList() {
         title: "",
         description: "",
         date: "",
+    });
+    const [simpleList, setSimpleList] = useState({
+        title: "",
+        description: [],
+        simple: true
     });
 
     useEffect(() => {
@@ -83,13 +88,14 @@ export default function TodoList() {
         return (
             <div className="todo-page">
                 <form className="todo-form">
-                    <div
+                    {/* <div
                         className="todo-input"
                         onClick={() => showModal("create")}
                     >
                         <p>Insira aqui uma nova tarefa...</p>
                         <EnterOutlined style={{ cursor: "pointer" }} />
-                    </div>
+                    </div> */}
+                    <MenuPlus showModal={showModal} />
                 </form>
 
                 {doneTab === "to do" ? (
@@ -106,7 +112,7 @@ export default function TodoList() {
                                         >
                                             <h3>{task.title}</h3>
                                             <p>
-                                                {moment(task.date)
+                                                {!task.date || moment(task.date)
                                                     .startOf("ss")
                                                     .fromNow() ===
                                                 "Data inválida"
@@ -202,6 +208,8 @@ export default function TodoList() {
                     setIsModalVisible={setIsModalVisible}
                     task={task}
                     setTask={setTask}
+                    simpleList={simpleList}
+                    setSimpleList={setSimpleList}
                     allTask={allTask}
                     setAllTask={setAllTask}
                     allTaskDone={allTaskDone}
