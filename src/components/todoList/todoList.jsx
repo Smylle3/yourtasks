@@ -124,6 +124,7 @@ export default function TodoList() {
                                         >
                                             <DeleteFilled />
                                         </button>
+                                        <div className="end-barr" />
                                     </section>
                                 ))}
                             </nav>
@@ -161,6 +162,7 @@ export default function TodoList() {
                                         >
                                             <DeleteFilled />
                                         </button>
+                                        <div className="end-barr" />
                                     </section>
                                 ))}
                             </nav>
