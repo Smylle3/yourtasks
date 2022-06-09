@@ -21,6 +21,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
     width: 100%;
 }
 
@@ -47,9 +48,13 @@
 .title-task {
     border: 0 none;
     outline: 0;
+    width: 100%;
 
+    padding: 0 0.2em;
     margin-bottom: 1em;
-    font-size: xx-large;
+    font-size: x-large;
+    border: 1px solid white;
+    transition: 0.5s;
 }
 
 .desc-task {
@@ -60,9 +65,11 @@
     border: 1px solid white;
     border-radius: 5px;
     transition: 0.5s;
+    width: 100%;
 }
 
-.desc-task:focus {
+.desc-task:focus,
+.title-task:focus {
     border: 1px solid gray;
     border-radius: 5px;
 }
@@ -193,7 +200,7 @@
 }
 
 .emprty-image {
-    max-width: 40%;
+    max-width: 37%;
     min-width: 270px;
 }
 
@@ -261,6 +268,66 @@
 
 .date-picker:hover {
     border-bottom: 1px solid #808080;
+}
+
+.input-group {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 5px;
+    transition: 0.5s;
+    padding: 0 1em;
+}
+
+.simple-desc-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.simple-desc-content {
+    margin-top: 0.5em;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #8080804d;
+}
+
+.simple-desc-content input:checked ~ label {
+    text-decoration: line-through;
+}
+
+.simple-desc-content input,
+.simple-desc-content label {
+    width: 50%;
+}
+
+.simple-desc-inputs input {
+    width: 90%;
+    border: 1px solid #8080804d;
+    border-radius: 5px;
+    outline: 0 none;
+    padding: 0.5em;
+    margin-right: 0.5em;
+}
+
+.check-icon {
+    border: 1px solid;
+    padding: 0.5em;
+    border-radius: 25px;
+    transition: 0.5s;
+}
+
+.check-icon:hover {
+    color: #fff;
+    background-color: #000;
+    border: 1px solid;
 }
 
 @media (max-width: 930px) {
