@@ -9,8 +9,7 @@
 }
 
 .todo-form {
-    margin-top: 1em;
-    margin-bottom: 2em;
+    margin: 1em 0;
 
     display: flex;
     justify-content: center;
@@ -132,7 +131,8 @@
     transition: 0.5s;
 }
 
-.todo-task p, .todo-task h3 {
+.todo-task p,
+.todo-task h3 {
     margin: 0;
     width: 50%;
     word-wrap: break-word;
@@ -205,6 +205,7 @@
     width: 70%;
     cursor: default;
     font-weight: 300;
+    margin-top: 1em;
 }
 
 .nav-select-button {
@@ -270,9 +271,9 @@
     }
 
     .todo-page {
-        margin: 0 0em;
-        padding: 1em;
-        min-height: 70vh;
+        margin: 0 0;
+        min-height: 75vh;
+        justify-content: space-between;
     }
 
     .todo-form {
@@ -280,14 +281,24 @@
         width: auto;
         margin: 0;
         bottom: 8em;
-        left: 1.5em;
-        right: 1.5em;
+        left: 0em;
+        right: 0em;
+        margin: 0 1em;
     }
 
     .todo-tasks {
         margin-top: 2em;
         width: 100%;
     }
+
+    .todo-task {
+        width: 100%;
+    }
+
+    .nav-select-type {
+        width: 100%;
+    }
+
     .emprty-image {
         margin-top: 7em;
     }
