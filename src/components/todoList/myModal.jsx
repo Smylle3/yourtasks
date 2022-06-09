@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DatePicker, message, Modal } from "antd";
 import moment from "moment";
+import { CheckOutlined } from "@ant-design/icons";
 
 export default function MyModal({
     isModalVisible,
@@ -9,6 +10,8 @@ export default function MyModal({
     setIsModalVisible,
     task,
     setTask,
+    simpleList,
+    setSimpleList,
     allTask,
     setAllTask,
     allTaskDone,
@@ -16,99 +19,202 @@ export default function MyModal({
     deleteId,
 }) {
     const [hasDate, setHasDate] = useState(false);
+    const [simpleDescription, setSimpleDescription] = useState("");
 
-    function handleSend(isOption, event) {
+    useEffect(() => {
+        setSimpleList({
+            title: "",
+            description: [],
+            simple: true,
+        });
+    }, [isModalVisible]);
+
+    function handleDescription() {
+        if (simpleDescription.length > 0) {
+            simpleList.description.push(simpleDescription);
+            setSimpleDescription("");
+        }
+    }
+
+    function handleSend(isOption, event, type) {
         event.preventDefault();
         if (isOption === "cancel") setIsModalVisible(false);
         else {
-            if (task.title.length === 0) {
-                message.error("Adicione ao menos um título!");
-                return;
+            if (type === "detail") {
+                if (task.title.length === 0 || task.description.length === 0) {
+                    message.error("Preencha os campos corretamente!");
+                    return;
+                }
+                setAllTask((arr) => [...arr, task]);
+                setTask({
+                    title: "",
+                    description: "",
+                    date: "",
+                });
+            } else if (type === "simple") {
+                if (simpleList.title.length === 0) {
+                    message.error("Adicione ao menos um título!");
+                    return;
+                }
+                setAllTask((arr) => [...arr, simpleList]);
+                setSimpleList({
+                    title: "",
+                    description: "",
+                });
             }
-            setAllTask((arr) => [...arr, task]);
-            setTask({
-                title: "",
-                description: "",
-                date: "",
-            });
             setIsModalVisible(false);
         }
     }
 
     if (typeModal === "create") {
-        return (
-            <Modal
-                title={task.title.length > 0 ? task.title : "Nova tarefa"}
-                visible={isModalVisible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                footer={null}
-            >
-                <form className="modal-form">
-                    <input
-                        className="title-task"
-                        placeholder="Título..."
-                        onChange={(e) =>
-                            setTask({
-                                title: e.target.value,
-                                description: task.description,
-                                date: task.date,
-                            })
-                        }
-                        value={task.title}
-                    />
-                    <textarea
-                        onChange={(e) =>
-                            setTask({
-                                title: task.title,
-                                description: e.target.value,
-                                date: task.date,
-                            })
-                        }
-                        value={task.description}
-                        className="desc-task"
-                        placeholder="Descrição..."
-                    />
-                    <div className="date-group">
-                        <label
-                            className="date-picker"
-                            onClick={() => setHasDate(!hasDate)}
-                        >
-                            {hasDate
-                                ? `Não definir data para conclusão`
-                                : `Definir uma data para a conclusão`}
-                        </label>
-                        {hasDate ? (
-                            <DatePicker
-                                className="date-pickeC"
-                                format="YYYY-MM-DD"
-                                onChange={(ev, e) =>
-                                    setTask({
-                                        title: task.title,
-                                        description: task.description,
-                                        date: e,
-                                    })
+        if (deleteId === "detail") {
+            return (
+                <Modal
+                    title={task.title.length > 0 ? task.title : "Nova tarefa"}
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    footer={null}
+                >
+                    <form className="modal-form">
+                        <input
+                            className="title-task"
+                            placeholder="Título..."
+                            onChange={(e) =>
+                                setTask({
+                                    title: e.target.value,
+                                    description: task.description,
+                                    date: task.date,
+                                })
+                            }
+                            value={task.title}
+                        />
+                        <textarea
+                            onChange={(e) =>
+                                setTask({
+                                    title: task.title,
+                                    description: e.target.value,
+                                    date: task.date,
+                                })
+                            }
+                            value={task.description}
+                            className="desc-task"
+                            placeholder="Descrição..."
+                        />
+                        <div className="date-group">
+                            <label
+                                className="date-picker"
+                                onClick={() => setHasDate(!hasDate)}
+                            >
+                                {hasDate
+                                    ? `Não definir data para conclusão`
+                                    : `Clique para definir uma data para a conclusão`}
+                            </label>
+                            {hasDate ? (
+                                <DatePicker
+                                    className="date-pickeC"
+                                    format="YYYY-MM-DD"
+                                    onChange={(ev, e) =>
+                                        setTask({
+                                            title: task.title,
+                                            description: task.description,
+                                            date: e,
+                                        })
+                                    }
+                                />
+                            ) : null}
+                        </div>
+                        <div className="button-form-modal">
+                            <button
+                                onClick={(e) => handleSend("cancel", e)}
+                                className="cancel-button-modal my-button"
+                            >
+                                CANCELAR
+                            </button>
+                            <button
+                                onClick={(e) =>
+                                    handleSend("confirm", e, deleteId)
                                 }
+                                className="confirm-button-modal my-button"
+                            >
+                                ADICIONAR
+                            </button>
+                        </div>
+                    </form>
+                </Modal>
+            );
+        } else if (deleteId === "simple") {
+            return (
+                <Modal
+                    title={
+                        simpleList.title.length > 0
+                            ? simpleList.title
+                            : "Lista simples"
+                    }
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    footer={null}
+                    width={350}
+                >
+                    <form className="modal-form">
+                        <input
+                            className="title-task"
+                            placeholder="Ex.: Lista de compras"
+                            onChange={(e) =>
+                                setSimpleList({
+                                    title: e.target.value,
+                                    description: simpleList.description,
+                                    simple: true,
+                                })
+                            }
+                            value={simpleList.title}
+                        />
+                        <section className="simple-desc-inputs">
+                            <input
+                                onChange={(e) => {
+                                    setSimpleDescription(e.target.value);
+                                }}
+                                placeholder="Ex.: 1 - Arroz"
+                                value={simpleDescription}
                             />
+                            <CheckOutlined
+                                onClick={() => handleDescription()}
+                                className="check-icon"
+                            />
+                        </section>
+                        {simpleList.description.length > 0 ? (
+                            <div className="input-group">
+                                {simpleList.description.map((content, id) => (
+                                    <div
+                                        className="simple-desc-content"
+                                        key={id}
+                                    >
+                                        <p>{content}</p>
+                                    </div>
+                                ))}
+                            </div>
                         ) : null}
-                    </div>
-                    <div className="button-form-modal">
-                        <button
-                            onClick={(e) => handleSend("cancel", e)}
-                            className="cancel-button-modal my-button"
-                        >
-                            CANCELAR
-                        </button>
-                        <button
-                            onClick={(e) => handleSend("confirm", e)}
-                            className="confirm-button-modal my-button"
-                        >
-                            ADICIONAR
-                        </button>
-                    </div>
-                </form>
-            </Modal>
-        );
+                        <div className="button-form-modal">
+                            <button
+                                onClick={(e) => handleSend("cancel", e)}
+                                className="cancel-button-modal my-button"
+                            >
+                                CANCELAR
+                            </button>
+                            <button
+                                onClick={(e) =>
+                                    handleSend("confirm", e, deleteId)
+                                }
+                                className="confirm-button-modal my-button"
+                            >
+                                ADICIONAR
+                            </button>
+                        </div>
+                    </form>
+                </Modal>
+            );
+        }
     } else if (typeModal === "info" && allTask[deleteId]) {
         return (
             <Modal
@@ -121,11 +227,35 @@ export default function MyModal({
                 <div className="info-modal">
                     <h1 className="title-info">{allTask[deleteId].title}</h1>
                     {allTask[deleteId].description.length === 0 ? null : (
-                        <p className="desc-info">
-                            {allTask[deleteId].description}
-                        </p>
+                        <>
+                            {allTask[deleteId].simple ? (
+                                <>
+                                    {allTask[deleteId].description.map(
+                                        (content, id) => (
+                                            <div
+                                                className="simple-desc-content"
+                                                key={id}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    id={`content${id}`}
+                                                />
+                                                <label htmlFor={`content${id}`}>
+                                                    {content}
+                                                </label>
+                                            </div>
+                                        )
+                                    )}
+                                </>
+                            ) : (
+                                <p className="desc-info">
+                                    {allTask[deleteId].description}
+                                </p>
+                            )}
+                        </>
                     )}
-                    {allTask[deleteId].date.length === 0 ? null : (
+                    {!allTask[deleteId].date ||
+                    allTask[deleteId].date.length === 0 ? null : (
                         <div className="date-info">
                             <p>Data para conclusão</p>
                             <p>{allTask[deleteId].date}</p>
