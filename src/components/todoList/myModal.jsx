@@ -276,7 +276,7 @@ export default function MyModal({
                                                 (allTask[deleteId].description =
                                                     e.target.value)
                                             }
-                                            className="desc-task"
+                                            className="desc-task edit-task"
                                             placeholder={
                                                 allTask[deleteId].description
                                             }

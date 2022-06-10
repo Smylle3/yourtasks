@@ -58,6 +58,7 @@
     transition: 0.5s;
 }
 
+
 .desc-task {
     border: 0 none;
     outline: 0;
@@ -71,6 +72,11 @@
 
 .desc-task:focus,
 .title-task:focus {
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.edit-task {
     border: 1px solid gray;
     border-radius: 5px;
 }
