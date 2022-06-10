@@ -80,6 +80,7 @@ export default function MyModal({
                     onOk={handleOk}
                     onCancel={handleCancel}
                     footer={null}
+                    style={{ cursor: "default" }}
                 >
                     <form className="modal-form">
                         <input
@@ -161,6 +162,7 @@ export default function MyModal({
                     onCancel={handleCancel}
                     footer={null}
                     width={350}
+                    style={{ cursor: "default" }}
                 >
                     <form className="modal-form">
                         <input
@@ -229,6 +231,7 @@ export default function MyModal({
                 footer={null}
                 width={300}
                 closable={false}
+                style={{ cursor: "default" }}
             >
                 <div className="info-modal">
                     {edit ? (
@@ -326,6 +329,7 @@ export default function MyModal({
                 onCancel={handleCancel}
                 footer={null}
                 width={300}
+                style={{ cursor: "default" }}
             >
                 <div className="info-modal">
                     <h1 className="title-info">
