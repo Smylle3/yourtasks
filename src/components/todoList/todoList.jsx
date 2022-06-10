@@ -101,15 +101,15 @@ export default function TodoList() {
                                     <section
                                         className="todo-task"
                                         style={{
-                                            backgroundColor: `${
+                                            border: `1px solid ${
                                                 TimePassed(
                                                     moment(
                                                         task.date,
                                                         "YYYYMMDD"
                                                     ).fromNow()
                                                 )
-                                                    ? "rgba(255, 161, 141, 0.3)"
-                                                    : "rgba(145, 255, 141, 0.3)"
+                                                    ? "rgb(255, 161, 141)"
+                                                    : "rgb(145, 255, 141)"
                                             }`,
                                         }}
                                         key={id}
@@ -120,20 +120,8 @@ export default function TodoList() {
                                             }
                                             className="todo-content-info"
                                         >
-                                            <h3
-                                                style={{
-                                                    backgroundColor:
-                                                        "transparent",
-                                                }}
-                                            >
-                                                {task.title}
-                                            </h3>
-                                            <p
-                                                style={{
-                                                    backgroundColor:
-                                                        "transparent",
-                                                }}
-                                            >
+                                            <h3>{task.title}</h3>
+                                            <p>
                                                 {!task.date ||
                                                 moment(task.date)
                                                     .startOf("ss")
