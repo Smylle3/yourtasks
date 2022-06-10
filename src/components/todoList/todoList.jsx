@@ -14,6 +14,7 @@ import { Spin } from "antd";
 import moment from "moment";
 import "moment/locale/pt-br";
 import MenuPlus from "../menuPlus/menuPlus";
+import { TimePassed } from "../../functions/timePassed";
 
 export default function TodoList() {
     const { user } = useAuth();
@@ -32,7 +33,7 @@ export default function TodoList() {
     const [simpleList, setSimpleList] = useState({
         title: "",
         description: [],
-        simple: true
+        simple: true,
     });
 
     useEffect(() => {
@@ -88,13 +89,6 @@ export default function TodoList() {
         return (
             <div className="todo-page">
                 <form className="todo-form">
-                    {/* <div
-                        className="todo-input"
-                        onClick={() => showModal("create")}
-                    >
-                        <p>Insira aqui uma nova tarefa...</p>
-                        <EnterOutlined style={{ cursor: "pointer" }} />
-                    </div> */}
                     <MenuPlus showModal={showModal} />
                 </form>
 
@@ -103,19 +97,47 @@ export default function TodoList() {
                         {allTask.length > 0 ? (
                             <nav className="todo-tasks">
                                 {allTask.map((task, id) => (
-                                    <section className="todo-task" key={id}>
+                                    <section
+                                        className="todo-task"
+                                        style={{
+                                            backgroundColor: `${
+                                                TimePassed(
+                                                    moment(
+                                                        task.date,
+                                                        "YYYYMMDD"
+                                                    ).fromNow()
+                                                )
+                                                    ? "rgba(255, 161, 141, 0.3)"
+                                                    : "rgba(145, 255, 141, 0.3)"
+                                            }`,
+                                        }}
+                                        key={id}
+                                    >
                                         <div
                                             onClick={() =>
                                                 showModal("info", id)
                                             }
                                             className="todo-content-info"
                                         >
-                                            <h3>{task.title}</h3>
-                                            <p>
-                                                {!task.date || moment(task.date)
+                                            <h3
+                                                style={{
+                                                    backgroundColor:
+                                                        "transparent",
+                                                }}
+                                            >
+                                                {task.title}
+                                            </h3>
+                                            <p
+                                                style={{
+                                                    backgroundColor:
+                                                        "transparent",
+                                                }}
+                                            >
+                                                {!task.date ||
+                                                moment(task.date)
                                                     .startOf("ss")
                                                     .fromNow() ===
-                                                "Data inválida"
+                                                    "Data inválida"
                                                     ? null
                                                     : moment(task.date)
                                                           .startOf("ss")
