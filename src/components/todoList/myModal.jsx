@@ -17,10 +17,16 @@ export default function MyModal({
     allTaskDone,
     typeModal,
     deleteId,
+    checked,
+    setChecked,
 }) {
     const [hasDate, setHasDate] = useState(false);
     const [edit, setEdit] = useState(false);
-    const [simpleDescription, setSimpleDescription] = useState("");
+    
+    const [simpleDescription, setSimpleDescription] = useState({
+        text: "",
+        checked: false,
+    });
 
     useEffect(() => {
         setSimpleList({
@@ -31,9 +37,9 @@ export default function MyModal({
     }, [isModalVisible]);
 
     function handleDescription() {
-        if (simpleDescription.length > 0) {
+        if (simpleDescription.text.length > 0) {
             simpleList.description.push(simpleDescription);
-            setSimpleDescription("");
+            setSimpleDescription({ text: "", checked: false });
         }
     }
 
@@ -180,10 +186,13 @@ export default function MyModal({
                         <section className="simple-desc-inputs">
                             <input
                                 onChange={(e) => {
-                                    setSimpleDescription(e.target.value);
+                                    setSimpleDescription({
+                                        text: e.target.value,
+                                        checked: false,
+                                    });
                                 }}
                                 placeholder="Ex.: 1 - Arroz"
-                                value={simpleDescription}
+                                value={simpleDescription.text}
                             />
                             <CheckOutlined
                                 onClick={() => handleDescription()}
@@ -197,7 +206,7 @@ export default function MyModal({
                                         className="simple-desc-content"
                                         key={id}
                                     >
-                                        <p>{content}</p>
+                                        <p>{content.text}</p>
                                     </div>
                                 ))}
                             </div>
@@ -223,6 +232,7 @@ export default function MyModal({
             );
         }
     } else if (typeModal === "info" && allTask[deleteId]) {
+        console.log(allTask[deleteId]);
         return (
             <Modal
                 visible={isModalVisible}
@@ -260,9 +270,15 @@ export default function MyModal({
                                                 <input
                                                     type="checkbox"
                                                     id={`content${id}`}
+                                                    checked={content.checked}
+                                                    onChange={(e) => {
+                                                        content.checked =
+                                                            e.target.checked;
+                                                        setChecked(!checked);
+                                                    }}
                                                 />
                                                 <label htmlFor={`content${id}`}>
-                                                    {content}
+                                                    {content.text}
                                                 </label>
                                             </div>
                                         )

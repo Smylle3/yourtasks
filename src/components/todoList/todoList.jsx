@@ -19,6 +19,7 @@ import { TimePassed } from "../../functions/timePassed";
 export default function TodoList() {
     const { user } = useAuth();
     const [change, setChange] = useState(false);
+    const [checked, setChecked] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [typeModal, setTypeModal] = useState(false);
     const [doneTab, setDoneTab] = useState("to do");
@@ -53,7 +54,7 @@ export default function TodoList() {
 
     useEffect(() => {
         localStorage.setItem("todo", JSON.stringify(allTask));
-    }, [allTask.length]);
+    }, [allTask.length, checked]);
 
     useEffect(() => {
         localStorage.setItem("done", JSON.stringify(allTaskDone));
@@ -237,6 +238,8 @@ export default function TodoList() {
                     allTaskDone={allTaskDone}
                     typeModal={typeModal}
                     deleteId={deleteId}
+                    checked={checked}
+                    setChecked={setChecked}
                 />
             </div>
         );
