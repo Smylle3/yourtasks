@@ -292,10 +292,24 @@ export default function MyModal({
                     )}
                     {!allTask[deleteId].date ||
                     allTask[deleteId].date.length === 0 ? null : (
-                        <div className="date-info">
-                            <p>Data para conclusão</p>
-                            <p>{allTask[deleteId].date}</p>
-                        </div>
+                        <>
+                            {edit ? (
+                                <>
+                                    <DatePicker
+                                        className="date-pickeC"
+                                        format="YYYY-MM-DD"
+                                        onChange={(ev, e) =>
+                                            (allTask[deleteId].date = e)
+                                        }
+                                    />
+                                </>
+                            ) : (
+                                <div className="date-info">
+                                    <p>Data para conclusão</p>
+                                    <p>{allTask[deleteId].date}</p>
+                                </div>
+                            )}
+                        </>
                     )}
                     {edit ? (
                         <button
