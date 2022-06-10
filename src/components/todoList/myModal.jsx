@@ -377,11 +377,12 @@ export default function MyModal({
                                             >
                                                 <input
                                                     type="checkbox"
-                                                    checked={true}
+                                                    checked={content.checked}
+                                                    disabled
                                                     id={`content${id}`}
                                                 />
                                                 <label htmlFor={`content${id}`}>
-                                                    {content}
+                                                    {content.text}
                                                 </label>
                                             </div>
                                         )
