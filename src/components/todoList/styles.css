@@ -104,6 +104,10 @@
     background-color: rgb(106, 194, 106);
 }
 
+.alert-button-modal {
+    background-color: rgb(106, 154, 194);
+}
+
 .date {
     border: 1px solid gray;
 }
