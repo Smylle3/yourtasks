@@ -19,6 +19,7 @@ export default function MyModal({
     deleteId,
 }) {
     const [hasDate, setHasDate] = useState(false);
+    const [edit, setEdit] = useState(false);
     const [simpleDescription, setSimpleDescription] = useState("");
 
     useEffect(() => {
@@ -38,8 +39,12 @@ export default function MyModal({
 
     function handleSend(isOption, event, type) {
         event.preventDefault();
-        if (isOption === "cancel") setIsModalVisible(false);
-        else {
+        if (isOption === "cancel") {
+            setIsModalVisible(false);
+            setEdit(false);
+        } else if (isOption === "edit") {
+            setEdit(true);
+        } else {
             if (type === "detail") {
                 if (task.title.length === 0 || task.description.length === 0) {
                     message.error("Preencha os campos corretamente!");
@@ -223,9 +228,22 @@ export default function MyModal({
                 onCancel={handleCancel}
                 footer={null}
                 width={300}
+                closable={false}
             >
                 <div className="info-modal">
-                    <h1 className="title-info">{allTask[deleteId].title}</h1>
+                    {edit ? (
+                        <input
+                            className="title-task edit-task"
+                            placeholder={allTask[deleteId].title}
+                            onChange={(e) =>
+                                (allTask[deleteId].title = e.target.value)
+                            }
+                        />
+                    ) : (
+                        <h1 className="title-info">
+                            {allTask[deleteId].title}
+                        </h1>
+                    )}
                     {allTask[deleteId].description.length === 0 ? null : (
                         <>
                             {allTask[deleteId].simple ? (
@@ -248,9 +266,24 @@ export default function MyModal({
                                     )}
                                 </>
                             ) : (
-                                <p className="desc-info">
-                                    {allTask[deleteId].description}
-                                </p>
+                                <>
+                                    {edit ? (
+                                        <textarea
+                                            onChange={(e) =>
+                                                (allTask[deleteId].description =
+                                                    e.target.value)
+                                            }
+                                            className="desc-task"
+                                            placeholder={
+                                                allTask[deleteId].description
+                                            }
+                                        />
+                                    ) : (
+                                        <p className="desc-info">
+                                            {allTask[deleteId].description}
+                                        </p>
+                                    )}
+                                </>
                             )}
                         </>
                     )}
@@ -260,6 +293,21 @@ export default function MyModal({
                             <p>Data para conclusão</p>
                             <p>{allTask[deleteId].date}</p>
                         </div>
+                    )}
+                    {edit ? (
+                        <button
+                            onClick={(e) => setEdit(false)}
+                            className="confirm-button-modal my-button"
+                        >
+                            CONFIRMAR
+                        </button>
+                    ) : (
+                        <button
+                            onClick={(e) => handleSend("edit", e)}
+                            className="alert-button-modal my-button"
+                        >
+                            EDITAR
+                        </button>
                     )}
                     <button
                         onClick={(e) => handleSend("cancel", e)}
@@ -284,9 +332,33 @@ export default function MyModal({
                         {allTaskDone[deleteId].title}
                     </h1>
                     {allTaskDone[deleteId].description.length === 0 ? null : (
-                        <p className="desc-info">
-                            {allTaskDone[deleteId].description}
-                        </p>
+                        <>
+                            {allTaskDone[deleteId].simple ? (
+                                <>
+                                    {allTaskDone[deleteId].description.map(
+                                        (content, id) => (
+                                            <div
+                                                className="simple-desc-content"
+                                                key={id}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={true}
+                                                    id={`content${id}`}
+                                                />
+                                                <label htmlFor={`content${id}`}>
+                                                    {content}
+                                                </label>
+                                            </div>
+                                        )
+                                    )}
+                                </>
+                            ) : (
+                                <p className="desc-info">
+                                    {allTaskDone[deleteId].description}
+                                </p>
+                            )}
+                        </>
                     )}
                     <div className="date-info">
                         <p>Data de conclusão:</p>
