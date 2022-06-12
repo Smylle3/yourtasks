@@ -58,7 +58,6 @@
     transition: 0.5s;
 }
 
-
 .desc-task {
     border: 0 none;
     outline: 0;
@@ -339,6 +338,11 @@
     color: #fff;
     background-color: #000;
     border: 1px solid;
+}
+
+.simple-input-edit {
+    border: 0;
+    outline: 0;
 }
 
 @media (max-width: 930px) {
