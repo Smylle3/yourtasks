@@ -22,7 +22,7 @@ export default function MyModal({
 }) {
     const [hasDate, setHasDate] = useState(false);
     const [edit, setEdit] = useState(false);
-    
+
     const [simpleDescription, setSimpleDescription] = useState({
         text: "",
         checked: false,
@@ -232,7 +232,6 @@ export default function MyModal({
             );
         }
     } else if (typeModal === "info" && allTask[deleteId]) {
-        console.log(allTask[deleteId]);
         return (
             <Modal
                 visible={isModalVisible}
@@ -267,19 +266,40 @@ export default function MyModal({
                                                 className="simple-desc-content"
                                                 key={id}
                                             >
-                                                <input
-                                                    type="checkbox"
-                                                    id={`content${id}`}
-                                                    checked={content.checked}
-                                                    onChange={(e) => {
-                                                        content.checked =
-                                                            e.target.checked;
-                                                        setChecked(!checked);
-                                                    }}
-                                                />
-                                                <label htmlFor={`content${id}`}>
-                                                    {content.text}
-                                                </label>
+                                                {edit ? (
+                                                    <input
+                                                        onChange={(e) =>
+                                                            (content.text =
+                                                                e.target.value)
+                                                        }
+                                                        className="simple-input-edit"
+                                                        placeholder={
+                                                            content.text
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <>
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`content${id}`}
+                                                            checked={
+                                                                content.checked
+                                                            }
+                                                            onChange={(e) => {
+                                                                content.checked =
+                                                                    e.target.checked;
+                                                                setChecked(
+                                                                    !checked
+                                                                );
+                                                            }}
+                                                        />
+                                                        <label
+                                                            htmlFor={`content${id}`}
+                                                        >
+                                                            {content.text}
+                                                        </label>
+                                                    </>
+                                                )}
                                             </div>
                                         )
                                     )}
