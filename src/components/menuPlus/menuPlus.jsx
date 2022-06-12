@@ -5,7 +5,7 @@ import "./styles.css";
 
 export default function MenuPlus({ showModal }) {
     const [visible, setVisible] = useState(false);
-
+    
     const modalFunction = (isCreate, type) => {
         showModal(isCreate, type);
         setVisible(false);
@@ -25,12 +25,6 @@ export default function MenuPlus({ showModal }) {
             >
                 Lista simples
             </button>
-            <button
-                className="logout-button"
-                onClick={() => modalFunction("create", "note")}
-            >
-                Anotação
-            </button>
         </div>
     );
 
@@ -39,15 +33,17 @@ export default function MenuPlus({ showModal }) {
     };
 
     return (
-        <Popover
-            onVisibleChange={handleVisibleChange}
-            visible={visible}
-            content={content}
-            trigger="click"
-        >
-            <div className="todo-input-plus">
-                <PlusOutlined />
-            </div>
-        </Popover>
+        <>
+            <Popover
+                onVisibleChange={handleVisibleChange}
+                visible={visible}
+                content={content}
+                trigger="click"
+            >
+                <div className="todo-input-plus">
+                    <PlusOutlined />
+                </div>
+            </Popover>
+        </>
     );
 }

@@ -109,6 +109,7 @@ export default function MyModal({
                                     date: task.date,
                                 })
                             }
+                            wrap='on'
                             value={task.description}
                             className="desc-task"
                             placeholder="Descrição..."
