@@ -108,8 +108,8 @@ export default function TodoList() {
                                                         "YYYYMMDD"
                                                     ).fromNow()
                                                 )
-                                                    ? "rgb(255, 161, 141)"
-                                                    : "rgb(145, 255, 141)"
+                                                    ? "rgb(202, 46, 46)"
+                                                    : "rgb(68, 204, 63)"
                                             }`,
                                         }}
                                         key={id}
