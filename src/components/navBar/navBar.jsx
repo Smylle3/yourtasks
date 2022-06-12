@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/authContext";
 import useMobile from "../../functions/useMobile";
 import { useNavigate } from "react-router-dom";
-import { BsListCheck, BsCalendarDate, BsClock } from "react-icons/bs";
+import { BsListCheck, BsClock } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 
 import logo from "../../assets/logo192.png";
@@ -50,15 +50,6 @@ export default function NavBar() {
                 >
                     <BsListCheck className="icon" />
                     {isMobile ? null : <>Todo</>}
-                </div>
-                <div
-                    className={`buttom ${
-                        page === "/calendar" ? "selected" : null
-                    }`}
-                    onClick={() => handleNabigation("/calendar")}
-                >
-                    <BsCalendarDate className="icon" />
-                    {isMobile ? null : <>Calendar</>}
                 </div>
                 <div
                     className={`buttom ${
