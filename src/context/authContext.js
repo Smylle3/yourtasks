@@ -9,6 +9,33 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [allTaskDone, setAllTaskDone] = useState([]);
+    const [allTask, setAllTask] = useState([]);
+    const [task, setTask] = useState({
+        title: "",
+        description: "",
+        date: "",
+    });
+    const [simpleList, setSimpleList] = useState({
+        title: "",
+        description: [],
+        simple: true,
+    });
+
+    useEffect(() => {
+        let localTask = localStorage.getItem("todo");
+        let localTaskDone = localStorage.getItem("done");
+
+        if (JSON.parse(localTask)) {
+            if (JSON.parse(localTask).length > 0)
+                setAllTask(JSON.parse(localTask));
+        }
+
+        if (JSON.parse(localTaskDone)) {
+            if (JSON.parse(localTaskDone).length > 0)
+                setAllTaskDone(JSON.parse(localTaskDone));
+        }
+    }, []);
 
     useEffect(() => {
         auth.onAuthStateChanged((user) => {
@@ -17,7 +44,17 @@ export const AuthProvider = ({ children }) => {
         });
     }, [user, navigate]);
 
-    const value = { user };
+    const value = {
+        user,
+        allTaskDone,
+        setAllTaskDone,
+        allTask,
+        setAllTask,
+        task,
+        setTask,
+        simpleList,
+        setSimpleList,
+    };
 
     return (
         <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
