@@ -1,27 +1,31 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Popover } from "antd";
 import React, { useState } from "react";
+import CreateTask from "../todoList/modais/createTask";
 import "./styles.css";
 
-export default function MenuPlus({ showModal }) {
+export default function MenuPlus() {
+    const [type, setType] = useState("");
     const [visible, setVisible] = useState(false);
-    
-    const modalFunction = (isCreate, type) => {
-        showModal(isCreate, type);
-        setVisible(false);
-    };
+    const [isModalVisible, setModalVisible] = useState(false);
 
+    const modalFunction = (type) => {
+        setVisible(false);
+        setType(type);
+        setModalVisible(true);
+    };
+    
     const content = (
         <div className="task-menu-plus">
             <button
                 className="logout-button"
-                onClick={() => modalFunction("create", "detail")}
+                onClick={() => modalFunction("detail")}
             >
                 Tarefa com detalhes
             </button>
             <button
                 className="logout-button"
-                onClick={() => modalFunction("create", "simple")}
+                onClick={() => modalFunction("simple")}
             >
                 Lista simples
             </button>
@@ -44,6 +48,11 @@ export default function MenuPlus({ showModal }) {
                     <PlusOutlined />
                 </div>
             </Popover>
+            <CreateTask
+                isModalVisible={isModalVisible}
+                setModalVisible={setModalVisible}
+                type={type}
+            />
         </>
     );
 }
