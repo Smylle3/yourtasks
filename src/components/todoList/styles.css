@@ -1,15 +1,14 @@
 .todo-page {
-    margin: 0 11em;
-    padding: 1em;
+    margin: 0 2em;
+    padding: 0.5em;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: scroll;
 }
 
 .todo-form {
-    margin: 1em 0;
+    margin-bottom: 1em;
 
     display: flex;
     justify-content: center;
@@ -18,11 +17,8 @@
     background-color: #fff;
 }
 
-.modal-form {
+.todo-lists {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
     width: 100%;
 }
 
@@ -46,29 +42,6 @@
     margin: 0;
 }
 
-.title-task {
-    border: 0 none;
-    outline: 0;
-    width: 100%;
-
-    padding: 0 0.2em;
-    margin-bottom: 1em;
-    font-size: x-large;
-    border: 1px solid white;
-    transition: 0.5s;
-}
-
-.desc-task {
-    border: 0 none;
-    outline: 0;
-    margin-bottom: 1em;
-    padding: 0.5em;
-    border: 1px solid white;
-    border-radius: 5px;
-    transition: 0.5s;
-    width: 100%;
-}
-
 .desc-task:focus,
 .title-task:focus {
     border: 1px solid gray;
@@ -80,52 +53,27 @@
     border-radius: 5px;
 }
 
-.button-form-modal {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin: 1em 0;
-}
-
-.my-button {
-    border: 0 none;
-    outline: 0;
-    padding: 0.5em 1em;
-    border-radius: 5px;
-    transition: 0.4s;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.my-button:hover {
-    opacity: 0.7;
-}
-
-.cancel-button-modal {
-    background-color: rgb(252, 104, 104);
-}
-
-.confirm-button-modal {
-    background-color: rgb(106, 194, 106);
-}
-
-.alert-button-modal {
-    background-color: rgb(106, 154, 194);
-}
-
-.date {
-    border: 1px solid gray;
-}
-
 .todo-tasks {
     width: 100%;
+    height: 70vh;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+
     cursor: default;
-    overflow-y: scroll;
-    height: 57vh;
-    padding-top: 1em;
+    padding: 1em;
+
+    box-shadow: 0 0 10px -5px gray;
+    border-radius: 5px;
+}
+
+.right {
+    margin-left: 1em;
+}
+
+.left {
+    margin-right: 1em;
 }
 
 .todo-task:hover {
@@ -133,7 +81,7 @@
 }
 
 .todo-task {
-    width: 70%;
+    width: 100%;
     border: 1px solid black;
     border-radius: 5px;
     display: flex;
@@ -184,22 +132,6 @@
     background-color: #fff;
 }
 
-.info-modal .desc-info,
-.info-modal .date-info {
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    padding: 0.5em;
-    border-radius: 5px;
-}
-
-.info-modal button {
-    margin-top: 1em;
-}
-
-.info-modal {
-    display: flex;
-    flex-direction: column;
-}
-
 .buttons-delete-task {
     display: flex;
     flex-direction: column;
@@ -207,11 +139,6 @@
 
 .buttons-delete-task .cancel-button-modal {
     margin-bottom: 1em;
-}
-
-.emprty-image {
-    max-width: 37%;
-    min-width: 270px;
 }
 
 .nav-select-type {
@@ -258,103 +185,25 @@
     justify-content: center;
 }
 
-.date-group {
+.column-reverse {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+
+    padding: 1em 0;
     width: 100%;
-}
-
-.date-pickerC {
-    width: 100%;
-}
-
-.date-picker {
-    cursor: pointer;
-    transition: 0.5s;
-    border-bottom: 1px solid #fff;
-    width: fit-content;
-    margin-bottom: 1em;
-}
-
-.date-picker:hover {
-    border-bottom: 1px solid #808080;
-}
-
-.input-group {
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid rgba(128, 128, 128, 0.3);
-    border-radius: 5px;
-    transition: 0.5s;
-    padding: 0 1em;
-}
-
-.simple-desc-inputs {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1em;
-}
-
-.simple-desc-content {
-    margin-top: 0.5em;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid #8080804d;
-}
-
-.simple-desc-content input:checked ~ label {
-    text-decoration: line-through;
-}
-
-.simple-desc-content input,
-.simple-desc-content label {
-    width: 50%;
-}
-
-.simple-desc-inputs input {
-    width: 90%;
-    border: 1px solid #8080804d;
-    border-radius: 5px;
-    outline: 0 none;
-    padding: 0.5em;
-    margin-right: 0.5em;
-}
-
-.check-icon {
-    border: 1px solid;
-    padding: 0.5em;
-    border-radius: 25px;
-    transition: 0.5s;
-}
-
-.check-icon:hover {
-    color: #fff;
-    background-color: #000;
-    border: 1px solid;
-}
-
-.simple-input-edit {
-    border: 0;
-    outline: 0;
+    overflow-y: scroll;
 }
 
 @media (max-width: 930px) {
-    .todo-input {
-        width: 100%;
-    }
-
-    .todo-page {
-        margin: 0 0;
-        min-height: 75vh;
-        justify-content: space-between;
-        overflow-y: scroll;
+    .todo-lists {
+        display: flex;
+        align-items: flex-end;
+        position: fixed;
+        width: auto;
+        top: 0;
+        bottom: 13em;
+        left: 0;
+        right: 0;
     }
 
     .todo-form {
@@ -368,35 +217,14 @@
     }
 
     .todo-tasks {
-        margin-top: 2em;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .column-reverse {
+        display: flex;
+        flex-direction: column;
         width: 100%;
-        justify-content: end;
-    }
-
-    .todo-task {
-        width: 100%;
-    }
-
-    .nav-select-type {
-        position: fixed;
-        width: auto;
-        margin: 0;
-        bottom: 13em;
-        left: 0em;
-        right: 0em;
-        margin: 0 1em;
-    }
-
-    .emprty-image {
-        margin-top: 7em;
-    }
-
-    .end-barr {
-        position: fixed;
-        bottom: 17em;
-        left: 0em;
-        right: 0em;
-        margin: 0 1em;
-        border: 1px solid rgba(128, 128, 128, 0.2);
+        overflow-y: scroll;
     }
 }
