@@ -33,6 +33,7 @@
 
 .todo-lists {
     display: flex;
+    justify-content: center;
     width: 100%;
 }
 
@@ -196,10 +197,17 @@
     overflow-y: scroll;
 }
 
+.empty-image {
+    width: 100%;
+    min-width: 280px;
+    max-width: 500px;
+}
+
 @media (max-width: 930px) {
     .todo-lists {
         display: flex;
         align-items: flex-end;
+        justify-content: center;
         position: fixed;
         width: auto;
         top: 0;
