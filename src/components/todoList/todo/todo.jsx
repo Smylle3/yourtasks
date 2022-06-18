@@ -33,8 +33,7 @@ export default function Todo() {
     };
 
     return (
-        <nav className="todo-tasks left">
-            todo
+        <nav className="todo-tasks">
             <div className="column-reverse">
                 {allTask.map((task, id) => (
                     <section

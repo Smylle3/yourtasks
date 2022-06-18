@@ -25,9 +25,8 @@ export default function Done() {
     };
 
     return (
-        <nav className="todo-tasks right">
-            done
-            <div className="column-reverse" >
+        <nav className="todo-tasks">
+            <div className="column-reverse">
                 {allTaskDone.map((task, id) => (
                     <section className="todo-task" key={id}>
                         <div
