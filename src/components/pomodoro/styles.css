@@ -1,0 +1,32 @@
+.pomo-page {
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+    position: fixed;
+    top: 7em;
+    bottom: 2em;
+    left: 0;
+    right: 0;
+    margin: 0 2em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1em;
+}
+
+.pomo-page p {
+    font-size: xx-large;
+    margin: 0;
+}
+
+@media (max-width: 930px) {
+    .pomo-page {
+        left: 0;
+        right: 0;
+        margin: 0 1em;
+        bottom: 7em;
+        top: 2em;
+    }
+}
