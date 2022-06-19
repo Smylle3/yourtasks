@@ -8,11 +8,11 @@
 }
 
 .todo-form {
-    margin-bottom: 1em;
+    margin-bottom: 2em;
 
     display: flex;
-    justify-content: space-around;
-    width: 100%;
+    justify-content: space-between;
+    width: 70%;
     height: 3em;
     background-color: #fff;
 }
@@ -70,7 +70,7 @@
 }
 
 .todo-tasks {
-    width: 100%;
+    width: 70%;
     height: 70vh;
 
     display: flex;
@@ -78,7 +78,6 @@
     align-items: center;
 
     cursor: default;
-    padding: 1em;
 }
 
 .todo-task:hover {
@@ -230,6 +229,8 @@
     .todo-tasks {
         display: flex;
         justify-content: flex-end;
+        width: 100%;
+        margin: 0 1em;
     }
 
     .column-reverse {
