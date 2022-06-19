@@ -25,17 +25,39 @@
     padding: 0 1em;
     border-radius: 5px;
     border: 1px solid #fff;
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
-.done-tab, .default-done-tab:hover {
+.done-tab,
+.default-done-tab:hover {
     border: 1px solid #000;
 }
 
 .todo-lists {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
+}
+
+.todo-lists section {
+    display: flex;
+    gap: 1em;
+}
+
+.dot-one {
+    width: 0.7em;
+    height: 0.7em;
+    background-color: #fff;
+    border-radius: 25px;
+    border: 1px solid #000;
+    transition: all 0.5s;
+}
+
+.dot-selected {
+    background-color: #000;
+    border: 1px solid #000;
 }
 
 .todo-input {
@@ -205,9 +227,9 @@
 
 @media (max-width: 930px) {
     .todo-lists {
+        margin: 0 1em;
         display: flex;
-        align-items: flex-end;
-        justify-content: center;
+        align-items: center;
         position: fixed;
         width: auto;
         top: 0;

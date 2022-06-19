@@ -62,6 +62,18 @@ export default function TodoList() {
                     }
                 >
                     {doneTab === "to do" ? <Todo /> : <Done />}
+                    <section>
+                        <div
+                            className={`dot-one ${
+                                doneTab === "to do" ? `dot-selected` : null
+                            }`}
+                        />
+                        <div
+                            className={`dot-one ${
+                                doneTab === "done" ? `dot-selected` : null
+                            }`}
+                        />
+                    </section>
                 </div>
             </div>
         );
