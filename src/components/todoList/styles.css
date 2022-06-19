@@ -7,6 +7,12 @@
     align-items: center;
 }
 
+.todo-page section {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+}
+
 .todo-form {
     margin-bottom: 2em;
 
@@ -39,11 +45,6 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-}
-
-.todo-lists section {
-    display: flex;
-    gap: 1em;
 }
 
 .dot-one {

@@ -26,7 +26,7 @@ export default function TodoList() {
     if (user) {
         return (
             <div className="todo-page">
-                <form className="todo-form">
+                <div className="todo-form">
                     <div
                         className={`default-done-tab ${
                             doneTab === "to do" ? `done-tab` : null
@@ -44,7 +44,19 @@ export default function TodoList() {
                     >
                         <CheckSquareOutlined /> Feitos
                     </div>
-                </form>
+                </div>
+                <section>
+                    <div
+                        className={`dot-one ${
+                            doneTab === "to do" ? `dot-selected` : null
+                        }`}
+                    />
+                    <div
+                        className={`dot-one ${
+                            doneTab === "done" ? `dot-selected` : null
+                        }`}
+                    />
+                </section>
                 <div
                     className="todo-lists"
                     onTouchStart={({ changedTouches }) =>
@@ -62,18 +74,6 @@ export default function TodoList() {
                     }
                 >
                     {doneTab === "to do" ? <Todo /> : <Done />}
-                    <section>
-                        <div
-                            className={`dot-one ${
-                                doneTab === "to do" ? `dot-selected` : null
-                            }`}
-                        />
-                        <div
-                            className={`dot-one ${
-                                doneTab === "done" ? `dot-selected` : null
-                            }`}
-                        />
-                    </section>
                 </div>
             </div>
         );
