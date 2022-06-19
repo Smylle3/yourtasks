@@ -15,8 +15,11 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
         setModalVisible(false);
     };
 
-    function handleDescription() {
-        if (simpleDescription.text.length > 0) {
+    function handleDescription(key) {
+        if (
+            simpleDescription.text.length > 0 &&
+            (key === "Enter" || key === "NumpadEnter")
+        ) {
             simpleList.description.push(simpleDescription);
             setSimpleDescription({ text: "", checked: false });
         }
@@ -61,10 +64,12 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                     visible={isModalVisible}
                     onCancel={handleCancel}
                     footer={null}
+                    closable={false}
                     style={{ cursor: "default" }}
                 >
                     <form className="modal-form">
                         <input
+                            autoFocus
                             className="title-task"
                             placeholder="Título..."
                             onChange={(e) =>
@@ -140,10 +145,12 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                     onCancel={handleCancel}
                     footer={null}
                     width={350}
+                    closable={false}
                     style={{ cursor: "default" }}
                 >
-                    <form className="modal-form">
+                    <div className="modal-form">
                         <input
+                            autoFocus
                             className="title-task"
                             placeholder="Ex.: Lista de compras"
                             onChange={(e) =>
@@ -163,11 +170,12 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                         checked: false,
                                     });
                                 }}
-                                placeholder="Ex.: 1 - Arroz"
+                                onKeyDown={(e) => handleDescription(e.code)}
+                                placeholder="Ex.: Arroz"
                                 value={simpleDescription.text}
                             />
                             <CheckOutlined
-                                onClick={() => handleDescription()}
+                                onClick={() => handleDescription("Enter")}
                                 className="check-icon"
                             />
                         </section>
@@ -178,6 +186,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                         className="simple-desc-content"
                                         key={id}
                                     >
+                                        <p>{id + 1}</p>
                                         <p>{content.text}</p>
                                     </div>
                                 ))}
@@ -200,7 +209,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                 ADICIONAR
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </Modal>
             );
         default:

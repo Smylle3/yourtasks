@@ -108,10 +108,9 @@
     width: fit-content;
     display: flex;
     flex-direction: column;
-    border: 1px solid rgba(128, 128, 128, 0.3);
     border-radius: 5px;
     transition: 0.5s;
-    padding: 0 1em;
+    width: 100%;
 }
 
 .simple-desc-inputs {
