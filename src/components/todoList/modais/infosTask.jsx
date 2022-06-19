@@ -1,4 +1,4 @@
-import { CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/authContext";
@@ -102,7 +102,7 @@ export default function InfosTask({
                             onChange={(e) => editItem(e.target.value, id)}
                             value={localTask.description[id].text}
                         />
-                        <DeleteOutlined
+                        <DeleteFilled
                             className="item-editor-button"
                             onClick={() => {
                                 localTask.description.splice(id, 1);
