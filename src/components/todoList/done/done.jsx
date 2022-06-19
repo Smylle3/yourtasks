@@ -3,7 +3,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import InfosTask from "../modais/infosTask";
-import emptyImage from '../../../assets/EmptyImage.jpg'
+import emptyImage from "../../../assets/EmptyImage.jpg";
 
 export default function Done() {
     const [change, setChange] = useState(false);
@@ -25,7 +25,11 @@ export default function Done() {
         setChange(!change);
     };
 
-    if (allTaskDone.length > 0) {
+    if (allTaskDone.length <= 0) {
+        return (
+            <img alt="emptyImage" src={emptyImage} className="empty-image" />
+        );
+    } else {
         return (
             <nav className="todo-tasks">
                 <div className="column-reverse">
@@ -56,10 +60,6 @@ export default function Done() {
                     taskIsDone={true}
                 />
             </nav>
-        );
-    } else {
-        return (
-            <img alt="emptyImage" src={emptyImage} className="empty-image" />
         );
     }
 }

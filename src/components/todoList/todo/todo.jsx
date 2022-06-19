@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import { TimePassed } from "../../../functions/timePassed";
 import InfosTask from "../modais/infosTask";
-import emptyImage from '../../../assets/EmptyImage.jpg'
+import emptyImage from "../../../assets/EmptyImage.jpg";
 
 export default function Todo() {
     const [change, setChange] = useState(false);
@@ -33,7 +33,11 @@ export default function Todo() {
         setChange(!change);
     };
 
-    if (allTask.length > 0) {
+    if (allTask.length <= 0) {
+        return (
+            <img alt="emptyImage" src={emptyImage} className="empty-image" />
+        );
+    } else {
         return (
             <nav className="todo-tasks">
                 <div className="column-reverse">
@@ -84,10 +88,6 @@ export default function Todo() {
                     taskIsDone={false}
                 />
             </nav>
-        );
-    } else {
-        return(
-            <img alt="emptyImage" src={emptyImage}  className="empty-image"/>
         );
     }
 }
