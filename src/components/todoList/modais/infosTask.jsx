@@ -69,7 +69,7 @@ export default function InfosTask({
                 value={localTask.description}
             />
         ) : (
-            <p className="desc-info">{localTask.description}</p>
+            <p className="desc-info">{allTask[taskObject].description}</p>
         );
 
     const listDescription = (taskId) =>
