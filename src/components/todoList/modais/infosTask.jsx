@@ -1,8 +1,8 @@
-import { CheckOutlined } from "@ant-design/icons";
-import { DatePicker, Modal } from "antd";
+import { CheckOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DatePicker, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../../context/authContext";
-import './styles.css'
+import "./styles.css";
 
 export default function InfosTask({
     isModalVisible,
@@ -12,9 +12,9 @@ export default function InfosTask({
     taskIsDone,
 }) {
     const { allTask, allTaskDone } = useAuth();
-    const [checked, setChecked] = useState(false);
+    const [change, setChange] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
-    const [localTask, setLocalTask] = useState(null);
+    const [localTask, setLocalTask] = useState();
     const [simpleDescription, setSimpleDescription] = useState({
         text: "",
         checked: false,
@@ -30,35 +30,46 @@ export default function InfosTask({
         setModalVisible(false);
     };
 
-    const handleEdit = (id) => {
+    const handleEditConfirm = (id) => {
+        if (localTask.description.length <= 0) {
+            message.error("Adicione ao menos um item à lista!");
+            return;
+        }
         allTask[id] = localTask;
         setIsEdit(false);
         localStorage.setItem("todo", JSON.stringify(allTask));
     };
 
-    const handleDescription = () => {
-        if (simpleDescription.text.length > 0) {
+    const handleDescription = (key) => {
+        if (
+            simpleDescription.text.length > 0 &&
+            (key === "Enter" || key === "NumpadEnter")
+        ) {
             localTask.description.push(simpleDescription);
             setSimpleDescription({ text: "", checked: false });
         }
     };
 
-    const detailDescription = (id) =>
+    const editItem = (value, index) => {
+        localTask.description[index].text = value;
+        setChange(!change);
+    };
+
+    const detailDescription = () =>
         isEdit ? (
             <textarea
                 className="desc-task on-edit"
-                placeholder={allTask[taskObject].description}
+                placeholder={localTask.description}
                 onChange={(e) =>
-                    setLocalTask({
-                        title: localTask.title,
+                    setLocalTask((prevState) => ({
+                        ...prevState,
                         description: e.target.value,
-                        date: localTask.date,
-                    })
+                    }))
                 }
                 value={localTask.description}
             />
         ) : (
-            <p className="desc-info">{allTask[id].description}</p>
+            <p className="desc-info">{localTask.description}</p>
         );
 
     const listDescription = (taskId) =>
@@ -72,21 +83,31 @@ export default function InfosTask({
                                 checked: false,
                             });
                         }}
+                        onKeyDown={(e) => handleDescription(e.code)}
                         placeholder="Add novo item"
                         value={simpleDescription.text}
                     />
                     <CheckOutlined
-                        onClick={() => handleDescription(taskId)}
+                        onClick={() => handleDescription("Enter")}
                         className="check-icon"
                     />
                 </section>
-                {allTask[taskId].description.map((content, id) => (
+                {localTask.description.map((content, id) => (
                     <div className="simple-desc-content" key={id}>
                         <p>{id + 1}</p>
                         <input
+                            autoFocus={id === 0 ? true : false}
                             className="list-input"
                             placeholder={content.text}
-                            onChange={(e) => (content.text = e.target.value)}
+                            onChange={(e) => editItem(e.target.value, id)}
+                            value={localTask.description[id].text}
+                        />
+                        <DeleteOutlined
+                            className="item-editor-button"
+                            onClick={() => {
+                                localTask.description.splice(id, 1);
+                                setChange(!change);
+                            }}
                         />
                     </div>
                 ))}
@@ -97,12 +118,17 @@ export default function InfosTask({
                     <div className="simple-desc-content" key={id}>
                         <p>{id + 1}</p>
                         <input
+                            className="input-checkbox"
                             type="checkbox"
                             id={`content${id}`}
                             checked={content.checked}
                             onChange={(e) => {
                                 content.checked = e.target.checked;
-                                setChecked(!checked);
+                                localStorage.setItem(
+                                    "todo",
+                                    JSON.stringify(allTask)
+                                );
+                                setChange(!change);
                             }}
                         />
                         <label
@@ -122,11 +148,10 @@ export default function InfosTask({
                 className="date-pickeC"
                 format="YYYY-MM-DD"
                 onChange={(ev, e) =>
-                    setLocalTask({
-                        title: localTask.title,
-                        description: localTask.description,
+                    setLocalTask((prevState) => ({
+                        ...prevState,
                         date: e,
-                    })
+                    }))
                 }
             />
         ) : (
@@ -157,11 +182,10 @@ export default function InfosTask({
                                 className="title-task on-edit"
                                 placeholder={allTask[taskObject].title}
                                 onChange={(e) =>
-                                    setLocalTask({
+                                    setLocalTask((prevState) => ({
+                                        ...prevState,
                                         title: e.target.value,
-                                        description: localTask.description,
-                                        date: localTask.date,
-                                    })
+                                    }))
                                 }
                                 value={localTask.title}
                             />
@@ -173,13 +197,13 @@ export default function InfosTask({
 
                         {allTask[taskObject].simple
                             ? listDescription(taskObject)
-                            : detailDescription(taskObject)}
+                            : detailDescription()}
 
                         {dateDescription(taskObject)}
 
                         {isEdit ? (
                             <button
-                                onClick={() => handleEdit(taskObject)}
+                                onClick={() => handleEditConfirm(taskObject)}
                                 className="confirm-button-modal my-button"
                             >
                                 CONFIRMAR
@@ -231,11 +255,6 @@ export default function InfosTask({
                                                 disabled
                                                 id={`content${id}`}
                                                 checked={content.checked}
-                                                onChange={(e) => {
-                                                    content.checked =
-                                                        e.target.checked;
-                                                    setChecked(!checked);
-                                                }}
                                             />
                                             <label htmlFor={`content${id}`}>
                                                 {content.text}
