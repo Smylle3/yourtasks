@@ -11,7 +11,7 @@
     border-radius: 25px;
     color: #000;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .todo-input-plus:active {
