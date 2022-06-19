@@ -14,12 +14,12 @@ export default function TodoList() {
     const [gesture, setGesture] = useState({ XInicial: null, XFinal: null });
 
     useEffect(() => {
-        if (gesture.XInicial - gesture.XFinal > 100) {
+        if (gesture.XInicial - gesture.XFinal > 50) {
             console.log("vai para feitos", gesture);
             setDoneTab("done");
         }
 
-        if (gesture.XFinal - gesture.XInicial > 100) {
+        if (gesture.XFinal - gesture.XInicial > 50) {
             console.log("vai para a fazer", gesture);
             setDoneTab("to do");
         }
