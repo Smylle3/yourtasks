@@ -11,12 +11,11 @@
     border-radius: 25px;
     color: #000;
     cursor: pointer;
-    transition: 0.4s;
+    transition: 0.3s;
 }
 
-.todo-input-plus:hover {
-    color: #fff;
-    background-color: #000;
+.todo-input-plus:active {
+    box-shadow: 0 0 0 0 #fff;
 }
 
 .task-menu-plus {
