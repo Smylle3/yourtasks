@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { useAuth } from "../../context/authContext";
 import { Spin } from "antd";
@@ -11,6 +11,19 @@ import { BorderOutlined, CheckSquareOutlined } from "@ant-design/icons";
 export default function TodoList() {
     const { user } = useAuth();
     const [doneTab, setDoneTab] = useState("to do");
+    const [gesture, setGesture] = useState({ XInicial: null, XFinal: null });
+
+    useEffect(() => {
+        if (gesture.XInicial - gesture.XFinal > 100) {
+            console.log("vai para feitos", gesture);
+            setDoneTab("done");
+        }
+
+        if (gesture.XFinal - gesture.XInicial > 100) {
+            console.log("vai para a fazer", gesture);
+            setDoneTab("to do");
+        }
+    }, [gesture]);
 
     if (user) {
         return (
@@ -34,7 +47,22 @@ export default function TodoList() {
                         <CheckSquareOutlined /> Feitos
                     </div>
                 </form>
-                <div className="todo-lists">
+                <div
+                    className="todo-lists"
+                    onTouchStart={({ changedTouches }) =>
+                        setGesture((prevState) => ({
+                            ...prevState,
+                            XInicial: changedTouches[0].clientX,
+                            XFinal: changedTouches[0].clientX,
+                        }))
+                    }
+                    onTouchEnd={({ changedTouches }) =>
+                        setGesture((prevState) => ({
+                            ...prevState,
+                            XFinal: changedTouches[0].clientX,
+                        }))
+                    }
+                >
                     {doneTab === "to do" ? <Todo /> : <Done />}
                 </div>
             </div>
