@@ -67,7 +67,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                     closable={false}
                     style={{ cursor: "default" }}
                 >
-                    <form className="modal-form">
+                    <div className="modal-form">
                         <input
                             autoFocus
                             className="title-task"
@@ -134,7 +134,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                 ADICIONAR
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </Modal>
             );
         case "simple":
