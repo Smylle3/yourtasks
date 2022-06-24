@@ -69,7 +69,7 @@ export default function InfosTask({
                 value={localTask.description}
             />
         ) : (
-            <p className="desc-info">{allTask[taskObject].description}</p>
+            <textarea disabled className="desc-info">{allTask[taskObject].description}</textarea>
         );
 
     const listDescription = (taskId) =>
@@ -264,9 +264,9 @@ export default function InfosTask({
                                 )}
                             </>
                         ) : (
-                            <p className="desc-info">
+                            <textarea disabled className="desc-info">
                                 {allTaskDone[taskObject].description}
-                            </p>
+                            </textarea>
                         )}
                         <button
                             onClick={(e) => {

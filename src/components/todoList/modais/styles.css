@@ -88,6 +88,11 @@
     background-color: rgb(106, 154, 194);
 }
 
+.info-modal textarea {
+    min-height: 6em;
+    resize: vertical;
+}
+
 .info-modal .desc-info,
 .info-modal .date-info {
     border: 1px solid rgba(128, 128, 128, 0.2);
