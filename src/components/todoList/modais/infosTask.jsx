@@ -206,7 +206,7 @@ export default function InfosTask({
                         )}
 
                         {detailDescription()}
-                        {listDescription(taskObject)}
+                        {allTask[taskObject] && listDescription(taskObject)}
                         {dateDescription(taskObject)}
 
                         {isEdit ? (
