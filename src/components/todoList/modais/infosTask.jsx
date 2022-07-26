@@ -206,7 +206,8 @@ export default function InfosTask({
                         )}
 
                         {detailDescription()}
-                        {allTask[taskObject].checkList && listDescription(taskObject)}
+                        {allTask[taskObject].checkList &&
+                            listDescription(taskObject)}
                         {dateDescription(taskObject)}
 
                         {isEdit ? (
@@ -254,22 +255,29 @@ export default function InfosTask({
                             className="desc-task"
                             value={allTaskDone[taskObject].description}
                         />
-                        {allTaskDone[taskObject].checkList.map(
-                            (content, id) => (
-                                <div className="simple-desc-content" key={id}>
-                                    <p>{id + 1}</p>
-                                    <input
-                                        className="input-checkbox"
-                                        type="checkbox"
-                                        disabled
-                                        id={`content${id}`}
-                                        checked={content.checked}
-                                    />
-                                    <label htmlFor={`content${id}`}>
-                                        {content.text}
-                                    </label>
-                                </div>
-                            )
+                        {allTaskDone[taskObject].checkList && (
+                            <>
+                                {allTaskDone[taskObject].checkList.map(
+                                    (content, id) => (
+                                        <div
+                                            className="simple-desc-content"
+                                            key={id}
+                                        >
+                                            <p>{id + 1}</p>
+                                            <input
+                                                className="input-checkbox"
+                                                type="checkbox"
+                                                disabled
+                                                id={`content${id}`}
+                                                checked={content.checked}
+                                            />
+                                            <label htmlFor={`content${id}`}>
+                                                {content.text}
+                                            </label>
+                                        </div>
+                                    )
+                                )}
+                            </>
                         )}
                         <button
                             onClick={(e) => {
