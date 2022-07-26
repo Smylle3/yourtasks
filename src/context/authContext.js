@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     const [task, setTask] = useState({
         title: "",
         description: "",
+        checkList: [],
         date: "",
     });
     const [simpleList, setSimpleList] = useState({
@@ -37,6 +38,12 @@ export const AuthProvider = ({ children }) => {
                 setAllTaskDone(JSON.parse(localTaskDone));
         }
     }, []);
+    useEffect(() => {
+        localStorage.setItem("todo", JSON.stringify(allTask));
+    }, [allTask.length]);
+    useEffect(() => {
+        localStorage.setItem("done", JSON.stringify(allTaskDone));
+    }, [allTaskDone.length]);
 
     useEffect(() => {
         setCurrentPage(window.location.pathname);

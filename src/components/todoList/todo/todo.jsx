@@ -7,14 +7,9 @@ import InfosTask from "../modais/infosTask";
 import emptyImage from "../../../assets/EmptyImage.jpg";
 
 export default function Todo() {
-    const [change, setChange] = useState(false);
-    const { allTask, setAllTaskDone } = useAuth();
+    const { allTask, allTaskDone, setAllTask, setAllTaskDone } = useAuth();
     const [isModalVisible, setModalVisible] = useState(false);
     const [taskObject, setTaskObject] = useState(null);
-
-    useEffect(() => {
-        localStorage.setItem("todo", JSON.stringify(allTask));
-    }, [allTask.length]);
 
     const modalFunction = (id) => {
         setTaskObject(id);
@@ -30,7 +25,7 @@ export default function Todo() {
 
     const handleDelete = (id) => {
         allTask.splice(id, 1);
-        setChange(!change);
+        setAllTask((arr) => [...arr]);
     };
 
     if (allTask.length <= 0) {

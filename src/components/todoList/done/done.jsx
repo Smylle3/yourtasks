@@ -6,14 +6,9 @@ import InfosTask from "../modais/infosTask";
 import emptyImage from "../../../assets/EmptyImage.jpg";
 
 export default function Done() {
-    const [change, setChange] = useState(false);
-    const { allTaskDone } = useAuth();
+    const { allTaskDone, setAllTaskDone } = useAuth();
     const [isModalVisible, setModalVisible] = useState(false);
     const [taskObject, setTaskObject] = useState(null);
-
-    useEffect(() => {
-        localStorage.setItem("done", JSON.stringify(allTaskDone));
-    }, [allTaskDone.length]);
 
     const modalFunction = (id) => {
         setTaskObject(id);
@@ -22,7 +17,7 @@ export default function Done() {
 
     const handleDelete = (id) => {
         allTaskDone.splice(id, 1);
-        setChange(!change);
+        setAllTaskDone((arr) => [...arr]);
     };
 
     if (allTaskDone.length <= 0) {

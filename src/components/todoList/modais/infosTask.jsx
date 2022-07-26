@@ -1,6 +1,7 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
+import TextareaAutosize from "react-autosize-textarea/lib";
 import { useAuth } from "../../../context/authContext";
 import "./styles.css";
 
@@ -31,7 +32,7 @@ export default function InfosTask({
     };
 
     const handleEditConfirm = (id) => {
-        if (localTask.description.length <= 0) {
+        if (localTask.checkList.length <= 0) {
             message.error("Adicione ao menos um item à lista!");
             return;
         }
@@ -45,31 +46,38 @@ export default function InfosTask({
             simpleDescription.text.length > 0 &&
             (key === "Enter" || key === "NumpadEnter")
         ) {
-            localTask.description.push(simpleDescription);
+            localTask.checkList.push(simpleDescription);
             setSimpleDescription({ text: "", checked: false });
         }
     };
 
     const editItem = (value, index) => {
-        localTask.description[index].text = value;
+        localTask.checkList[index].text = value;
         setChange(!change);
     };
 
     const detailDescription = () =>
         isEdit ? (
-            <textarea
-                className="desc-task on-edit"
-                placeholder={localTask.description}
-                onChange={(e) =>
-                    setLocalTask((prevState) => ({
-                        ...prevState,
-                        description: e.target.value,
-                    }))
-                }
-                value={localTask.description}
-            />
+            <>
+                <TextareaAutosize
+                    className="desc-task"
+                    placeholder={localTask.description}
+                    onChange={(e) => {
+                        setLocalTask((prevState) => ({
+                            ...prevState,
+                            description: e.target.value,
+                        }));
+                    }}
+                    value={localTask.description}
+                    rows={2}
+                />
+            </>
         ) : (
-            <textarea disabled className="desc-info">{allTask[taskObject].description}</textarea>
+            <TextareaAutosize
+                disabled
+                className="desc-task"
+                value={allTask[taskObject].description}
+            />
         );
 
     const listDescription = (taskId) =>
@@ -92,29 +100,31 @@ export default function InfosTask({
                         className="check-icon"
                     />
                 </section>
-                {localTask.description.map((content, id) => (
-                    <div className="simple-desc-content" key={id}>
-                        <p>{id + 1}</p>
-                        <input
-                            autoFocus={id === 0 ? true : false}
-                            className="list-input"
-                            placeholder={content.text}
-                            onChange={(e) => editItem(e.target.value, id)}
-                            value={localTask.description[id].text}
-                        />
-                        <DeleteFilled
-                            className="item-editor-button"
-                            onClick={() => {
-                                localTask.description.splice(id, 1);
-                                setChange(!change);
-                            }}
-                        />
-                    </div>
-                ))}
+                <div className="input-group">
+                    {localTask.checkList.map((content, id) => (
+                        <div className="simple-desc-content" key={id}>
+                            <p>{id + 1}</p>
+                            <input
+                                autoFocus={id === 0 ? true : false}
+                                className="list-input"
+                                placeholder={content.text}
+                                onChange={(e) => editItem(e.target.value, id)}
+                                value={localTask.checkList[id].text}
+                            />
+                            <DeleteFilled
+                                className="item-editor-button"
+                                onClick={() => {
+                                    localTask.checkList.splice(id, 1);
+                                    setChange(!change);
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
             </>
         ) : (
             <>
-                {allTask[taskId].description.map((content, id) => (
+                {allTask[taskId].checkList.map((content, id) => (
                     <div className="simple-desc-content" key={id}>
                         <p>{id + 1}</p>
                         <input
@@ -158,7 +168,7 @@ export default function InfosTask({
             <>
                 {!allTask[id].date || allTask[id].date.length === 0 ? null : (
                     <div className="date-info">
-                        <p>Data para conclusão</p>
+                        <p>Data para conclusão:</p>
                         <p>{allTask[id].date}</p>
                     </div>
                 )}
@@ -195,10 +205,8 @@ export default function InfosTask({
                             </h1>
                         )}
 
-                        {allTask[taskObject].simple
-                            ? listDescription(taskObject)
-                            : detailDescription()}
-
+                        {detailDescription()}
+                        {listDescription(taskObject)}
                         {dateDescription(taskObject)}
 
                         {isEdit ? (
@@ -241,32 +249,27 @@ export default function InfosTask({
                         <h1 className="title-info">
                             {allTaskDone[taskObject].title}
                         </h1>
-                        {allTaskDone[taskObject].simple ? (
-                            <>
-                                {allTaskDone[taskObject].description.map(
-                                    (content, id) => (
-                                        <div
-                                            className="simple-desc-content"
-                                            key={id}
-                                        >
-                                            <p>{id + 1}</p>
-                                            <input
-                                                type="checkbox"
-                                                disabled
-                                                id={`content${id}`}
-                                                checked={content.checked}
-                                            />
-                                            <label htmlFor={`content${id}`}>
-                                                {content.text}
-                                            </label>
-                                        </div>
-                                    )
-                                )}
-                            </>
-                        ) : (
-                            <textarea disabled className="desc-info">
-                                {allTaskDone[taskObject].description}
-                            </textarea>
+                        <TextareaAutosize
+                            disabled
+                            className="desc-task"
+                            value={allTaskDone[taskObject].description}
+                        />
+                        {allTaskDone[taskObject].checkList.map(
+                            (content, id) => (
+                                <div className="simple-desc-content" key={id}>
+                                    <p>{id + 1}</p>
+                                    <input
+                                        className="input-checkbox"
+                                        type="checkbox"
+                                        disabled
+                                        id={`content${id}`}
+                                        checked={content.checked}
+                                    />
+                                    <label htmlFor={`content${id}`}>
+                                        {content.text}
+                                    </label>
+                                </div>
+                            )
                         )}
                         <button
                             onClick={(e) => {
