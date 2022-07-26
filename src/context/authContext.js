@@ -9,6 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(window.location.pathname);
     const [allTaskDone, setAllTaskDone] = useState([]);
     const [allTask, setAllTask] = useState([]);
     const [task, setTask] = useState({
@@ -38,10 +39,18 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
+        setCurrentPage(window.location.pathname);
         auth.onAuthStateChanged((user) => {
             setUser(user);
             !user && navigate("/login");
         });
+        if (
+            currentPage !== "/" &&
+            currentPage !== "/pomodoro" &&
+            currentPage !== "/login"
+        ) {
+            navigate("/");
+        }
     }, [user, navigate]);
 
     const value = {
