@@ -1,11 +1,13 @@
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
 import React, { useState } from "react";
 import { useAuth } from "../../../context/authContext";
 
 export default function CreateTask({ isModalVisible, setModalVisible, type }) {
-    const { task, setTask, setAllTask, simpleList, setSimpleList } = useAuth();
+    const { task, setTask, setAllTask } = useAuth();
     const [hasDate, setHasDate] = useState(false);
+    const [hasCheckList, setHasCheckList] = useState(false);
+    const [change, setChange] = useState(false);
     const [simpleDescription, setSimpleDescription] = useState({
         text: "",
         checked: false,
@@ -15,17 +17,16 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
         setTask({
             title: "",
             description: "",
+            checkList: [],
             date: "",
-        });
-        setSimpleList({
-            title: "",
-            description: [],
         });
         setSimpleDescription({
             text: "",
             checked: false,
         });
         setModalVisible(false);
+        setHasDate(false);
+        setHasCheckList(false);
     };
 
     function handleDescription(key) {
@@ -33,7 +34,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
             simpleDescription.text.length > 0 &&
             (key === "Enter" || key === "NumpadEnter")
         ) {
-            simpleList.description.push(simpleDescription);
+            task.checkList.push(simpleDescription);
             setSimpleDescription({ text: "", checked: false });
         }
     }
@@ -50,20 +51,8 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
             setTask({
                 title: "",
                 description: "",
+                checkList: [],
                 date: "",
-            });
-        } else if (type === "simple") {
-            if (
-                simpleList.title.length === 0 ||
-                simpleList.description.length === 0
-            ) {
-                message.error("Preencha os campos corretamente!");
-                return;
-            }
-            setAllTask((arr) => [...arr, simpleList]);
-            setSimpleList({
-                title: "",
-                description: []
             });
         }
         setModalVisible(false);
@@ -73,7 +62,6 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
         case "detail":
             return (
                 <Modal
-                    title="Nova tarefa"
                     visible={isModalVisible}
                     onCancel={handleCancel}
                     footer={null}
@@ -105,16 +93,85 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                             className="desc-task"
                             placeholder="Descrição..."
                         />
-                        <div className="date-group">
+                        <section className="variable-inputs-group">
                             <label
-                                className="date-picker"
+                                className="variable-inputs-picker"
+                                onClick={() => {
+                                    setTask((prevState) => ({
+                                        ...prevState,
+                                        checkList: [],
+                                    }));
+                                    setSimpleDescription({
+                                        text: "",
+                                        checked: false,
+                                    });
+                                    setHasCheckList(!hasCheckList);
+                                }}
+                            >
+                                {hasCheckList
+                                    ? `Excluir o checklist`
+                                    : `Clique para criar um checklist`}
+                            </label>
+                            {hasCheckList && (
+                                <section className="simple-desc-inputs">
+                                    <input
+                                        onChange={(e) => {
+                                            setSimpleDescription({
+                                                text: e.target.value,
+                                                checked: false,
+                                            });
+                                        }}
+                                        onKeyDown={(e) =>
+                                            handleDescription(e.code)
+                                        }
+                                        placeholder="Ex.: Item 1"
+                                        value={simpleDescription.text}
+                                    />
+                                    <CheckOutlined
+                                        onClick={() =>
+                                            handleDescription("Enter")
+                                        }
+                                        className="check-icon"
+                                    />
+                                </section>
+                            )}
+                            {task.checkList.length > 0 && (
+                                <div className="input-group">
+                                    {task.checkList.map((content, id) => (
+                                        <div
+                                            className="simple-desc-content"
+                                            key={id}
+                                        >
+                                            <p>{id + 1}</p>
+                                            <input
+                                                className="list-input"
+                                                disabled
+                                                value={content.text}
+                                            />
+                                            <DeleteFilled
+                                                className="item-editor-button"
+                                                onClick={() => {
+                                                    task.checkList.splice(
+                                                        id,
+                                                        1
+                                                    );
+                                                    setChange(!change);
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <label
+                                className="variable-inputs-picker"
                                 onClick={() => setHasDate(!hasDate)}
                             >
                                 {hasDate
                                     ? `Não definir data para conclusão`
                                     : `Clique para definir uma data para a conclusão`}
                             </label>
-                            {hasDate ? (
+                            {hasDate && (
                                 <DatePicker
                                     className="date-pickeC"
                                     format="YYYY-MM-DD"
@@ -125,79 +182,8 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                         }))
                                     }
                                 />
-                            ) : null}
-                        </div>
-                        <div className="button-form-modal">
-                            <button
-                                onClick={(e) => handleCancel()}
-                                className="cancel-button-modal my-button"
-                            >
-                                CANCELAR
-                            </button>
-                            <button
-                                onClick={(e) => handleSend(e, type)}
-                                className="confirm-button-modal my-button"
-                            >
-                                ADICIONAR
-                            </button>
-                        </div>
-                    </div>
-                </Modal>
-            );
-        case "simple":
-            return (
-                <Modal
-                    title="Lista simples"
-                    visible={isModalVisible}
-                    onCancel={handleCancel}
-                    footer={null}
-                    width={350}
-                    closable={false}
-                    style={{ cursor: "default" }}
-                >
-                    <div className="modal-form">
-                        <input
-                            autoFocus
-                            className="title-task"
-                            placeholder="Ex.: Lista de compras"
-                            onChange={(e) =>
-                                setSimpleList((prevState) => ({
-                                    ...prevState,
-                                    title: e.target.value,
-                                }))
-                            }
-                            value={simpleList.title}
-                        />
-                        <section className="simple-desc-inputs">
-                            <input
-                                onChange={(e) => {
-                                    setSimpleDescription({
-                                        text: e.target.value,
-                                        checked: false,
-                                    });
-                                }}
-                                onKeyDown={(e) => handleDescription(e.code)}
-                                placeholder="Ex.: Arroz"
-                                value={simpleDescription.text}
-                            />
-                            <CheckOutlined
-                                onClick={() => handleDescription("Enter")}
-                                className="check-icon"
-                            />
+                            )}
                         </section>
-                        {simpleList.description.length > 0 ? (
-                            <div className="input-group">
-                                {simpleList.description.map((content, id) => (
-                                    <div
-                                        className="simple-desc-content"
-                                        key={id}
-                                    >
-                                        <p>{id + 1}</p>
-                                        <p>{content.text}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : null}
                         <div className="button-form-modal">
                             <button
                                 onClick={(e) => handleCancel()}
