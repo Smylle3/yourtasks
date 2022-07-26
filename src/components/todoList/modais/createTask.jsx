@@ -42,7 +42,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
         event.preventDefault();
 
         if (type === "detail") {
-            if (task.title.length === 0 || task.description.length === 0) {
+            if (task.title.length === 0) {
                 message.error("Preencha os campos corretamente!");
                 return;
             }
@@ -63,7 +63,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
             setAllTask((arr) => [...arr, simpleList]);
             setSimpleList({
                 title: "",
-                description: "",
+                description: []
             });
         }
         setModalVisible(false);
