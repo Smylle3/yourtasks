@@ -206,7 +206,7 @@ export default function InfosTask({
                         )}
 
                         {detailDescription()}
-                        {allTask[taskObject] && listDescription(taskObject)}
+                        {allTask[taskObject].checkList && listDescription(taskObject)}
                         {dateDescription(taskObject)}
 
                         {isEdit ? (
