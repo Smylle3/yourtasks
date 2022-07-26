@@ -12,6 +12,19 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
     });
 
     const handleCancel = () => {
+        setTask({
+            title: "",
+            description: "",
+            date: "",
+        });
+        setSimpleList({
+            title: "",
+            description: [],
+        });
+        setSimpleDescription({
+            text: "",
+            checked: false,
+        });
         setModalVisible(false);
     };
 
@@ -73,21 +86,19 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                             className="title-task"
                             placeholder="Título..."
                             onChange={(e) =>
-                                setTask({
+                                setTask((prevState) => ({
+                                    ...prevState,
                                     title: e.target.value,
-                                    description: task.description,
-                                    date: task.date,
-                                })
+                                }))
                             }
                             value={task.title}
                         />
                         <textarea
                             onChange={(e) =>
-                                setTask({
-                                    title: task.title,
+                                setTask((prevState) => ({
+                                    ...prevState,
                                     description: e.target.value,
-                                    date: task.date,
-                                })
+                                }))
                             }
                             wrap="on"
                             value={task.description}
@@ -108,21 +119,17 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                                     className="date-pickeC"
                                     format="YYYY-MM-DD"
                                     onChange={(ev, e) =>
-                                        setTask({
-                                            title: task.title,
-                                            description: task.description,
+                                        setTask((prevState) => ({
+                                            ...prevState,
                                             date: e,
-                                        })
+                                        }))
                                     }
                                 />
                             ) : null}
                         </div>
                         <div className="button-form-modal">
                             <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setModalVisible(false);
-                                }}
+                                onClick={(e) => handleCancel()}
                                 className="cancel-button-modal my-button"
                             >
                                 CANCELAR
@@ -154,11 +161,10 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                             className="title-task"
                             placeholder="Ex.: Lista de compras"
                             onChange={(e) =>
-                                setSimpleList({
+                                setSimpleList((prevState) => ({
+                                    ...prevState,
                                     title: e.target.value,
-                                    description: simpleList.description,
-                                    simple: true,
-                                })
+                                }))
                             }
                             value={simpleList.title}
                         />
@@ -194,10 +200,7 @@ export default function CreateTask({ isModalVisible, setModalVisible, type }) {
                         ) : null}
                         <div className="button-form-modal">
                             <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setModalVisible(false);
-                                }}
+                                onClick={(e) => handleCancel()}
                                 className="cancel-button-modal my-button"
                             >
                                 CANCELAR
