@@ -1,6 +1,6 @@
 import { DeleteFilled } from "@ant-design/icons";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import InfosTask from "../modais/infosTask";
 import emptyImage from "../../../assets/EmptyImage.jpg";
