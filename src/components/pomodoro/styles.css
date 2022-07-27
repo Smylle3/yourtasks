@@ -14,11 +14,59 @@
     align-items: center;
 
     padding: 1em;
+    cursor: default;
 }
 
-.pomo-page p {
-    font-size: xx-large;
+.type-time {
+    color: #fff;
+    padding: 0.2em 0.7em;
+    border-radius: 5px;
+}
+
+.work {
+    background-color: var(--color-blue);
+    box-shadow: 0 0 15px 0px var(--color-blue);
+}
+
+.sleep {
+    background-color: var(--color-green);
+    box-shadow: 0 0 15px 0px var(--color-green);
+}
+
+.pomo-page h1 {
+    font-size: 4em;
     margin: 0;
+}
+
+.set-timers input {
+    text-align: center;
+    border: 0;
+    outline: 0;
+    border-radius: 5px;
+    background-color: #80808033;
+}
+
+.set-timers {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.button-section button {
+    display: flex;
+    margin: 0 1em;
+    text-align: center;
+    align-items: center;
+    gap: 0.1em;
+}
+
+.button-section {
+    display: flex;
+}
+
+.progress-bar {
+    width: 100%;
+    margin: 1em;
 }
 
 @media (max-width: 930px) {
