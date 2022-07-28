@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { message, notification } from "antd";
+import moment from "moment";
 
 const AuthContext = createContext({});
 
@@ -60,20 +62,67 @@ export const AuthProvider = ({ children }) => {
         }
     }, [user, navigate]);
 
+    const setIsDone = (id) => {
+        if (id === -1) return;
+        const doneTask = allTask[id];
+        allTask[id].date = moment();
+        setAllTaskDone((arr) => [...arr, doneTask]);
+        allTask.splice(id, 1);
+    };
+
     /*POMODORO SPACE*/
     const [timer, setTimer] = useState(false);
     const [timerObj, setTimerObj] = useState({
         min: 0,
         sec: 0,
         prog: 0,
+        cicles: 1,
     });
     const [finalTime, setFinalTime] = useState(25);
     const [finalSleep, setFinalSleep] = useState(5);
     const [timerFunction, setTimerFunction] = useState("work");
-
+    const [taskSelected, setTaskSelected] = useState({ id: -1, task: null });
+    const [ciclesNumber, setCiclesNumber] = useState(1);
     let seconds = 0;
     let minutes = 0;
     let progress = 0;
+
+    const openNotificationWithIcon = () => {
+        const key = `open${Date.now()}`;
+        const btn = (
+            <div className="notification-buttons">
+                <button
+                    className="confirm-button-modal my-button"
+                    onClick={() => {
+                        notification.close(key);
+                        setTaskSelected({ id: -1, task: null });
+                        setIsDone(taskSelected.id);
+                    }}
+                >
+                    SIM
+                </button>
+                <button
+                    className="cancel-button-modal my-button"
+                    onClick={() => {
+                        notification.close(key);
+                        message.info(
+                            "Poxa, mas não desista logo logo você finaliza!"
+                        );
+                    }}
+                >
+                    NÃO
+                </button>
+            </div>
+        );
+        notification.success({
+            message: "Parabéns! Você finalizou mais um ciclo.",
+            description: `Que ótimo que finalizou os ciclos, você também finalizou a task ${taskSelected.task}?`,
+            btn,
+            key,
+            placement: "top",
+            duration: 0,
+        });
+    };
 
     useEffect(() => {
         if (timerObj.min === finalTime && timerFunction === "work") {
@@ -84,21 +133,35 @@ export const AuthProvider = ({ children }) => {
         if (timerObj.min === finalSleep && timerFunction === "sleep") {
             stopTimer();
             setTimerFunction("work");
-            startTimer();
+            if (ciclesNumber === timerObj.cicles && taskSelected.id != -1)
+                openNotificationWithIcon();
+            else if (
+                ciclesNumber === timerObj.cicles &&
+                taskSelected.id === -1
+            ) {
+                message.success("Parabéns você finalizou todos os ciclos");
+                setTaskSelected({ id: -1, task: null });
+            } else {
+                setCiclesNumber(ciclesNumber + 1);
+                startTimer();
+            }
         }
     }, [timerObj.min]);
 
     function startTimer() {
-        setTimer(setInterval(() => showTime(), 1000));
+        if (!taskSelected.task)
+            message.error("Selecione uma tarefa e verifique os tempos!");
+        else setTimer(setInterval(() => showTime(), 1000));
     }
     function stopTimer() {
         clearInterval(timer);
         setTimer(false);
-        setTimerObj({
+        setTimerObj((prevState) => ({
+            ...prevState,
             min: 0,
             sec: 0,
             prog: 0,
-        });
+        }));
         setTimerFunction("work");
     }
 
@@ -132,15 +195,19 @@ export const AuthProvider = ({ children }) => {
         setTask,
         simpleList,
         setSimpleList,
+        setIsDone,
         finalTime,
         setFinalSleep,
         setFinalTime,
         finalSleep,
         timerFunction,
         timerObj,
+        setTimerObj,
         startTimer,
         stopTimer,
         timer,
+        taskSelected,
+        setTaskSelected,
     };
 
     return (
