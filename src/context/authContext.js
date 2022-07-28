@@ -60,6 +60,68 @@ export const AuthProvider = ({ children }) => {
         }
     }, [user, navigate]);
 
+    /*POMODORO SPACE*/
+    const [timer, setTimer] = useState(false);
+    const [timerObj, setTimerObj] = useState({
+        min: 0,
+        sec: 0,
+        prog: 0,
+    });
+    const [finalTime, setFinalTime] = useState(25);
+    const [finalSleep, setFinalSleep] = useState(5);
+    const [timerFunction, setTimerFunction] = useState("work");
+
+    let seconds = 0;
+    let minutes = 0;
+    let progress = 0;
+
+    useEffect(() => {
+        if (timerObj.min === finalTime && timerFunction === "work") {
+            stopTimer();
+            setTimerFunction("sleep");
+            startTimer();
+        }
+        if (timerObj.min === finalSleep && timerFunction === "sleep") {
+            stopTimer();
+            setTimerFunction("work");
+            startTimer();
+        }
+    }, [timerObj.min]);
+
+    function startTimer() {
+        setTimer(setInterval(() => showTime(), 1000));
+    }
+    function stopTimer() {
+        clearInterval(timer);
+        setTimer(false);
+        setTimerObj({
+            min: 0,
+            sec: 0,
+            prog: 0,
+        });
+        setTimerFunction("work");
+    }
+
+    function showTime() {
+        seconds++;
+        progress++;
+        setTimerObj((prevState) => ({
+            ...prevState,
+            sec: seconds,
+            prog: progress,
+        }));
+        if (seconds > 59) {
+            seconds = 0;
+            minutes++;
+            setTimerObj((prevState) => ({
+                ...prevState,
+                sec: seconds,
+                min: minutes,
+            }));
+        }
+    }
+    /*POMODORO SPACE*/
+
     const value = {
         user,
         allTaskDone,
@@ -70,6 +132,15 @@ export const AuthProvider = ({ children }) => {
         setTask,
         simpleList,
         setSimpleList,
+        finalTime,
+        setFinalSleep,
+        setFinalTime,
+        finalSleep,
+        timerFunction,
+        timerObj,
+        startTimer,
+        stopTimer,
+        timer,
     };
 
     return (
