@@ -1,11 +1,14 @@
 import {
+    CaretDownOutlined,
     CaretRightOutlined,
+    CaretUpOutlined,
     CloseOutlined,
+    EditOutlined,
+    QuestionCircleOutlined,
     SettingOutlined,
 } from "@ant-design/icons";
-import { Dropdown, InputNumber, Menu, Popover, Progress } from "antd";
+import { Divider, InputNumber, Popover, Progress, Tooltip } from "antd";
 import React, { useState } from "react";
-import { useEffect } from "react";
 import { useAuth } from "../../context/authContext";
 import "./styles.css";
 
@@ -17,14 +20,57 @@ export default function Pomodoro() {
         finalSleep,
         timerFunction,
         timerObj,
+        setTimerObj,
         startTimer,
         stopTimer,
         timer,
+        allTask,
+        taskSelected,
+        setTaskSelected,
     } = useAuth();
+
+    const [visiblePopover, setVisiblePopover] = useState(false);
+
+    const clicleText = (
+        <span className="cicle-text">
+            Um ciclo é o tempo de uma Concentração mais um Descanso. Atualmente
+            um ciclo equivale à {finalTime + finalSleep} minutos e, o total de{" "}
+            {timerObj.cicles} ciclo(s) equivale à{" "}
+            {(finalTime + finalSleep) * timerObj.cicles} minutos.
+        </span>
+    );
+
+    const taskList = (
+        <div className="task-list">
+            <h3
+                onClick={() => {
+                    setVisiblePopover(!visiblePopover);
+                    setTaskSelected({ id: -1, task: "Apenas concentração" });
+                }}
+            >
+                Apenas concentração
+            </h3>
+            <Divider>Suas tasks</Divider>
+            {allTask.map((task, id) => (
+                <section
+                    className=""
+                    key={id}
+                    onClick={() => {
+                        setVisiblePopover(!visiblePopover);
+                        setTaskSelected({ id: id, task: task.title });
+                    }}
+                >
+                    <h3>
+                        {id + 1} - {task.title}
+                    </h3>
+                </section>
+            ))}
+        </div>
+    );
 
     const menu = (
         <div className="set-timers">
-            <p>
+            <span>
                 Concentrar (min):
                 <InputNumber
                     disabled={timer}
@@ -37,8 +83,8 @@ export default function Pomodoro() {
                     controls={false}
                     size="small"
                 />
-            </p>
-            <p>
+            </span>
+            <span>
                 Descansar (min):
                 <InputNumber
                     disabled={timer}
@@ -50,28 +96,72 @@ export default function Pomodoro() {
                     controls={false}
                     size="small"
                 />
-            </p>
+            </span>
+            <span>
+                Número de ciclos{" "}
+                <Tooltip placement="top" title={clicleText}>
+                    <QuestionCircleOutlined />
+                </Tooltip>
+                :
+                <InputNumber
+                    disabled={timer}
+                    min={1}
+                    max={60}
+                    bordered={false}
+                    defaultValue={timerObj.cicles}
+                    onChange={(e) =>
+                        setTimerObj((prevState) => ({
+                            ...prevState,
+                            cicles: e,
+                        }))
+                    }
+                    controls={false}
+                    size="small"
+                />
+            </span>
         </div>
     );
 
     return (
         <div className="pomo-page">
-            <text
+            <div
                 className={`type-time ${
                     timerFunction === "work" ? "work" : "sleep"
                 }`}
             >
-                {timerFunction === "work"
-                    ? `Tempo para concentrar: ${finalTime} min`
-                    : `Tempo para descansar: ${finalSleep} min`}
-            </text>
+                <Popover
+                    content={taskList}
+                    trigger={["click"]}
+                    placement="bottom"
+                    className="popover-style"
+                    onVisibleChange={() => setVisiblePopover(!visiblePopover)}
+                    visible={visiblePopover}
+                >
+                    {taskSelected.task
+                        ? `${taskSelected.task}`
+                        : "Selecione uma tarefa!"}
+                    {visiblePopover ? (
+                        <CaretUpOutlined />
+                    ) : (
+                        <CaretDownOutlined />
+                    )}
+                </Popover>
+            </div>
             <h1>
                 {timerObj.min < 10 ? `0${timerObj.min}` : timerObj.min}:
                 {timerObj.sec < 10 ? `0${timerObj.sec}` : timerObj.sec}
             </h1>
             <div className="set-config">
                 <Popover content={menu} trigger={["click"]} placement="bottom">
-                    <SettingOutlined />
+                    {timerFunction === "work" ? (
+                        <span>
+                            {finalTime} min <EditOutlined />
+                        </span>
+                    ) : (
+                        <span>
+                            {finalSleep} min <EditOutlined />
+                        </span>
+                    )}
                 </Popover>
             </div>
             <div className="progress-bar">
