@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 
 import logo from "../../assets/logo192.png";
 import "./styles.css";
-import { Popover, Tag } from "antd";
+import { Popover } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
@@ -20,7 +20,7 @@ export default function NavBar() {
     const isMobile = useMobile();
 
     useEffect(() => {
-        setPage(window.location.pathname)
+        setPage(window.location.pathname);
     }, [navigate]);
 
     function handleLogout() {
@@ -51,17 +51,14 @@ export default function NavBar() {
                     <BsListCheck className="icon" />
                     {isMobile ? null : <>Todo</>}
                 </div>
-                <div style={{ display: "flex", gap: ".2em" }}>
-                    <div
-                        className={`buttom ${
-                            page === "/pomodoro" ? "selected" : null
-                        }`}
-                        onClick={() => navigate("/pomodoro")}
-                    >
-                        <BsClock className="icon" />
-                        {isMobile ? null : <>Pomodoro</>}
-                    </div>
-                    <Tag color="processing">New</Tag>
+                <div
+                    className={`buttom ${
+                        page === "/pomodoro" ? "selected" : null
+                    }`}
+                    onClick={() => navigate("/pomodoro")}
+                >
+                    <BsClock className="icon" />
+                    {isMobile ? null : <>Pomodoro</>}
                 </div>
                 <Popover content={content} title="Usuário" trigger="click">
                     <div className="user-profile buttom">
