@@ -32,8 +32,8 @@ export default function InfosTask({
     };
 
     const handleEditConfirm = (id) => {
-        if (localTask.checkList.length <= 0) {
-            message.error("Adicione ao menos um item à lista!");
+        if (localTask.title.length <= 0) {
+            message.error("Adicione ao menos um titulo à tarefa!");
             return;
         }
         allTask[id] = localTask;
@@ -153,7 +153,7 @@ export default function InfosTask({
         );
 
     const dateDescription = (id) =>
-        isEdit && allTask[id].date ? (
+        isEdit ? (
             <DatePicker
                 className="date-pickeC"
                 format="YYYY-MM-DD"
