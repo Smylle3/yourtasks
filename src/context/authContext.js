@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }) => {
     let minutes = 0;
     let progress = 0;
 
-    const openNotificationWithIcon = () => {
+    const openNotificationWithIcon = (userCloser) => {
         const key = `open${Date.now()}`;
         const btn = (
             <div className="notification-buttons">
@@ -114,37 +114,49 @@ export const AuthProvider = ({ children }) => {
                 </button>
             </div>
         );
-        notification.success({
-            message: "Parabéns! Você finalizou mais um ciclo.",
-            description: `Que ótimo que finalizou os ciclos, você também finalizou a task ${taskSelected.task}?`,
-            btn,
-            key,
-            placement: "top",
-            duration: 0,
-        });
+        notification.success(
+            userCloser
+                ? {
+                      message: `Você finalizou a task ${taskSelected.task}?`,
+                      btn,
+                      key,
+                      placement: "top",
+                      duration: 0,
+                  }
+                : {
+                      message: "Parabéns! Você finalizou mais um ciclo.",
+                      description: `Que ótimo que finalizou os ciclos, você também finalizou a task ${taskSelected.task}?`,
+                      btn,
+                      key,
+                      placement: "top",
+                      duration: 0,
+                  }
+        );
     };
 
     useEffect(() => {
         if (timerObj.min === finalTime && timerFunction === "work") {
             stopTimer();
-            setTimerFunction("sleep");
-            startTimer();
+            if (ciclesNumber === timerObj.cicles && taskSelected.id !== -1) {
+                openNotificationWithIcon();
+            } else if (
+                ciclesNumber === timerObj.cicles &&
+                taskSelected.id === -1
+            ) {
+                setCiclesNumber(1);
+                message.success("Parabéns você finalizou todos os ciclos");
+                setTaskSelected({ id: -1, task: null });
+            } else {
+                setCiclesNumber(1);
+                setTimerFunction("sleep");
+                setCiclesNumber(ciclesNumber + 1);
+                startTimer();
+            }
         }
         if (timerObj.min === finalSleep && timerFunction === "sleep") {
             stopTimer();
             setTimerFunction("work");
-            if (ciclesNumber === timerObj.cicles && taskSelected.id != -1)
-                openNotificationWithIcon();
-            else if (
-                ciclesNumber === timerObj.cicles &&
-                taskSelected.id === -1
-            ) {
-                message.success("Parabéns você finalizou todos os ciclos");
-                setTaskSelected({ id: -1, task: null });
-            } else {
-                setCiclesNumber(ciclesNumber + 1);
-                startTimer();
-            }
+            startTimer();
         }
     }, [timerObj.min]);
 
@@ -153,7 +165,8 @@ export const AuthProvider = ({ children }) => {
             message.error("Selecione uma tarefa e verifique os tempos!");
         else setTimer(setInterval(() => showTime(), 1000));
     }
-    function stopTimer() {
+    function stopTimer(userCloser) {
+        userCloser && openNotificationWithIcon(userCloser);
         clearInterval(timer);
         setTimer(false);
         setTimerObj((prevState) => ({
