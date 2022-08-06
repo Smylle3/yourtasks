@@ -59,7 +59,7 @@
 
 .set-config {
     display: flex;
-    background-color:#80808033;
+    background-color: #80808033;
     padding: 0.2em 0.7em;
     border-radius: 5px;
     cursor: pointer;
@@ -81,7 +81,6 @@
 
 .button-section button {
     display: flex;
-    margin: 0 1em;
     text-align: center;
     align-items: center;
     gap: 0.1em;
@@ -91,17 +90,48 @@
     display: flex;
 }
 
+.loading-button {
+    border: 0 none;
+    outline: 0;
+    padding: 0.5em 1em;
+    border-radius: 5px;
+    transition: 0.4s;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.start-timer-button {
+    background-color: #6ac26a;
+}
+
+.start-timer-button::before {
+    content: "";
+    position: absolute;
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    transition: all 0.5s ease;
+}
+.start-timer-button:hover::before {
+    width: 100%;
+}
+
 .progress-bar {
     width: 100%;
     margin: 1em;
 }
 
-.cicle-text{
+.cicle-text {
     display: flex;
     text-align: justify;
 }
 
-.notification-buttons{
+.notification-buttons {
     display: flex;
     gap: 1em;
 }
