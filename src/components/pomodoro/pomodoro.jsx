@@ -5,7 +5,6 @@ import {
     CloseOutlined,
     EditOutlined,
     QuestionCircleOutlined,
-    SettingOutlined,
 } from "@ant-design/icons";
 import { Divider, InputNumber, Popover, Progress, Tooltip } from "antd";
 import React, { useState } from "react";
@@ -33,10 +32,11 @@ export default function Pomodoro() {
 
     const clicleText = (
         <span className="cicle-text">
-            Um ciclo é o tempo de uma Concentração mais um Descanso. Atualmente
-            um ciclo equivale à {finalTime + finalSleep} minutos e, o total de{" "}
-            {timerObj.cicles} ciclo(s) equivale à{" "}
-            {(finalTime + finalSleep) * timerObj.cicles} minutos.
+            Um ciclo é o tempo de uma Concentração. Atualmente um ciclo equivale
+            à {finalTime} minutos e, o total de {timerObj.cicles} ciclo(s)
+            equivale à{" "}
+            {finalTime * timerObj.cicles + (timerObj.cicles - 1) * finalSleep}{" "}
+            minutos.
         </span>
     );
 
@@ -45,7 +45,7 @@ export default function Pomodoro() {
             <h3
                 onClick={() => {
                     setVisiblePopover(!visiblePopover);
-                    setTaskSelected({ id: -1, task: "Apenas concentração" });
+                    setTaskSelected({ id: -2, task: "Apenas concentração" });
                 }}
             >
                 Apenas concentração
@@ -145,6 +145,13 @@ export default function Pomodoro() {
                     ) : (
                         <CaretDownOutlined />
                     )}
+                    {taskSelected.id !== -1 && (
+                        <CloseOutlined
+                            onClick={() => {
+                                setTaskSelected({ id: -1, task: null });
+                            }}
+                        />
+                    )}
                 </Popover>
             </div>
             <h1>
@@ -155,11 +162,11 @@ export default function Pomodoro() {
                 <Popover content={menu} trigger={["click"]} placement="bottom">
                     {timerFunction === "work" ? (
                         <span>
-                            {finalTime} min <EditOutlined />
+                            Concentração: {finalTime} min <EditOutlined />
                         </span>
                     ) : (
                         <span>
-                            {finalSleep} min <EditOutlined />
+                            Descanso: {finalSleep} min <EditOutlined />
                         </span>
                     )}
                 </Popover>
@@ -189,7 +196,7 @@ export default function Pomodoro() {
             <section className="button-section">
                 {!timer ? (
                     <button
-                        className="confirm-button-modal my-button"
+                        className="start-timer-button loading-button"
                         onClick={() => startTimer()}
                     >
                         START
@@ -198,7 +205,7 @@ export default function Pomodoro() {
                 ) : (
                     <button
                         className="cancel-button-modal my-button"
-                        onClick={() => stopTimer()}
+                        onClick={() => stopTimer(true)}
                     >
                         STOP
                         <CloseOutlined />
