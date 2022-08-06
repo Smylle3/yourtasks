@@ -7,7 +7,7 @@ import InfosTask from "../modais/infosTask";
 import emptyImage from "../../../assets/EmptyImage.jpg";
 
 export default function Todo() {
-    const { allTask, setAllTask, setAllTaskDone, setIsDone } = useAuth();
+    const { allTask, setAllTask, setIsDone } = useAuth();
     const [isModalVisible, setModalVisible] = useState(false);
     const [taskObject, setTaskObject] = useState(null);
 
