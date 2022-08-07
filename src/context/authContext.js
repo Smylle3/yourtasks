@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth, db } from "../config/firebase";
 import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { message, notification } from "antd";
 import moment from "moment";
-import CookieNotification from "../components/notifications/cookieNotification/cookieNotification";
 import Cookies from "js-cookie";
 import TypeStorage from "../components/notifications/typeStorage/typeStorage";
 
@@ -31,7 +31,6 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        !Cookies.get("acceptCookies") && CookieNotification();
         if (Cookies.get("acceptCookies") === "local") {
             let localTask = localStorage.getItem("todo");
             let localTaskDone = localStorage.getItem("done");
@@ -83,8 +82,8 @@ export const AuthProvider = ({ children }) => {
             allTasksDone: allTaskDone,
         });
     };
-    
     /*FIREBASE SPACE*/
+
     useEffect(() => {
         setCurrentPage(window.location.pathname);
         auth.onAuthStateChanged((user) => {
