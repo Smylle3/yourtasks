@@ -1,5 +1,6 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
 import { useAuth } from "../../../context/authContext";
@@ -23,7 +24,7 @@ export default function InfosTask({
 
     useEffect(() => {
         setLocalTask(allTask[taskObject]);
-    }, [taskObject]);
+    }, [taskObject, allTask]);
 
     const handleCancel = () => {
         setIsEdit(false);
@@ -38,8 +39,8 @@ export default function InfosTask({
         }
         allTask[id] = localTask;
         setIsEdit(false);
-        updateDBTasks()
-        localStorage.setItem("todo", JSON.stringify(allTask));
+        if (Cookies.get("typeStorage") === "cloud") updateDBTasks();
+        else localStorage.setItem("todo", JSON.stringify(allTask));
     };
 
     const handleDescription = (key) => {
