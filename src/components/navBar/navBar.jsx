@@ -45,7 +45,7 @@ export default function NavBar() {
                     setVisible(false);
                 }}
             >
-                <SettingOutlined className="icon-logout" /> Armazenamento
+                <SettingOutlined className="icon-logout" /> Storage
             </button>
         </div>
     );
