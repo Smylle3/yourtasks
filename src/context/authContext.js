@@ -261,6 +261,7 @@ export const AuthProvider = ({ children }) => {
         timer,
         taskSelected,
         setTaskSelected,
+        updateDBTasks
     };
 
     return (

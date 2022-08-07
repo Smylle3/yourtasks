@@ -12,7 +12,7 @@ export default function InfosTask({
     setTaskObject,
     taskIsDone,
 }) {
-    const { allTask, allTaskDone } = useAuth();
+    const { allTask, allTaskDone, updateDBTasks } = useAuth();
     const [change, setChange] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [localTask, setLocalTask] = useState();
@@ -38,6 +38,7 @@ export default function InfosTask({
         }
         allTask[id] = localTask;
         setIsEdit(false);
+        updateDBTasks()
         localStorage.setItem("todo", JSON.stringify(allTask));
     };
 
