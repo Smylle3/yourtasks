@@ -14,7 +14,7 @@ export default function Login() {
 
     useEffect(() => {
         if (user) navigate("/");
-    }, [user]);
+    }, [navigate, user]);
 
     async function handleLogin(type) {
         setLoading(true);
