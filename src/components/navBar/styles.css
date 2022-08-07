@@ -82,6 +82,12 @@
     margin-right: 0.5em;
 }
 
+.settings-user-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
 @media (max-width: 930px) {
     .selected {
         border: 1px solid gray;
