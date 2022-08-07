@@ -16,7 +16,7 @@ import TypeStorage from "../notifications/typeStorage/typeStorage";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
-    const { user } = useAuth();
+    const { user, turnCloudToLocal, turnLocalToCloud } = useAuth();
     const navigate = useNavigate();
     const isMobile = useMobile();
     const [visible, setVisible] = useState(false);
@@ -28,24 +28,30 @@ export default function NavBar() {
     function handleLogout() {
         signOut(auth);
     }
-    
+
     const handleVisibleChange = (newVisible) => {
         setVisible(newVisible);
     };
 
     const content = (
         <div className="settings-user-menu">
-            <button className="logout-button" onClick={handleLogout}>
-                <LogoutOutlined className="icon-logout" /> LogOut
-            </button>
             <button
                 className="logout-button"
                 onClick={() => {
-                    TypeStorage();
+                    TypeStorage(turnCloudToLocal, turnLocalToCloud);
                     setVisible(false);
                 }}
             >
                 <SettingOutlined className="icon-logout" /> Storage
+            </button>
+            <button
+                className="logout-button"
+                onClick={() => {
+                    setVisible(false);
+                    handleLogout();
+                }}
+            >
+                <LogoutOutlined className="icon-logout" /> LogOut
             </button>
         </div>
     );
@@ -77,7 +83,7 @@ export default function NavBar() {
                 </div>
                 <Popover
                     content={content}
-                    title="Usuário"
+                    title={user.displayName}
                     visible={visible}
                     onVisibleChange={handleVisibleChange}
                     trigger="click"
