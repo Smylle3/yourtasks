@@ -1,5 +1,6 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
 import { useAuth } from "../../../context/authContext";
@@ -12,7 +13,7 @@ export default function InfosTask({
     setTaskObject,
     taskIsDone,
 }) {
-    const { allTask, allTaskDone } = useAuth();
+    const { allTask, allTaskDone, updateDBTasks } = useAuth();
     const [change, setChange] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [localTask, setLocalTask] = useState();
@@ -23,12 +24,19 @@ export default function InfosTask({
 
     useEffect(() => {
         setLocalTask(allTask[taskObject]);
-    }, [taskObject]);
+    }, [taskObject, allTask]);
 
     const handleCancel = () => {
         setIsEdit(false);
         setTaskObject(null);
         setModalVisible(false);
+    };
+
+    const handleChangeCheck = (content, e) => {
+        content.checked = e.target.checked;
+        if (Cookies.get("typeStorage") === "cloud") updateDBTasks();
+        else localStorage.setItem("todo", JSON.stringify(allTask));
+        setChange(!change);
     };
 
     const handleEditConfirm = (id) => {
@@ -38,7 +46,8 @@ export default function InfosTask({
         }
         allTask[id] = localTask;
         setIsEdit(false);
-        localStorage.setItem("todo", JSON.stringify(allTask));
+        if (Cookies.get("typeStorage") === "cloud") updateDBTasks();
+        else localStorage.setItem("todo", JSON.stringify(allTask));
     };
 
     const handleDescription = (key) => {
@@ -132,14 +141,7 @@ export default function InfosTask({
                             type="checkbox"
                             id={`content${id}`}
                             checked={content.checked}
-                            onChange={(e) => {
-                                content.checked = e.target.checked;
-                                localStorage.setItem(
-                                    "todo",
-                                    JSON.stringify(allTask)
-                                );
-                                setChange(!change);
-                            }}
+                            onChange={(e) => handleChangeCheck(content, e)}
                         />
                         <label
                             className="simple-label"

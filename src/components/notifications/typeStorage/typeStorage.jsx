@@ -26,6 +26,11 @@ export default function TypeStorage() {
                         id="localStorage"
                         name="storageSelect"
                         value="localStorage"
+                        checked={
+                            Cookies.get("typeStorage") === "local"
+                                ? true
+                                : undefined
+                        }
                         required
                     />
                     Armazenar dados localmente.
@@ -36,6 +41,11 @@ export default function TypeStorage() {
                         id="cloudStorage"
                         name="storageSelect"
                         value="cloudStorage"
+                        checked={
+                            Cookies.get("typeStorage") === "cloud"
+                                ? true
+                                : undefined
+                        }
                         required
                     />
                     Armzenar dados na nuvem.
