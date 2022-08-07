@@ -32,6 +32,13 @@ export default function InfosTask({
         setModalVisible(false);
     };
 
+    const handleChangeCheck = (content, e) => {
+        content.checked = e.target.checked;
+        if (Cookies.get("typeStorage") === "cloud") updateDBTasks();
+        else localStorage.setItem("todo", JSON.stringify(allTask));
+        setChange(!change);
+    };
+
     const handleEditConfirm = (id) => {
         if (localTask.title.length <= 0) {
             message.error("Adicione ao menos um titulo à tarefa!");
@@ -134,14 +141,7 @@ export default function InfosTask({
                             type="checkbox"
                             id={`content${id}`}
                             checked={content.checked}
-                            onChange={(e) => {
-                                content.checked = e.target.checked;
-                                localStorage.setItem(
-                                    "todo",
-                                    JSON.stringify(allTask)
-                                );
-                                setChange(!change);
-                            }}
+                            onChange={(e) => handleChangeCheck(content, e)}
                         />
                         <label
                             className="simple-label"
