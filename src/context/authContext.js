@@ -1,8 +1,12 @@
 import React, { useContext, useState, useEffect, createContext } from "react";
-import { auth } from "../config/firebase";
+import { auth, db } from "../config/firebase";
+import { doc, updateDoc, getDoc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { message, notification } from "antd";
 import moment from "moment";
+import CookieNotification from "../components/notifications/cookieNotification/cookieNotification";
+import Cookies from "js-cookie";
+import TypeStorage from "../components/notifications/typeStorage/typeStorage";
 
 const AuthContext = createContext({});
 
@@ -27,29 +31,64 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        let localTask = localStorage.getItem("todo");
-        let localTaskDone = localStorage.getItem("done");
+        !Cookies.get("acceptCookies") && CookieNotification();
+        if (Cookies.get("acceptCookies") === "local") {
+            let localTask = localStorage.getItem("todo");
+            let localTaskDone = localStorage.getItem("done");
 
-        if (JSON.parse(localTask)) {
-            if (JSON.parse(localTask).length > 0)
-                setAllTask(JSON.parse(localTask));
-        }
+            if (JSON.parse(localTask)) {
+                if (JSON.parse(localTask).length > 0)
+                    setAllTask(JSON.parse(localTask));
+            }
 
-        if (JSON.parse(localTaskDone)) {
-            if (JSON.parse(localTaskDone).length > 0)
-                setAllTaskDone(JSON.parse(localTaskDone));
+            if (JSON.parse(localTaskDone)) {
+                if (JSON.parse(localTaskDone).length > 0)
+                    setAllTaskDone(JSON.parse(localTaskDone));
+            }
         }
     }, []);
     useEffect(() => {
-        localStorage.setItem("todo", JSON.stringify(allTask));
-    }, [allTask.length]);
-    useEffect(() => {
-        localStorage.setItem("done", JSON.stringify(allTaskDone));
-    }, [allTaskDone.length]);
+        if (
+            user &&
+            user.uid !== undefined &&
+            Cookies.get("typeStorage") === "cloud"
+        )
+            updateDBTasks();
+        else {
+            localStorage.setItem("todo", JSON.stringify(allTask));
+            localStorage.setItem("done", JSON.stringify(allTaskDone));
+        }
+    }, [allTask.length, allTaskDone.length]);
 
+    /*FIREBASE SPACE*/
+    const getDBTasks = async (user) => {
+        const docRef = doc(db, `usersTasks/${user.uid}`);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            setAllTask(docSnap.data().allTasks);
+            setAllTaskDone(docSnap.data().allTasksDone);
+        } else {
+            await setDoc(docRef, {
+                allTasks: allTask,
+                allTasksDone: allTaskDone,
+            });
+        }
+    };
+
+    const updateDBTasks = async () => {
+        const userDbCredentials = doc(db, `usersTasks/${user.uid}`);
+        await updateDoc(userDbCredentials, {
+            allTasks: allTask,
+            allTasksDone: allTaskDone,
+        });
+    };
+    
+    /*FIREBASE SPACE*/
     useEffect(() => {
         setCurrentPage(window.location.pathname);
         auth.onAuthStateChanged((user) => {
+            user && Cookies.get("typeStorage") === "cloud" && getDBTasks(user);
             setUser(user);
             !user && navigate("/login");
         });
@@ -60,12 +99,13 @@ export const AuthProvider = ({ children }) => {
         ) {
             navigate("/");
         }
+        if (user && !Cookies.get("typeStorage")) TypeStorage();
     }, [user, navigate]);
 
     const setIsDone = (id) => {
         if (id === -1) return;
         const doneTask = allTask[id];
-        allTask[id].date = moment();
+        doneTask.date = moment()._d;
         setAllTaskDone((arr) => [...arr, doneTask]);
         allTask.splice(id, 1);
     };
