@@ -8,16 +8,18 @@ import { AiOutlineUser } from "react-icons/ai";
 import logo from "../../assets/logo192.png";
 import "./styles.css";
 import { Popover } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { LogoutOutlined, SettingOutlined } from "@ant-design/icons";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useEffect } from "react";
+import TypeStorage from "../notifications/typeStorage/typeStorage";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
     const { user } = useAuth();
     const navigate = useNavigate();
     const isMobile = useMobile();
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         setPage(window.location.pathname);
@@ -26,11 +28,24 @@ export default function NavBar() {
     function handleLogout() {
         signOut(auth);
     }
+    
+    const handleVisibleChange = (newVisible) => {
+        setVisible(newVisible);
+    };
 
     const content = (
-        <div>
+        <div className="settings-user-menu">
             <button className="logout-button" onClick={handleLogout}>
                 <LogoutOutlined className="icon-logout" /> LogOut
+            </button>
+            <button
+                className="logout-button"
+                onClick={() => {
+                    TypeStorage();
+                    setVisible(false);
+                }}
+            >
+                <SettingOutlined className="icon-logout" /> Armazenamento
             </button>
         </div>
     );
@@ -60,7 +75,13 @@ export default function NavBar() {
                     <BsClock className="icon" />
                     {isMobile ? null : <>Pomodoro</>}
                 </div>
-                <Popover content={content} title="Usuário" trigger="click">
+                <Popover
+                    content={content}
+                    title="Usuário"
+                    visible={visible}
+                    onVisibleChange={handleVisibleChange}
+                    trigger="click"
+                >
                     <div className="user-profile buttom">
                         <AiOutlineUser className="icon" />
                         {isMobile ? null : user.displayName}
