@@ -1,7 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth, db } from "../config/firebase";
-import { doc, updateDoc, getDoc, setDoc, onSnapshot } from "firebase/firestore";
+import {
+    doc,
+    updateDoc,
+    getDoc,
+    setDoc,
+    onSnapshot,
+    deleteDoc,
+} from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { message, notification } from "antd";
 import moment from "moment";
@@ -31,7 +38,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        if (Cookies.get("acceptCookies") === "local") {
+        if (Cookies.get("typeStorage") === "local") {
             let localTask = localStorage.getItem("todo");
             let localTaskDone = localStorage.getItem("done");
 
@@ -89,6 +96,22 @@ export const AuthProvider = ({ children }) => {
             setAllTask(doc.data().allTasks);
             setAllTaskDone(doc.data().allTasksDone);
         });
+    };
+
+    const turnCloudToLocal = async () => {
+        localStorage.setItem("todo", JSON.stringify(allTask));
+        localStorage.setItem("done", JSON.stringify(allTaskDone));
+        const docRef = doc(db, `usersTasks/${user.uid}`);
+        await deleteDoc(docRef);
+    };
+
+    const turnLocalToCloud = async () => {
+        const docRef = doc(db, `usersTasks/${user.uid}`);
+        await setDoc(docRef, {
+            allTasks: allTask,
+            allTasksDone: allTaskDone,
+        });
+        localStorage.clear();
     };
     /*FIREBASE SPACE*/
 
@@ -271,6 +294,8 @@ export const AuthProvider = ({ children }) => {
         taskSelected,
         setTaskSelected,
         updateDBTasks,
+        turnCloudToLocal,
+        turnLocalToCloud,
     };
 
     return (
