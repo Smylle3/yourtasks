@@ -3,7 +3,7 @@ import { notification } from "antd";
 import Cookies from "js-cookie";
 import "./styles.css";
 
-export default function TypeStorage(turnCloudToLocal, turnLocalToCloud) {
+export default function TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile) {
     const key = `open${Date.now()}`;
 
     const handleFormSubmit = (e) => {
@@ -78,7 +78,7 @@ export default function TypeStorage(turnCloudToLocal, turnLocalToCloud) {
         ),
         icon: <SettingOutlined />,
         duration: 0,
-        placement: "bottom",
+        placement: `${isMobile ? "bottom" : "top"}`,
         btn,
         key,
         closeIcon: <></>,
