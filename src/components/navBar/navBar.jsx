@@ -38,7 +38,7 @@ export default function NavBar() {
             <button
                 className="logout-button"
                 onClick={() => {
-                    TypeStorage(turnCloudToLocal, turnLocalToCloud);
+                    TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile);
                     setVisible(false);
                 }}
             >
