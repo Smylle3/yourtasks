@@ -34,20 +34,20 @@ export default function NavBar() {
                     <img alt="logo" src={logo} className="logo-image" />
                     {!isMobile && <>YOURTASKS</>}
                 </div>
-                <div
+                <button
                     className={`buttom ${page === "/" && "selected"}`}
                     onClick={() => navigate("/")}
                 >
-                    <BsListCheck className="icon" />
+                    <BsListCheck/>
                     {!isMobile && <>Todo</>}
-                </div>
-                <div
+                </button>
+                <button
                     className={`buttom ${page === "/pomodoro" && "selected"}`}
                     onClick={() => navigate("/pomodoro")}
                 >
-                    <BsClock className="icon" />
+                    <BsClock/>
                     {!isMobile && <>Pomodoro</>}
-                </div>
+                </button>
                 <Popover
                     content={userOptionsContent(
                         TypeStorage,
@@ -61,10 +61,10 @@ export default function NavBar() {
                     onVisibleChange={handleVisibleChange}
                     trigger="click"
                 >
-                    <div className="user-profile buttom">
+                    <button className="user-profile">
                         <AiOutlineUser className="icon" />
                         {!isMobile && user.displayName}
-                    </div>
+                    </button>
                 </Popover>
             </nav>
         );
