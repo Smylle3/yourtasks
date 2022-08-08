@@ -9,9 +9,11 @@ import {
 import { Divider, InputNumber, Popover, Progress, Tooltip } from "antd";
 import React, { useState } from "react";
 import { useAuth } from "../../context/authContext";
+import { usePomodoro } from "../../context/pomodoroContext";
 import "./styles.css";
 
 export default function Pomodoro() {
+    const { allTask } = useAuth();
     const {
         finalTime,
         setFinalSleep,
@@ -23,10 +25,9 @@ export default function Pomodoro() {
         startTimer,
         stopTimer,
         timer,
-        allTask,
         taskSelected,
         setTaskSelected,
-    } = useAuth();
+    } = usePomodoro();
 
     const [visiblePopover, setVisiblePopover] = useState(false);
 
