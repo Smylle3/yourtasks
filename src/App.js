@@ -5,6 +5,7 @@ import Login from "./components/login/login";
 import Pomodoro from "./components/pomodoro/pomodoro";
 
 import { AuthProvider } from "./context/authContext";
+import { PomodoroProvider } from "./context/pomodoroContext";
 import NavBar from "./components/navBar/navBar";
 
 function App() {
@@ -12,12 +13,14 @@ function App() {
         <div>
             <BrowserRouter>
                 <AuthProvider>
-                    <NavBar />
-                    <Routes>
-                        <Route path="/" element={<TodoList />} />
-                        <Route path="/pomodoro" element={<Pomodoro />} />
-                        <Route path="/login" element={<Login />} />
-                    </Routes>
+                    <PomodoroProvider>
+                        <NavBar />
+                        <Routes>
+                            <Route path="/" element={<TodoList />} />
+                            <Route path="/pomodoro" element={<Pomodoro />} />
+                            <Route path="/login" element={<Login />} />
+                        </Routes>
+                    </PomodoroProvider>
                 </AuthProvider>
             </BrowserRouter>
         </div>
