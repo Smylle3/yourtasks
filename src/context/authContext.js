@@ -14,6 +14,7 @@ import { message, notification } from "antd";
 import moment from "moment";
 import Cookies from "js-cookie";
 import TypeStorage from "../components/notifications/typeStorage/typeStorage";
+import useMobile from "../functions/useMobile";
 
 const AuthContext = createContext({});
 
@@ -21,6 +22,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const isMobile = useMobile();
     const navigate = useNavigate();
     const [currentPage, setCurrentPage] = useState(window.location.pathname);
     const [allTaskDone, setAllTaskDone] = useState([]);
@@ -129,7 +131,8 @@ export const AuthProvider = ({ children }) => {
         ) {
             navigate("/");
         }
-        if (user && !Cookies.get("typeStorage")) TypeStorage();
+        if (user && !Cookies.get("typeStorage"))
+            TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile);
         if (user && user.uid && Cookies.get("typeStorage") === "cloud")
             realTimeUpdate();
     }, [user, navigate]);
