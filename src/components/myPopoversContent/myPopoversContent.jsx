@@ -1,12 +1,15 @@
 import {
+    CloudServerOutlined,
+    DatabaseOutlined,
     LogoutOutlined,
     QuestionCircleOutlined,
     SettingOutlined,
 } from "@ant-design/icons";
-import { Divider, InputNumber, Tooltip } from "antd";
+import { Divider, Dropdown, InputNumber, Menu, Tooltip } from "antd";
 import { signOut } from "firebase/auth";
 import React from "react";
 import { auth } from "../../config/firebase";
+import "./styles.css";
 
 function handleLogout() {
     signOut(auth);
@@ -21,23 +24,67 @@ const clicleText = (finalTime, timerObj, finalSleep) => (
     </span>
 );
 
+const setStorageOptions = (storageInfo, turnCloudToLocal, turnLocalToCloud) => (
+    <Menu
+        items={[
+            {
+                label: (
+                    <div
+                        className={`options ${
+                            storageInfo === "local" && "options-selected"
+                        }`}
+                        onClick={() => turnCloudToLocal()}
+                    >
+                        <DatabaseOutlined />
+                        Armazenar dados localmente
+                    </div>
+                ),
+                key: "0",
+            },
+            {
+                type: "divider",
+            },
+            {
+                label: (
+                    <div
+                        className={`options ${
+                            storageInfo === "cloud" && "options-selected"
+                        }`}
+                        onClick={() => turnLocalToCloud()}
+                    >
+                        <CloudServerOutlined />
+                        Armazenar dados na nuvem
+                    </div>
+                ),
+                key: "1",
+            },
+        ]}
+    />
+);
+
 const userOptionsContent = (
-    TypeStorage,
     setVisible,
+    storageInfo,
     turnCloudToLocal,
-    turnLocalToCloud,
-    isMobile
+    turnLocalToCloud
 ) => (
     <section className="settings-user-menu">
-        <button
-            className="logout-button"
-            onClick={() => {
-                TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile);
-                setVisible(false);
+        <Dropdown
+            overlay={setStorageOptions(
+                storageInfo,
+                turnCloudToLocal,
+                turnLocalToCloud
+            )}
+            trigger={["click"]}
+            placement="top"
+            arrow={{
+                pointAtCenter: true,
             }}
         >
-            <SettingOutlined className="icon-logout" /> Storage
-        </button>
+            <button className="logout-button">
+                <SettingOutlined className="icon-logout" /> Storage
+            </button>
+        </Dropdown>
         <button
             className="logout-button"
             onClick={() => {
