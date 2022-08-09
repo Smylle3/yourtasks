@@ -9,12 +9,11 @@ import logo from "../../assets/logo192.png";
 import "./styles.css";
 import { Popover } from "antd";
 import { useEffect } from "react";
-import TypeStorage from "../notifications/typeStorage/typeStorage";
 import { userOptionsContent } from "../myPopoversContent/myPopoversContent";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
-    const { user, turnCloudToLocal, turnLocalToCloud } = useAuth();
+    const { user, storageInfo, turnCloudToLocal, turnLocalToCloud } = useAuth();
     const navigate = useNavigate();
     const isMobile = useMobile();
     const [visible, setVisible] = useState(false);
@@ -38,23 +37,22 @@ export default function NavBar() {
                     className={`buttom ${page === "/" && "selected"}`}
                     onClick={() => navigate("/")}
                 >
-                    <BsListCheck/>
+                    <BsListCheck />
                     {!isMobile && <>Todo</>}
                 </button>
                 <button
                     className={`buttom ${page === "/pomodoro" && "selected"}`}
                     onClick={() => navigate("/pomodoro")}
                 >
-                    <BsClock/>
+                    <BsClock />
                     {!isMobile && <>Pomodoro</>}
                 </button>
                 <Popover
                     content={userOptionsContent(
-                        TypeStorage,
                         setVisible,
+                        storageInfo,
                         turnCloudToLocal,
-                        turnLocalToCloud,
-                        isMobile
+                        turnLocalToCloud
                     )}
                     title={user.displayName}
                     visible={visible}
