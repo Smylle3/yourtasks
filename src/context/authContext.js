@@ -20,10 +20,11 @@ const AuthContext = createContext({});
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
     const isMobile = useMobile();
     const navigate = useNavigate();
+    const [user, setUser] = useState(null);
     const [currentPage, setCurrentPage] = useState(window.location.pathname);
+    const [storageInfo, setStorageInfo] = useState(Cookies.get("typeStorage"));
     const [allTaskDone, setAllTaskDone] = useState([]);
     const [allTask, setAllTask] = useState([]);
     const [task, setTask] = useState({
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        if (Cookies.get("typeStorage") === "local") {
+        if (storageInfo === "local") {
             let localTask = localStorage.getItem("todo");
             let localTaskDone = localStorage.getItem("done");
 
@@ -54,18 +55,34 @@ export const AuthProvider = ({ children }) => {
             }
         }
     }, []);
+
     useEffect(() => {
-        if (
-            user &&
-            user.uid !== undefined &&
-            Cookies.get("typeStorage") === "cloud"
-        )
+        if (user && user.uid !== undefined && storageInfo === "cloud")
             updateDBTasks();
         else {
             localStorage.setItem("todo", JSON.stringify(allTask));
             localStorage.setItem("done", JSON.stringify(allTaskDone));
         }
     }, [allTask.length, allTaskDone.length]);
+
+    useEffect(() => {
+        setCurrentPage(window.location.pathname);
+        auth.onAuthStateChanged((user) => {
+            user && storageInfo === "cloud" && getDBTasks(user);
+            setUser(user);
+            !user && navigate("/login");
+        });
+        if (
+            currentPage !== "/" &&
+            currentPage !== "/pomodoro" &&
+            currentPage !== "/login"
+        ) {
+            navigate("/");
+        }
+        if (user && !storageInfo)
+            TypeStorage(isMobile, turnCloudToLocal, turnLocalToCloud);
+        if (user && user.uid && storageInfo === "cloud") realTimeUpdate();
+    }, [user, navigate]);
 
     /*FIREBASE SPACE*/
     const getDBTasks = async (user) => {
@@ -100,41 +117,22 @@ export const AuthProvider = ({ children }) => {
     };
 
     const turnCloudToLocal = async () => {
+        setStorageInfo("local");
+        Cookies.set("typeStorage", "local", { expires: 400 });
         localStorage.setItem("todo", JSON.stringify(allTask));
         localStorage.setItem("done", JSON.stringify(allTaskDone));
         const docRef = doc(db, `usersTasks/${user.uid}`);
-        await deleteDoc(docRef);
+        const docSnap = await getDoc(docRef);
+        docSnap.exists() && (await deleteDoc(docRef));
     };
 
     const turnLocalToCloud = async () => {
-        const docRef = doc(db, `usersTasks/${user.uid}`);
-        await setDoc(docRef, {
-            allTasks: allTask,
-            allTasksDone: allTaskDone,
-        });
+        setStorageInfo("cloud");
+        Cookies.set("typeStorage", "cloud", { expires: 400 });
+        getDBTasks(user);
         localStorage.clear();
     };
     /*FIREBASE SPACE*/
-
-    useEffect(() => {
-        setCurrentPage(window.location.pathname);
-        auth.onAuthStateChanged((user) => {
-            user && Cookies.get("typeStorage") === "cloud" && getDBTasks(user);
-            setUser(user);
-            !user && navigate("/login");
-        });
-        if (
-            currentPage !== "/" &&
-            currentPage !== "/pomodoro" &&
-            currentPage !== "/login"
-        ) {
-            navigate("/");
-        }
-        if (user && !Cookies.get("typeStorage"))
-            TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile);
-        if (user && user.uid && Cookies.get("typeStorage") === "cloud")
-            realTimeUpdate();
-    }, [user, navigate]);
 
     const setIsDone = (id) => {
         if (id === -1) return;
@@ -156,6 +154,8 @@ export const AuthProvider = ({ children }) => {
         setSimpleList,
         setIsDone,
         updateDBTasks,
+        storageInfo,
+        setStorageInfo,
         turnCloudToLocal,
         turnLocalToCloud,
     };
