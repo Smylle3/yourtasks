@@ -3,25 +3,23 @@ import { notification } from "antd";
 import Cookies from "js-cookie";
 import "./styles.css";
 
-export default function TypeStorage(turnCloudToLocal, turnLocalToCloud, isMobile) {
+export default function TypeStorage(
+    isMobile,
+    turnCloudToLocal,
+    turnLocalToCloud
+) {
     const key = `open${Date.now()}`;
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        if (e.target[0].checked) {
-            turnCloudToLocal();
-        } else if (e.target[1].checked) {
-            turnLocalToCloud();
-        }
+        e.target[0].checked && turnCloudToLocal();
 
-        Cookies.set(
-            "typeStorage",
-            `${e.target[0].checked ? "local" : "cloud"}`,
-            { expires: 7 }
-        );
+        e.target[1].checked && turnLocalToCloud();
+
         notification.close(key);
     };
+
     const btn = (
         <form
             className="container-storage-select"
