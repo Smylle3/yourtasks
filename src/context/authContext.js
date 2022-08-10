@@ -79,8 +79,10 @@ export const AuthProvider = ({ children }) => {
         ) {
             navigate("/");
         }
-        if (user && !storageInfo)
-            TypeStorage(isMobile, turnCloudToLocal, turnLocalToCloud);
+        if (user) {
+            !storageInfo &&
+                TypeStorage(isMobile, turnCloudToLocal, turnLocalToCloud);
+        }
         if (user && user.uid && storageInfo === "cloud") realTimeUpdate();
     }, [user, navigate]);
 
