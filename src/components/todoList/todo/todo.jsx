@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import { TimePassed } from "../../../functions/timePassed";
 import InfosTask from "../modais/infosTask";
-import emptyImage from "../../../assets/EmptyImage.jpg";
+import { Empty } from "antd";
 
 export default function Todo() {
     const { allTask, setAllTask, setIsDone } = useAuth();
@@ -21,13 +21,9 @@ export default function Todo() {
         setAllTask((arr) => [...arr]);
     };
 
-    if (allTask.length <= 0) {
-        return (
-            <img alt="emptyImage" src={emptyImage} className="empty-image" />
-        );
-    } else {
-        return (
-            <nav className="todo-tasks">
+    return (
+        <nav className="todo-tasks" >
+            {allTask.length > 0 ? (
                 <div className="column-reverse">
                     {allTask.map((task, id) => (
                         <section
@@ -68,14 +64,16 @@ export default function Todo() {
                         </section>
                     ))}
                 </div>
-                <InfosTask
-                    isModalVisible={isModalVisible}
-                    setModalVisible={setModalVisible}
-                    taskObject={taskObject}
-                    setTaskObject={setTaskObject}
-                    taskIsDone={false}
-                />
-            </nav>
-        );
-    }
+            ) : (
+                <Empty />
+            )}
+            <InfosTask
+                isModalVisible={isModalVisible}
+                setModalVisible={setModalVisible}
+                taskObject={taskObject}
+                setTaskObject={setTaskObject}
+                taskIsDone={false}
+            />
+        </nav>
+    );
 }
