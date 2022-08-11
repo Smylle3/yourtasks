@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import InfosTask from "../modais/infosTask";
 import emptyImage from "../../../assets/EmptyImage.jpg";
+import { Empty } from "antd";
 
 export default function Done() {
     const { allTaskDone, setAllTaskDone } = useAuth();
@@ -20,13 +21,9 @@ export default function Done() {
         setAllTaskDone((arr) => [...arr]);
     };
 
-    if (allTaskDone.length <= 0) {
-        return (
-            <img alt="emptyImage" src={emptyImage} className="empty-image" />
-        );
-    } else {
-        return (
-            <nav className="todo-tasks">
+    return (
+        <nav className="todo-tasks">
+            {allTaskDone.length > 0 ? (
                 <div className="column-reverse">
                     {allTaskDone.map((task, id) => (
                         <section className="todo-task" key={id}>
@@ -36,9 +33,7 @@ export default function Done() {
                             >
                                 <h3>{task.title}</h3>
                                 <p>
-                                    {moment(task.date)
-                                        .startOf("ss")
-                                        .fromNow()}
+                                    {moment(task.date).startOf("ss").fromNow()}
                                 </p>
                             </div>
                             <button onClick={() => handleDelete(id)}>
@@ -47,14 +42,16 @@ export default function Done() {
                         </section>
                     ))}
                 </div>
-                <InfosTask
-                    isModalVisible={isModalVisible}
-                    setModalVisible={setModalVisible}
-                    taskObject={taskObject}
-                    setTaskObject={setTaskObject}
-                    taskIsDone={true}
-                />
-            </nav>
-        );
-    }
+            ) : (
+                <Empty />
+            )}
+            <InfosTask
+                isModalVisible={isModalVisible}
+                setModalVisible={setModalVisible}
+                taskObject={taskObject}
+                setTaskObject={setTaskObject}
+                taskIsDone={true}
+            />
+        </nav>
+    );
 }
