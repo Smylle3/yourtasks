@@ -14,11 +14,11 @@ export default function TodoList() {
     const [gesture, setGesture] = useState({ XInicial: null, XFinal: null });
 
     useEffect(() => {
-        if (gesture.XInicial - gesture.XFinal > 50) {
+        if (gesture.XInicial - gesture.XFinal > 40) {
             setDoneTab("done");
         }
 
-        if (gesture.XFinal - gesture.XInicial > 50) {
+        if (gesture.XFinal - gesture.XInicial > 40) {
             setDoneTab("to do");
         }
     }, [gesture]);
@@ -45,18 +45,6 @@ export default function TodoList() {
                         <CheckSquareOutlined /> Feitos
                     </div>
                 </div>
-                <section>
-                    <div
-                        className={`dot-one ${
-                            doneTab === "to do" ? `dot-selected` : null
-                        }`}
-                    />
-                    <div
-                        className={`dot-one ${
-                            doneTab === "done" ? `dot-selected` : null
-                        }`}
-                    />
-                </section>
                 <div
                     className="todo-lists"
                     onTouchStart={({ changedTouches }) =>
@@ -73,7 +61,8 @@ export default function TodoList() {
                         }))
                     }
                 >
-                    {doneTab === "to do" ? <Todo /> : <Done />}
+                    <Todo />
+                    <Done />
                 </div>
             </div>
         );
