@@ -113,8 +113,12 @@ export const AuthProvider = ({ children }) => {
     const realTimeUpdate = async () => {
         const docRef = doc(db, `usersTasks/${user.uid}`);
         onSnapshot(docRef, (doc) => {
-            setAllTask(doc.data().allTasks);
-            setAllTaskDone(doc.data().allTasksDone);
+            try {
+                setAllTask(doc.data().allTasks);
+                setAllTaskDone(doc.data().allTasksDone);
+            } catch (error) {
+                console.log(error.code);
+            }
         });
     };
 
