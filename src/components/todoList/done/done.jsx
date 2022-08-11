@@ -3,7 +3,6 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useAuth } from "../../../context/authContext";
 import InfosTask from "../modais/infosTask";
-import emptyImage from "../../../assets/EmptyImage.jpg";
 import { Empty } from "antd";
 
 export default function Done() {
