@@ -114,5 +114,6 @@ export const LocalTitle = styled.h2`
     justify-content: center;
     box-sizing: border-box;
     border-radius: 5px;
-    box-shadow: 0px 0px 12px -7px #000;
+    box-shadow: 0px 0px 12px 0px ${props => props.color};
+    background-color: ${props => props.color};
 `

@@ -52,7 +52,9 @@ export default function TodoList() {
             <TodoPage>
                 {isMobile ? (
                     <>
-                        <LocalTitle>
+                        <LocalTitle
+                            color={doneTab === 0 ? "#ff98007f" : "#4caf507f"}
+                        >
                             {doneTab === 0
                                 ? "TAREFAS A FAZER"
                                 : "TAREFAS CONCLUÍDAS"}
