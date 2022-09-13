@@ -1,9 +1,17 @@
-import { DeleteFilled } from "@ant-design/icons";
-import moment from "moment";
 import React, { useState } from "react";
-import { useAuth } from "../../../context/authContext";
+import moment from "moment";
+import { Empty } from "antd";
+import { useAuth } from "context/authContext";
 import InfosTask from "../modais/infosTask";
-import emptyImage from "../../../assets/EmptyImage.jpg";
+import { DeleteFilled } from "@ant-design/icons";
+import {
+    CheckButton,
+    DateTask,
+    Task,
+    TaskContent,
+    TaskList,
+    TitleTask,
+} from "../stylesTodo";
 
 export default function Done() {
     const { allTaskDone, setAllTaskDone } = useAuth();
@@ -20,33 +28,23 @@ export default function Done() {
         setAllTaskDone((arr) => [...arr]);
     };
 
-    if (allTaskDone.length <= 0) {
+    if (allTaskDone.length > 0) {
         return (
-            <img alt="emptyImage" src={emptyImage} className="empty-image" />
-        );
-    } else {
-        return (
-            <nav className="todo-tasks">
-                <div className="column-reverse">
-                    {allTaskDone.map((task, id) => (
-                        <section className="todo-task" key={id}>
-                            <div
-                                onClick={() => modalFunction(id)}
-                                className="todo-content-info"
-                            >
-                                <h3>{task.title}</h3>
-                                <p>
-                                    {moment(task.date)
-                                        .startOf("ss")
-                                        .fromNow()}
-                                </p>
-                            </div>
-                            <button onClick={() => handleDelete(id)}>
-                                <DeleteFilled />
-                            </button>
-                        </section>
-                    ))}
-                </div>
+            <TaskList>
+                {allTaskDone.map((task, id) => (
+                    <Task key={id}>
+                        <TaskContent onClick={() => modalFunction(id)}>
+                            <TitleTask>{task.title}</TitleTask>
+                            <DateTask>
+                                {moment(task.date).startOf("ss").fromNow()}
+                            </DateTask>
+                        </TaskContent>
+                        <CheckButton onClick={() => handleDelete(id)}>
+                            <DeleteFilled />
+                        </CheckButton>
+                    </Task>
+                ))}
+
                 <InfosTask
                     isModalVisible={isModalVisible}
                     setModalVisible={setModalVisible}
@@ -54,7 +52,9 @@ export default function Done() {
                     setTaskObject={setTaskObject}
                     taskIsDone={true}
                 />
-            </nav>
+            </TaskList>
         );
+    } else {
+        return <Empty />;
     }
 }

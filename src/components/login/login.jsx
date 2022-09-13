@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { GithubFilled, GoogleOutlined } from "@ant-design/icons";
-import logo from "../../assets/logo192.png";
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider, gitProvider } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
 import { Spin } from "antd";
+import { GithubFilled, GoogleOutlined } from "@ant-design/icons";
+import { useAuth } from "context/authContext";
+import { signInWithPopup } from "firebase/auth";
+import { auth, gitProvider, googleProvider } from "config/firebase";
+import logo from "../../assets/logo192.png";
+import {
+    LoginButton,
+    LoginCard,
+    LoginIcon,
+    LoginLoading,
+    LoginPage,
+    LoginTitle,
+    LoginTitleText,
+} from "./stylesLogin";
 
 export default function Login() {
     const [loading, setLoading] = useState(false);
@@ -31,36 +40,43 @@ export default function Login() {
     }
 
     return (
-        <div id="login-page">
-            <div id="login-card">
-                <div id="login-title">
-                    <img alt="logo" src={logo} />
-                    <h2>Bem vindo ao YourTasks</h2>
-                    <img alt="logo" src={logo} />
-                </div>
+        <LoginPage>
+            <LoginCard>
+                <LoginTitle>
+                    <LoginIcon alt="logo" src={logo} />
+                    <LoginTitleText>Bem vindo ao YourTasks</LoginTitleText>
+                    <LoginIcon alt="logo" src={logo} />
+                </LoginTitle>
                 {loading ? (
                     <>
-                        <div className="loading google"><Spin /></div>
-                        <div className="loading github"><Spin /></div>
+                        <LoginLoading border="var(--color-three)">
+                            <Spin />
+                        </LoginLoading>
+                        <LoginLoading border="var(--dark-color)">
+                            <Spin />
+                        </LoginLoading>
                     </>
                 ) : (
                     <>
-                        <div
-                            className="login-button google"
+                        <LoginButton
+                            color="var(--color-three)"
+                            border="var(--color-three)"
                             onClick={() => handleLogin("google")}
                         >
                             <GoogleOutlined />
                             Login com Google
-                        </div>
-                        <div
-                            className="login-button github"
-                            onClick={() => handleLogin("github")}
+                        </LoginButton>
+                        <LoginButton
+                            color="var(--dark-color)"
+                            border="var(--dark-color)"
+                            onClick={() => handleLogin("google")}
                         >
-                            <GithubFilled /> Login com GitHub
-                        </div>
+                            <GithubFilled />
+                            Login com GitHub
+                        </LoginButton>
                     </>
                 )}
-            </div>
-        </div>
+            </LoginCard>
+        </LoginPage>
     );
 }
