@@ -1,10 +1,18 @@
-import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
-import moment from "moment";
 import React, { useState } from "react";
-import { useAuth } from "../../../context/authContext";
-import { TimePassed } from "../../../functions/timePassed";
-import InfosTask from "../modais/infosTask";
+import moment from "moment";
 import { Empty } from "antd";
+import { useAuth } from "context/authContext";
+import { TimePassed } from "functions/timePassed";
+import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
+import {
+    CheckButton,
+    DateTask,
+    Task,
+    TaskContent,
+    TaskList,
+    TitleTask,
+} from "../stylesTodo";
+import InfosTask from "../modais/infosTask";
 
 export default function Todo() {
     const { allTask, setAllTask, setIsDone } = useAuth();
@@ -21,59 +29,46 @@ export default function Todo() {
         setAllTask((arr) => [...arr]);
     };
 
-    return (
-        <nav className="todo-tasks" >
-            {allTask.length > 0 ? (
-                <div className="column-reverse">
-                    {allTask.map((task, id) => (
-                        <section
-                            className="todo-task"
-                            style={{
-                                border: `1px solid ${
-                                    TimePassed(
-                                        moment(task.date, "YYYYMMDD").fromNow()
-                                    )
-                                        ? "rgb(202, 46, 46)"
-                                        : "rgb(68, 204, 63)"
-                                }`,
-                            }}
-                            key={id}
-                        >
-                            <div
-                                onClick={() => modalFunction(id)}
-                                className="todo-content-info"
-                            >
-                                <h3>{task.title}</h3>
-                                <p>
-                                    {!task.date ||
-                                    moment(task.date)
-                                        .startOf("ss")
-                                        .fromNow() === "Data inválida"
-                                        ? null
-                                        : moment(task.date)
-                                              .startOf("ss")
-                                              .fromNow()}
-                                </p>
-                            </div>
-                            <button onClick={() => setIsDone(id)}>
-                                <CheckOutlined />
-                            </button>
-                            <button onClick={() => handleDelete(id)}>
-                                <DeleteFilled />
-                            </button>
-                        </section>
-                    ))}
-                </div>
-            ) : (
-                <Empty />
-            )}
-            <InfosTask
-                isModalVisible={isModalVisible}
-                setModalVisible={setModalVisible}
-                taskObject={taskObject}
-                setTaskObject={setTaskObject}
-                taskIsDone={false}
-            />
-        </nav>
-    );
+    if (allTask.length > 0) {
+        return (
+            <TaskList>
+                {allTask.map((task, id) => (
+                    <Task
+                        border={
+                            TimePassed(moment(task.date, "YYYYMMDD").fromNow())
+                                ? "rgb(202, 46, 46)"
+                                : "rgb(68, 204, 63)"
+                        }
+                        key={id}
+                    >
+                        <TaskContent onClick={() => modalFunction(id)}>
+                            <TitleTask>{task.title}</TitleTask>
+                            <DateTask>
+                                {!task.date ||
+                                moment(task.date).startOf("ss").fromNow() ===
+                                    "Data inválida"
+                                    ? null
+                                    : moment(task.date).startOf("ss").fromNow()}
+                            </DateTask>
+                        </TaskContent>
+                        <CheckButton onClick={() => setIsDone(id)}>
+                            <CheckOutlined />
+                        </CheckButton>
+                        <CheckButton onClick={() => handleDelete(id)}>
+                            <DeleteFilled />
+                        </CheckButton>
+                    </Task>
+                ))}
+                <InfosTask
+                    isModalVisible={isModalVisible}
+                    setModalVisible={setModalVisible}
+                    taskObject={taskObject}
+                    setTaskObject={setTaskObject}
+                    taskIsDone={false}
+                />
+            </TaskList>
+        );
+    } else {
+        return <Empty />;
+    }
 }

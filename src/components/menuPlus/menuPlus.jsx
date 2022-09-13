@@ -1,7 +1,7 @@
-import { PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import CreateTask from "../todoList/modais/createTask";
-import "./styles.css";
+import CreateTask from "components/todoList/modais/createTask";
+import { PlusOutlined } from "@ant-design/icons";
+import { PlusButton } from "./stylePlus";
 
 export default function MenuPlus() {
     const [type, setType] = useState("");
@@ -14,12 +14,9 @@ export default function MenuPlus() {
 
     return (
         <>
-            <div
-                onClick={() => modalFunction("detail")}
-                className="todo-input-plus"
-            >
+            <PlusButton onClick={() => modalFunction("detail")}>
                 <PlusOutlined />
-            </div>
+            </PlusButton>
 
             <CreateTask
                 isModalVisible={isModalVisible}
