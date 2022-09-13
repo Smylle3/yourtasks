@@ -1,76 +1,108 @@
-import React, { useEffect, useState } from "react";
-import "./styles.css";
-import { useAuth } from "../../context/authContext";
+import React, { useState } from "react";
+import { useAuth } from "context/authContext";
+import useMobile from "functions/useMobile";
 import { Spin } from "antd";
-import "moment/locale/pt-br";
-import MenuPlus from "../menuPlus/menuPlus";
+import MenuPlus from "components/menuPlus/menuPlus";
 import Todo from "./todo/todo";
 import Done from "./done/done";
+import Carousel from "nuka-carousel/lib/carousel";
 import { BorderOutlined, CheckSquareOutlined } from "@ant-design/icons";
+import {
+    LocalTitle,
+    SelectTabButton,
+    SpinDiv,
+    TodoHeader,
+    TodoPage,
+} from "./stylesTodo";
+import "moment/locale/pt-br";
 
 export default function TodoList() {
     const { user } = useAuth();
-    const [doneTab, setDoneTab] = useState("to do");
-    const [gesture, setGesture] = useState({ XInicial: null, XFinal: null });
+    const isMobile = useMobile();
+    const [doneTab, setDoneTab] = useState(0);
 
-    useEffect(() => {
-        if (gesture.XInicial - gesture.XFinal > 40) {
-            setDoneTab("done");
-        }
-
-        if (gesture.XFinal - gesture.XInicial > 40) {
-            setDoneTab("to do");
-        }
-    }, [gesture]);
+    const Customization = {
+        carousel: {
+            display: "flex",
+            flexDirection: "column-reverse",
+            minHeight: "70vh",
+        },
+        next: {
+            backgroundColor: "#fff",
+            color: "#000",
+            borderRadius: "5px",
+            border: "1px solid #000",
+            position: "fixed",
+            bottom: "7em",
+            right: "1em",
+        },
+        prev: {
+            backgroundColor: "#fff",
+            color: "#000",
+            borderRadius: "5px",
+            border: "1px solid #000",
+            position: "fixed",
+            bottom: "7em",
+            left: "1em",
+        },
+    };
 
     if (user) {
         return (
-            <div className="todo-page">
-                <div className="todo-form">
-                    <div
-                        className={`default-done-tab ${
-                            doneTab === "to do" ? `done-tab` : null
-                        }`}
-                        onClick={() => setDoneTab("to do")}
-                    >
-                        <BorderOutlined /> A fazer
-                    </div>
-                    <MenuPlus />
-                    <div
-                        className={`default-done-tab ${
-                            doneTab === "done" ? `done-tab` : null
-                        }`}
-                        onClick={() => setDoneTab("done")}
-                    >
-                        <CheckSquareOutlined /> Feitos
-                    </div>
-                </div>
-                <div
-                    className="todo-lists"
-                    onTouchStart={({ changedTouches }) =>
-                        setGesture((prevState) => ({
-                            ...prevState,
-                            XInicial: changedTouches[0].clientX,
-                            XFinal: changedTouches[0].clientX,
-                        }))
-                    }
-                    onTouchEnd={({ changedTouches }) =>
-                        setGesture((prevState) => ({
-                            ...prevState,
-                            XFinal: changedTouches[0].clientX,
-                        }))
-                    }
-                >
-                    <Todo />
-                    <Done />
-                </div>
-            </div>
+            <TodoPage>
+                {isMobile ? (
+                    <>
+                        <LocalTitle>
+                            {doneTab === 0
+                                ? "TAREFAS A FAZER"
+                                : "TAREFAS CONCLUÍDAS"}
+                        </LocalTitle>
+                        <MenuPlus />
+                        <Carousel
+                            adaptiveHeight={false}
+                            style={Customization.carousel}
+                            afterSlide={(e) => setDoneTab(e)}
+                            defaultControlsConfig={{
+                                nextButtonText: "Feitos",
+                                nextButtonStyle: Customization.next,
+                                prevButtonStyle: Customization.prev,
+                                prevButtonText: "A fazer",
+                                pagingDotsStyle: {
+                                    fill: "transparent",
+                                },
+                            }}
+                        >
+                            <Todo />
+                            <Done />
+                        </Carousel>
+                    </>
+                ) : (
+                    <>
+                        <TodoHeader>
+                            <SelectTabButton
+                                borderSelect={doneTab === 0 ? "black" : "white"}
+                                onClick={() => setDoneTab(0)}
+                            >
+                                <BorderOutlined /> A fazer
+                            </SelectTabButton>
+                            <MenuPlus />
+                            <SelectTabButton
+                                borderSelect={doneTab !== 0 ? "black" : "white"}
+                                onClick={() => setDoneTab(1)}
+                            >
+                                <CheckSquareOutlined /> Feitos
+                            </SelectTabButton>
+                        </TodoHeader>
+                        {doneTab === 0 ? <Todo /> : <Done />}
+                    </>
+                )}
+            </TodoPage>
         );
     } else {
         return (
-            <div className="spin">
+            <SpinDiv>
                 <Spin />
-            </div>
+            </SpinDiv>
         );
     }
 }
