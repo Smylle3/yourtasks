@@ -1,15 +1,9 @@
-import {
-    CloudServerOutlined,
-    DatabaseOutlined,
-    LogoutOutlined,
-    QuestionCircleOutlined,
-    SettingOutlined,
-} from "@ant-design/icons";
-import { Divider, Dropdown, InputNumber, Menu, Tooltip } from "antd";
-import { signOut } from "firebase/auth";
 import React from "react";
-import { auth } from "../../config/firebase";
-import "./styles.css";
+import { Divider, InputNumber, Tooltip } from "antd";
+import { signOut } from "firebase/auth";
+import { auth } from "config/firebase";
+import { SettingsButton, SettingUserMenu } from "./stylesPopovers";
+import { LogoutOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 
 function handleLogout() {
     signOut(auth);
@@ -24,77 +18,17 @@ const clicleText = (finalTime, timerObj, finalSleep) => (
     </span>
 );
 
-const setStorageOptions = (storageInfo, turnCloudToLocal, turnLocalToCloud) => (
-    <Menu
-        items={[
-            {
-                label: (
-                    <div
-                        className={`options ${
-                            storageInfo === "local" && "options-selected"
-                        }`}
-                        onClick={() => turnCloudToLocal()}
-                    >
-                        <DatabaseOutlined />
-                        Armazenar dados localmente
-                    </div>
-                ),
-                key: "0",
-            },
-            {
-                type: "divider",
-            },
-            {
-                label: (
-                    <div
-                        className={`options ${
-                            storageInfo === "cloud" && "options-selected"
-                        }`}
-                        onClick={() => turnLocalToCloud()}
-                    >
-                        <CloudServerOutlined />
-                        Armazenar dados na nuvem
-                    </div>
-                ),
-                key: "1",
-            },
-        ]}
-    />
-);
-
-const userOptionsContent = (
-    setVisible,
-    storageInfo,
-    turnCloudToLocal,
-    turnLocalToCloud
-) => (
-    <section className="settings-user-menu">
-        <Dropdown
-            overlay={setStorageOptions(
-                storageInfo,
-                turnCloudToLocal,
-                turnLocalToCloud
-            )}
-            trigger={["click"]}
-            placement="top"
-            arrow={{
-                pointAtCenter: true,
-            }}
-        >
-            <button className="logout-button">
-                <SettingOutlined className="icon-logout" /> Storage
-            </button>
-        </Dropdown>
-        <button
-            className="logout-button"
+const userOptionsContent = (setVisible) => (
+    <SettingUserMenu>
+        <SettingsButton
             onClick={() => {
                 setVisible(false);
                 handleLogout();
             }}
         >
-            <LogoutOutlined className="icon-logout" /> LogOut
-        </button>
-    </section>
+            <LogoutOutlined /> LogOut
+        </SettingsButton>
+    </SettingUserMenu>
 );
 
 const pomodoroTaskListContent = (
@@ -115,7 +49,6 @@ const pomodoroTaskListContent = (
         <Divider>Suas tasks</Divider>
         {allTask.map((task, id) => (
             <section
-                className=""
                 key={id}
                 onClick={() => {
                     setVisiblePopover(!visiblePopover);

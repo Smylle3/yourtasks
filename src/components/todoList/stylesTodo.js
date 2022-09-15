@@ -103,16 +103,3 @@ export const SpinDiv = styled.div`
     align-items: center;
     justify-content: center;
 `
-
-export const LocalTitle = styled.h2`
-    position: fixed;
-    margin: 0;
-    top: 1em;
-    right: 1em;
-    left: 1em;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    border-radius: 5px;
-    box-shadow: 0px 0px 12px -7px #000;
-`

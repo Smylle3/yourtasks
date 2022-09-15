@@ -1,30 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect, createContext } from "react";
-import { auth, db } from "../config/firebase";
+import { auth, db } from "config/firebase";
 import {
     doc,
     updateDoc,
     getDoc,
     setDoc,
-    onSnapshot,
-    deleteDoc,
+    onSnapshot
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import Cookies from "js-cookie";
-import TypeStorage from "../components/notifications/typeStorage/typeStorage";
-import useMobile from "../functions/useMobile";
 
 const AuthContext = createContext({});
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const isMobile = useMobile();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [currentPage, setCurrentPage] = useState(window.location.pathname);
-    const [storageInfo, setStorageInfo] = useState(Cookies.get("typeStorage"));
     const [allTaskDone, setAllTaskDone] = useState([]);
     const [allTask, setAllTask] = useState([]);
     const [task, setTask] = useState({
@@ -40,37 +34,17 @@ export const AuthProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        if (storageInfo === "local") {
-            let localTask = localStorage.getItem("todo");
-            let localTaskDone = localStorage.getItem("done");
-
-            if (JSON.parse(localTask)) {
-                if (JSON.parse(localTask).length > 0)
-                    setAllTask(JSON.parse(localTask));
-            }
-
-            if (JSON.parse(localTaskDone)) {
-                if (JSON.parse(localTaskDone).length > 0)
-                    setAllTaskDone(JSON.parse(localTaskDone));
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        if (user && user.uid !== undefined && storageInfo === "cloud")
+        if (user && user.uid !== undefined) {
             updateDBTasks();
-        else {
-            localStorage.setItem("todo", JSON.stringify(allTask));
-            localStorage.setItem("done", JSON.stringify(allTaskDone));
         }
     }, [allTask.length, allTaskDone.length]);
 
     useEffect(() => {
         setCurrentPage(window.location.pathname);
         auth.onAuthStateChanged((user) => {
-            user && storageInfo === "cloud" && getDBTasks(user);
-            setUser(user);
             !user && navigate("/login");
+            user && getDBTasks(user);
+            setUser(user);
         });
         if (
             currentPage !== "/" &&
@@ -79,11 +53,7 @@ export const AuthProvider = ({ children }) => {
         ) {
             navigate("/");
         }
-        if (user) {
-            !storageInfo &&
-                TypeStorage(isMobile, turnCloudToLocal, turnLocalToCloud);
-        }
-        if (user && user.uid && storageInfo === "cloud") realTimeUpdate();
+        if (user && user.uid) realTimeUpdate();
     }, [user, navigate]);
 
     /*FIREBASE SPACE*/
@@ -96,6 +66,7 @@ export const AuthProvider = ({ children }) => {
             setAllTaskDone(docSnap.data().allTasksDone);
         } else {
             await setDoc(docRef, {
+                userEmail: user.email,
                 allTasks: allTask,
                 allTasksDone: allTaskDone,
             });
@@ -104,10 +75,15 @@ export const AuthProvider = ({ children }) => {
 
     const updateDBTasks = async () => {
         const userDbCredentials = doc(db, `usersTasks/${user.uid}`);
-        await updateDoc(userDbCredentials, {
-            allTasks: allTask,
-            allTasksDone: allTaskDone,
-        });
+        try {
+            await updateDoc(userDbCredentials, {
+                userEmail: user.email,
+                allTasks: allTask,
+                allTasksDone: allTaskDone,
+            });
+        } catch (error) {
+            console.log(error)
+        }
     };
 
     const realTimeUpdate = async () => {
@@ -116,23 +92,6 @@ export const AuthProvider = ({ children }) => {
             setAllTask(doc.data().allTasks);
             setAllTaskDone(doc.data().allTasksDone);
         });
-    };
-
-    const turnCloudToLocal = async () => {
-        setStorageInfo("local");
-        Cookies.set("typeStorage", "local", { expires: 400 });
-        localStorage.setItem("todo", JSON.stringify(allTask));
-        localStorage.setItem("done", JSON.stringify(allTaskDone));
-        const docRef = doc(db, `usersTasks/${user.uid}`);
-        const docSnap = await getDoc(docRef);
-        docSnap.exists() && (await deleteDoc(docRef));
-    };
-
-    const turnLocalToCloud = async () => {
-        setStorageInfo("cloud");
-        Cookies.set("typeStorage", "cloud", { expires: 400 });
-        getDBTasks(user);
-        localStorage.clear();
     };
     /*FIREBASE SPACE*/
 
@@ -155,11 +114,7 @@ export const AuthProvider = ({ children }) => {
         simpleList,
         setSimpleList,
         setIsDone,
-        updateDBTasks,
-        storageInfo,
-        setStorageInfo,
-        turnCloudToLocal,
-        turnLocalToCloud,
+        updateDBTasks
     };
 
     return (
