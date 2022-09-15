@@ -1,19 +1,24 @@
-import React, { useState } from "react";
-import { useAuth } from "../../context/authContext";
-import useMobile from "../../functions/useMobile";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Popover } from "antd";
+import {
+    ButtonNav,
+    ContainerNavBar,
+    ImageLogo,
+    ImgLogo,
+    UserButtonNav,
+} from "./stylesNavbar";
+import { useAuth } from "context/authContext";
 import { BsListCheck, BsClock } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
+import { userOptionsContent } from "components/myPopoversContent/myPopoversContent";
+import useMobile from "functions/useMobile";
 
 import logo from "../../assets/logo192.png";
-import "./styles.css";
-import { Popover } from "antd";
-import { useEffect } from "react";
-import { userOptionsContent } from "../myPopoversContent/myPopoversContent";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
-    const { user, storageInfo, turnCloudToLocal, turnLocalToCloud } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
     const isMobile = useMobile();
     const [visible, setVisible] = useState(false);
@@ -28,43 +33,38 @@ export default function NavBar() {
 
     if (user) {
         return (
-            <nav className="container-navbar">
-                <div className="image-logo">
-                    <img alt="logo" src={logo} className="logo-image" />
+            <ContainerNavBar>
+                <ImageLogo>
+                    <ImgLogo alt="logo" src={logo} />
                     {!isMobile && <>YOURTASKS</>}
-                </div>
-                <button
-                    className={`buttom ${page === "/" && "selected"}`}
+                </ImageLogo>
+                <ButtonNav
+                    selected={page === "/" ? "black" : "white"}
                     onClick={() => navigate("/")}
                 >
                     <BsListCheck />
                     {!isMobile && <>Todo</>}
-                </button>
-                <button
-                    className={`buttom ${page === "/pomodoro" && "selected"}`}
+                </ButtonNav>
+                <ButtonNav
+                    selected={page === "/pomodoro" ? "black" : "white"}
                     onClick={() => navigate("/pomodoro")}
                 >
                     <BsClock />
                     {!isMobile && <>Pomodoro</>}
-                </button>
+                </ButtonNav>
                 <Popover
-                    content={userOptionsContent(
-                        setVisible,
-                        storageInfo,
-                        turnCloudToLocal,
-                        turnLocalToCloud
-                    )}
+                    content={userOptionsContent(setVisible)}
                     title={user.displayName}
                     visible={visible}
                     onVisibleChange={handleVisibleChange}
                     trigger="click"
                 >
-                    <button className="user-profile">
+                    <UserButtonNav>
                         <AiOutlineUser className="icon" />
                         {!isMobile && user.displayName}
-                    </button>
+                    </UserButtonNav>
                 </Popover>
-            </nav>
+            </ContainerNavBar>
         );
     }
 }
