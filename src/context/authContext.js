@@ -9,7 +9,7 @@ import {
     onSnapshot
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
+import { CurrentDate } from "functions/timePassed";
 
 const AuthContext = createContext({});
 
@@ -97,9 +97,10 @@ export const AuthProvider = ({ children }) => {
 
     const setIsDone = (id) => {
         if (id === -1) return;
-        const doneTask = allTask[id];
-        doneTask.date = moment()._d;
-        setAllTaskDone((arr) => [...arr, doneTask]);
+
+        const endTime = CurrentDate()
+        allTask[id].date = endTime;
+        setAllTaskDone((arr) => [...arr, allTask[id]]);
         allTask.splice(id, 1);
     };
 
