@@ -7,19 +7,26 @@ import Todo from "./todo/todo";
 import Done from "./done/done";
 import Carousel from "nuka-carousel/lib/carousel";
 import { BorderOutlined, CheckSquareOutlined } from "@ant-design/icons";
-import {
-    LocalTitle,
-    SelectTabButton,
-    SpinDiv,
-    TodoHeader,
-    TodoPage,
-} from "./stylesTodo";
+import { SelectTabButton, SpinDiv, TodoHeader, TodoPage } from "./stylesTodo";
 import "moment/locale/pt-br";
 
 export default function TodoList() {
     const { user } = useAuth();
     const isMobile = useMobile();
     const [doneTab, setDoneTab] = useState(0);
+
+    const PrevButton = (
+        <>
+            <BorderOutlined />
+            <h3 style={{ margin: "0" }}>A fazer</h3>
+        </>
+    );
+    const NextButton = (
+        <>
+            <CheckSquareOutlined />
+            <h3 style={{ margin: "0" }}>Feitos</h3>
+        </>
+    );
 
     const Customization = {
         carousel: {
@@ -28,6 +35,9 @@ export default function TodoList() {
             minHeight: "70vh",
         },
         next: {
+            display: "flex",
+            alignItems: "center",
+            gap: ".5em",
             backgroundColor: "#fff",
             color: "#000",
             borderRadius: "5px",
@@ -37,6 +47,9 @@ export default function TodoList() {
             right: "1em",
         },
         prev: {
+            display: "flex",
+            alignItems: "center",
+            gap: ".5em",
             backgroundColor: "#fff",
             color: "#000",
             borderRadius: "5px",
@@ -52,23 +65,16 @@ export default function TodoList() {
             <TodoPage>
                 {isMobile ? (
                     <>
-                        <LocalTitle
-                            color={doneTab === 0 ? "#ff98007f" : "#4caf507f"}
-                        >
-                            {doneTab === 0
-                                ? "TAREFAS A FAZER"
-                                : "TAREFAS CONCLUÍDAS"}
-                        </LocalTitle>
                         <MenuPlus />
                         <Carousel
                             adaptiveHeight={false}
                             style={Customization.carousel}
                             afterSlide={(e) => setDoneTab(e)}
                             defaultControlsConfig={{
-                                nextButtonText: "Feitos",
+                                nextButtonText: NextButton,
                                 nextButtonStyle: Customization.next,
                                 prevButtonStyle: Customization.prev,
-                                prevButtonText: "A fazer",
+                                prevButtonText: PrevButton,
                                 pagingDotsStyle: {
                                     fill: "transparent",
                                 },
