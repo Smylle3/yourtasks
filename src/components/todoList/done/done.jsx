@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import moment from "moment";
 import { Empty } from "antd";
 import { useAuth } from "context/authContext";
-import InfosTask from "../modais/infosTask";
 import { DeleteFilled } from "@ant-design/icons";
 import {
     CheckButton,
@@ -12,6 +11,7 @@ import {
     TaskList,
     TitleTask,
 } from "../stylesTodo";
+import InfosTask from "../modais/infosTask";
 
 export default function Done() {
     const { allTaskDone, setAllTaskDone } = useAuth();
