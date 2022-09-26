@@ -6,7 +6,7 @@ import {
     updateDoc,
     getDoc,
     setDoc,
-    onSnapshot
+    //onSnapshot
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { CurrentDate } from "functions/timePassed";
@@ -26,11 +26,7 @@ export const AuthProvider = ({ children }) => {
         description: "",
         checkList: [],
         date: "",
-    });
-    const [simpleList, setSimpleList] = useState({
-        title: "",
-        description: [],
-        simple: true,
+        endDate: "",
     });
 
     useEffect(() => {
@@ -54,7 +50,7 @@ export const AuthProvider = ({ children }) => {
             navigate("/");
         }
         if (user && user.uid) realTimeUpdate();
-    }, [user, navigate]);
+    }, [user]);
 
     /*FIREBASE SPACE*/
     const getDBTasks = async (user) => {
@@ -82,24 +78,27 @@ export const AuthProvider = ({ children }) => {
                 allTasksDone: allTaskDone,
             });
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     };
 
     const realTimeUpdate = async () => {
-        const docRef = doc(db, `usersTasks/${user.uid}`);
-        onSnapshot(docRef, (doc) => {
-            setAllTask(doc.data().allTasks);
-            setAllTaskDone(doc.data().allTasksDone);
-        });
+        /* const docRef = doc(db, `usersTasks/${user.uid}`);
+        try {
+            onSnapshot(docRef, (doc) => {
+                setAllTask(doc.data().allTasks);
+                setAllTaskDone(doc.data().allTasksDone);
+            });
+        } catch (error) {
+            console.log(error)
+        } */
     };
     /*FIREBASE SPACE*/
-
     const setIsDone = (id) => {
         if (id === -1) return;
 
         const endTime = CurrentDate()
-        allTask[id].date = endTime;
+        allTask[id].endDate = endTime;
         setAllTaskDone((arr) => [...arr, allTask[id]]);
         allTask.splice(id, 1);
     };
@@ -112,8 +111,6 @@ export const AuthProvider = ({ children }) => {
         setAllTask,
         task,
         setTask,
-        simpleList,
-        setSimpleList,
         setIsDone,
         updateDBTasks
     };
