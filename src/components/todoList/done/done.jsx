@@ -36,7 +36,9 @@ export default function Done() {
                         <TaskContent onClick={() => modalFunction(id)}>
                             <TitleTask>{task.title}</TitleTask>
                             <DateTask>
-                                {moment(task.date).startOf("ss").fromNow()}
+                                {moment(task.endDate ? task.endDate : task.date)
+                                    .startOf("ss")
+                                    .fromNow()}
                             </DateTask>
                         </TaskContent>
                         <CheckButton onClick={() => handleDelete(id)}>
