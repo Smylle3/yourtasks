@@ -1,7 +1,18 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
+import { useAuth } from "context/authContext";
 import React, { useState } from "react";
-import { useAuth } from "../../../context/authContext";
+import TextareaAutosize from "react-autosize-textarea/lib";
+import {
+    ButtonFooterGroup,
+    ButtonGroup,
+    ButtonModal,
+    ChecklistContent,
+    ChecklistInput,
+    InputGroup,
+    ModalInput,
+    SimpleButton,
+} from "./stylesModal";
 
 export default function CreateTask({ isModalVisible, setModalVisible }) {
     const { task, setTask, setAllTask } = useAuth();
@@ -64,9 +75,8 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
             style={{ cursor: "default" }}
         >
             <div className="modal-form">
-                <input
+                <ModalInput
                     autoFocus
-                    className="title-task"
                     placeholder="Título..."
                     onChange={(e) =>
                         setTask((prevState) => ({
@@ -75,22 +85,22 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                         }))
                     }
                     value={task.title}
+                    type="2em"
                 />
-                <textarea
+                <TextareaAutosize
                     onChange={(e) =>
                         setTask((prevState) => ({
                             ...prevState,
                             description: e.target.value,
                         }))
                     }
-                    wrap="on"
                     value={task.description}
                     className="desc-task"
                     placeholder="Descrição..."
+                    rows={3}
                 />
-                <section className="variable-inputs-group">
-                    <label
-                        className="variable-inputs-picker"
+                <ButtonGroup>
+                    <SimpleButton
                         onClick={() => {
                             setTask((prevState) => ({
                                 ...prevState,
@@ -106,10 +116,10 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                         {hasCheckList
                             ? `Excluir o checklist`
                             : `Clique para criar um checklist`}
-                    </label>
+                    </SimpleButton>
                     {hasCheckList && (
-                        <section className="simple-desc-inputs">
-                            <input
+                        <ChecklistInput onSubmit={(e) => e.preventDefault()}>
+                            <ModalInput
                                 onChange={(e) => {
                                     setSimpleDescription({
                                         text: e.target.value,
@@ -119,47 +129,41 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                                 onKeyDown={(e) => handleDescription(e.code)}
                                 placeholder="Ex.: Item 1"
                                 value={simpleDescription.text}
+                                border="1px"
                             />
                             <CheckOutlined
                                 onClick={() => handleDescription("Enter")}
                                 className="check-icon"
                             />
-                        </section>
+                        </ChecklistInput>
                     )}
                     {task.checkList.length > 0 && (
-                        <div className="input-group">
+                        <InputGroup>
                             {task.checkList.map((content, id) => (
-                                <div className="simple-desc-content" key={id}>
-                                    <p>{id + 1}</p>
-                                    <input
-                                        className="list-input"
-                                        disabled
-                                        value={content.text}
-                                    />
+                                <ChecklistContent key={id}>
+                                    <>{id + 1}</>
+                                    <ModalInput disabled value={content.text} />
                                     <DeleteFilled
-                                        className="item-editor-button"
                                         onClick={() => {
                                             task.checkList.splice(id, 1);
                                             setChange(!change);
                                         }}
                                     />
-                                </div>
+                                </ChecklistContent>
                             ))}
-                        </div>
+                        </InputGroup>
                     )}
 
-                    <label
-                        className="variable-inputs-picker"
-                        onClick={() => setHasDate(!hasDate)}
-                    >
+                    <SimpleButton onClick={() => setHasDate(!hasDate)}>
                         {hasDate
                             ? `Não definir data para conclusão`
                             : `Clique para definir uma data para a conclusão`}
-                    </label>
+                    </SimpleButton>
                     {hasDate && (
                         <DatePicker
+                            showTime={{ format: "HH:mm" }}
                             className="date-pickeC"
-                            format="YYYY-MM-DD"
+                            format="YYYY-MM-DD HH:mm"
                             onChange={(ev, e) =>
                                 setTask((prevState) => ({
                                     ...prevState,
@@ -168,21 +172,15 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                             }
                         />
                     )}
-                </section>
-                <div className="button-form-modal">
-                    <button
-                        onClick={(e) => handleCancel()}
-                        className="cancel-button-modal my-button"
-                    >
-                        CANCELAR
-                    </button>
-                    <button
-                        onClick={(e) => handleSend(e)}
-                        className="confirm-button-modal my-button"
-                    >
+                </ButtonGroup>
+                <ButtonFooterGroup>
+                    <ButtonModal type="cancel" onClick={(e) => handleCancel()}>
+                        FECHAR
+                    </ButtonModal>
+                    <ButtonModal type="confirm" onClick={(e) => handleSend(e)}>
                         ADICIONAR
-                    </button>
-                </div>
+                    </ButtonModal>
+                </ButtonFooterGroup>
             </div>
         </Modal>
     );
