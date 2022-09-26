@@ -1,9 +1,22 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
+import { useAuth } from "context/authContext";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
-import { useAuth } from "../../../context/authContext";
 import "./styles.css";
+import {
+    ButtonModal,
+    Checkbox,
+    ChecklistContent,
+    ChecklistInput,
+    IconsModal,
+    InfoModal,
+    InputGroup,
+    LabelModal,
+    ModalInput,
+    ShowDate,
+} from "./stylesModal";
 
 export default function InfosTask({
     isModalVisible,
@@ -22,13 +35,16 @@ export default function InfosTask({
     });
 
     useEffect(() => {
-        setLocalTask(allTask[taskObject]);
-    }, [taskObject, allTask]);
+        taskIsDone
+            ? setLocalTask(allTaskDone[taskObject])
+            : setLocalTask(allTask[taskObject]);
+    }, [taskObject, allTask, allTaskDone, taskIsDone]);
 
     const handleCancel = () => {
         setIsEdit(false);
         setTaskObject(null);
         setModalVisible(false);
+        setLocalTask();
     };
 
     const handleChangeCheck = (content, e) => {
@@ -62,35 +78,27 @@ export default function InfosTask({
         setChange(!change);
     };
 
-    const detailDescription = () =>
-        isEdit ? (
-            <>
-                <TextareaAutosize
-                    className="desc-task"
-                    placeholder={localTask.description}
-                    onChange={(e) => {
-                        setLocalTask((prevState) => ({
-                            ...prevState,
-                            description: e.target.value,
-                        }));
-                    }}
-                    value={localTask.description}
-                    rows={2}
-                />
-            </>
-        ) : (
-            <TextareaAutosize
-                disabled
-                className="desc-task"
-                value={allTask[taskObject].description}
-            />
-        );
+    const detailDescription = () => (
+        <TextareaAutosize
+            disabled={!isEdit}
+            className="desc-task"
+            placeholder={localTask.description}
+            onChange={(e) => {
+                setLocalTask((prevState) => ({
+                    ...prevState,
+                    description: e.target.value,
+                }));
+            }}
+            value={localTask.description}
+            rows={2}
+        />
+    );
 
-    const listDescription = (taskId) =>
+    const listDescription = (isFinish) =>
         isEdit ? (
             <>
-                <section className="simple-desc-inputs">
-                    <input
+                <ChecklistInput onSubmit={(e) => e.preventDefault()}>
+                    <ModalInput
                         onChange={(e) => {
                             setSimpleDescription({
                                 text: e.target.value,
@@ -100,62 +108,64 @@ export default function InfosTask({
                         onKeyDown={(e) => handleDescription(e.code)}
                         placeholder="Add novo item"
                         value={simpleDescription.text}
+                        type="18px"
+                        border="1px"
+                        autoFocus
                     />
                     <CheckOutlined
                         onClick={() => handleDescription("Enter")}
                         className="check-icon"
                     />
-                </section>
-                <div className="input-group">
+                </ChecklistInput>
+                <InputGroup>
                     {localTask.checkList.map((content, id) => (
-                        <div className="simple-desc-content" key={id}>
-                            <p>{id + 1}</p>
-                            <input
-                                autoFocus={id === 0 ? true : false}
-                                className="list-input"
+                        <ChecklistContent key={id}>
+                            <>{id + 1}</>
+                            <ModalInput
                                 placeholder={content.text}
                                 onChange={(e) => editItem(e.target.value, id)}
                                 value={localTask.checkList[id].text}
                             />
-                            <DeleteFilled
-                                className="item-editor-button"
+                            <IconsModal
                                 onClick={() => {
                                     localTask.checkList.splice(id, 1);
                                     setChange(!change);
                                 }}
-                            />
-                        </div>
+                            >
+                                <DeleteFilled />
+                            </IconsModal>
+                        </ChecklistContent>
                     ))}
-                </div>
+                </InputGroup>
             </>
         ) : (
             <>
-                {allTask[taskId].checkList.map((content, id) => (
-                    <div className="simple-desc-content" key={id}>
-                        <p>{id + 1}</p>
-                        <input
-                            className="input-checkbox"
+                {localTask.checkList.map((content, id) => (
+                    <ChecklistContent key={id}>
+                        <>{id + 1}</>
+                        <Checkbox
+                            disabled={isFinish}
                             type="checkbox"
                             id={`content${id}`}
                             checked={content.checked}
                             onChange={(e) => handleChangeCheck(content, e)}
                         />
-                        <label
-                            className="simple-label"
+                        <LabelModal
                             htmlFor={`content${id}`}
+                            checked={content.checked}
                         >
                             {content.text}
-                        </label>
-                    </div>
+                        </LabelModal>
+                    </ChecklistContent>
                 ))}
             </>
         );
 
-    const dateDescription = (id) =>
+    const dateDescription = (isFinish) =>
         isEdit ? (
             <DatePicker
-                className="date-pickeC"
-                format="YYYY-MM-DD"
+                showTime={{ format: "HH:mm" }}
+                format="YYYY-MM-DD HH:mm"
                 onChange={(ev, e) =>
                     setLocalTask((prevState) => ({
                         ...prevState,
@@ -165,16 +175,36 @@ export default function InfosTask({
             />
         ) : (
             <>
-                {!allTask[id].date || allTask[id].date.length === 0 ? null : (
-                    <div className="date-info">
-                        <p>Data para conclusão:</p>
-                        <p>{allTask[id].date}</p>
-                    </div>
-                )}
+                <ShowDate>
+                    {localTask.date > 0 && (
+                        <>
+                            <div>Data para conclusão:</div>
+                            <div>
+                                {moment(localTask?.date).format(
+                                    "DD  MMMM YYYY, h:mm a"
+                                )}
+                            </div>
+                        </>
+                    )}
+                    {isFinish && (
+                        <>
+                            <div>Concluído dia:</div>
+                            <div>
+                                {moment(
+                                    allTaskDone[taskObject].endDate
+                                        ? moment(
+                                              allTaskDone[taskObject].endDate
+                                          )
+                                        : moment(allTaskDone[taskObject].date)
+                                ).format("DD  MMMM YYYY, h:mm a")}
+                            </div>
+                        </>
+                    )}
+                </ShowDate>
             </>
         );
 
-    if (taskObject !== null) {
+    if (localTask !== undefined) {
         if (!taskIsDone) {
             return (
                 <Modal
@@ -185,52 +215,46 @@ export default function InfosTask({
                     closable={false}
                     style={{ cursor: "default" }}
                 >
-                    <div className="info-modal">
-                        {isEdit ? (
-                            <input
-                                className="title-task on-edit"
-                                placeholder={allTask[taskObject].title}
-                                onChange={(e) =>
-                                    setLocalTask((prevState) => ({
-                                        ...prevState,
-                                        title: e.target.value,
-                                    }))
-                                }
-                                value={localTask.title}
-                            />
-                        ) : (
-                            <h1 className="title-info">
-                                {allTask[taskObject].title}
-                            </h1>
-                        )}
-
-                        {detailDescription()}
+                    <InfoModal>
+                        <ModalInput
+                            disabled={!isEdit}
+                            placeholder={allTask[taskObject].title}
+                            onChange={(e) =>
+                                setLocalTask((prevState) => ({
+                                    ...prevState,
+                                    title: e.target.value,
+                                }))
+                            }
+                            value={localTask.title}
+                            type="2em"
+                        />
+                        {localTask.description.length > 0 &&
+                            detailDescription()}
                         {allTask[taskObject].checkList &&
-                            listDescription(taskObject)}
-                        {dateDescription(taskObject)}
-
+                            listDescription(false)}
+                        {dateDescription()}
                         {isEdit ? (
-                            <button
+                            <ButtonModal
                                 onClick={() => handleEditConfirm(taskObject)}
-                                className="confirm-button-modal my-button"
+                                type="confirm"
                             >
                                 CONFIRMAR
-                            </button>
+                            </ButtonModal>
                         ) : (
-                            <button
+                            <ButtonModal
+                                type="alert"
                                 onClick={() => setIsEdit(true)}
-                                className="alert-button-modal my-button"
                             >
                                 EDITAR
-                            </button>
+                            </ButtonModal>
                         )}
-                        <button
+                        <ButtonModal
+                            type="cancel"
                             onClick={(e) => handleCancel()}
-                            className="cancel-button-modal my-button"
                         >
                             FECHAR
-                        </button>
-                    </div>
+                        </ButtonModal>
+                    </InfoModal>
                 </Modal>
             );
         }
@@ -245,50 +269,24 @@ export default function InfosTask({
                     closable={false}
                     style={{ cursor: "default" }}
                 >
-                    <div className="info-modal">
-                        <h1 className="title-info">
-                            {allTaskDone[taskObject].title}
-                        </h1>
-                        <TextareaAutosize
+                    <InfoModal>
+                        <ModalInput
                             disabled
-                            className="desc-task"
-                            value={allTaskDone[taskObject].description}
+                            value={localTask.title}
+                            type="2em"
                         />
-                        {allTaskDone[taskObject].checkList && (
-                            <>
-                                {allTaskDone[taskObject].checkList.map(
-                                    (content, id) => (
-                                        <div
-                                            className="simple-desc-content"
-                                            key={id}
-                                        >
-                                            <p>{id + 1}</p>
-                                            <input
-                                                className="input-checkbox"
-                                                type="checkbox"
-                                                disabled
-                                                id={`content${id}`}
-                                                checked={content.checked}
-                                            />
-                                            <label htmlFor={`content${id}`}>
-                                                {content.text}
-                                            </label>
-                                        </div>
-                                    )
-                                )}
-                            </>
-                        )}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                setModalVisible(false);
-                                setTaskObject(null);
-                            }}
-                            className="cancel-button-modal my-button"
+                        {localTask.description.length > 0 &&
+                            detailDescription()}
+                        {allTaskDone[taskObject].checkList &&
+                            listDescription(true)}
+                        {dateDescription(true)}
+                        <ButtonModal
+                            type="cancel"
+                            onClick={(e) => handleCancel()}
                         >
                             FECHAR
-                        </button>
-                    </div>
+                        </ButtonModal>
+                    </InfoModal>
                 </Modal>
             );
         }
