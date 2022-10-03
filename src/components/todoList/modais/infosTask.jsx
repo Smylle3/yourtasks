@@ -109,7 +109,7 @@ export default function InfosTask({
                         placeholder="Add novo item"
                         value={simpleDescription.text}
                         type="18px"
-                        border="1px"
+                        border="#8080805f"
                         autoFocus
                     />
                     <CheckOutlined
@@ -176,7 +176,7 @@ export default function InfosTask({
         ) : (
             <>
                 <ShowDate>
-                    {localTask.date > 0 && (
+                    {localTask.date.length > 0 && (
                         <>
                             <div>Data para conclusão:</div>
                             <div>
@@ -227,9 +227,10 @@ export default function InfosTask({
                             }
                             value={localTask.title}
                             type="2em"
+                            isEdit="1px"
+                            border={isEdit ? "#8080805f":null}
                         />
-                        {localTask.description.length > 0 &&
-                            detailDescription()}
+                        {detailDescription()}
                         {allTask[taskObject].checkList &&
                             listDescription(false)}
                         {dateDescription()}

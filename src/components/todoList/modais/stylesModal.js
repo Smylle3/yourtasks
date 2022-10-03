@@ -3,11 +3,13 @@ import styled from "styled-components";
 export const InfoModal = styled.div`
     display: flex;
     flex-direction: column;
+    gap: 1em;
 `
 
 export const ModalInput = styled.input`
     outline: 0;
-    border: ${props => props.border ? props.border : 0} solid #8080805f;
+    border-bottom: 1px solid #8080805f;
+    border: 1px solid ${props => props.border ? props.border : "transparent"};
     border-radius: 5px;
     width: 100%;
     padding: 0 .3em;
@@ -24,14 +26,15 @@ export const ChecklistInput = styled.form`
     gap: 1em;
     justify-content: space-between;
     box-sizing: border-box;
-    padding-bottom: 1em;
 `
 
 export const InputGroup = styled.div`
     background-color: #8080801a;
     border-radius: 5px;
     transition: all .5em;
-    margin-bottom: 1em;
+`
+
+export const ChecklistGroup = styled.div`
 `
 
 export const ChecklistContent = styled.div`
@@ -61,7 +64,6 @@ export const ButtonModal = styled.button`
     transition: all .4s;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 1em;
     background-color: ${({ type }) => {
         if (type === "cancel") return "rgb(252, 104, 104)"
         else if (type === "confirm") return "rgb(106, 194, 106)"
@@ -73,7 +75,6 @@ export const ButtonModal = styled.button`
 `
 
 export const ShowDate = styled.div`
-    margin-top: 1em;
     background-color: #8080801a;
     display: flex;
     flex-direction: column;
@@ -98,6 +99,7 @@ export const SimpleButton = styled.button`
     text-align: left;
     width: fit-content;
     transition: all .2s;
+    cursor: pointer;
     :hover{
         border-bottom: 1px solid gray;
     }

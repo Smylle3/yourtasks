@@ -9,6 +9,7 @@ import {
     ButtonModal,
     ChecklistContent,
     ChecklistInput,
+    InfoModal,
     InputGroup,
     ModalInput,
     SimpleButton,
@@ -66,6 +67,11 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
         setModalVisible(false);
     }
 
+    function editItem(value, index) {
+        task.checkList[index].text = value;
+        setChange(!change);
+    };
+
     return (
         <Modal
             visible={isModalVisible}
@@ -74,7 +80,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
             closable={false}
             style={{ cursor: "default" }}
         >
-            <div className="modal-form">
+            <InfoModal>
                 <ModalInput
                     autoFocus
                     placeholder="Título..."
@@ -86,6 +92,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                     }
                     value={task.title}
                     type="2em"
+                    border={"#8080805f"}
                 />
                 <TextareaAutosize
                     onChange={(e) =>
@@ -129,7 +136,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                                 onKeyDown={(e) => handleDescription(e.code)}
                                 placeholder="Ex.: Item 1"
                                 value={simpleDescription.text}
-                                border="1px"
+                                border="#8080805f"
                             />
                             <CheckOutlined
                                 onClick={() => handleDescription("Enter")}
@@ -142,7 +149,11 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                             {task.checkList.map((content, id) => (
                                 <ChecklistContent key={id}>
                                     <>{id + 1}</>
-                                    <ModalInput disabled value={content.text} />
+                                    <ModalInput
+                                        onChange={(e) => editItem(e.target.value, id)}
+                                        placeholder={task.checkList[id].text}
+                                        value={task.checkList[id].text}
+                                    />
                                     <DeleteFilled
                                         onClick={() => {
                                             task.checkList.splice(id, 1);
@@ -181,7 +192,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                         ADICIONAR
                     </ButtonModal>
                 </ButtonFooterGroup>
-            </div>
+            </InfoModal>
         </Modal>
     );
 }
