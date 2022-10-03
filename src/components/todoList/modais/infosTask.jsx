@@ -4,7 +4,7 @@ import { useAuth } from "context/authContext";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
-import "./styles.css";
+import "../styles.css";
 import {
     ButtonModal,
     Checkbox,
