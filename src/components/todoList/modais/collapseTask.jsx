@@ -16,7 +16,7 @@ import {
     ShowDate,
 } from "./stylesModal";
 
-export default function CollapseTask({ task, id, isCollapsed }) {
+export default function CollapseTask({ task, id, isCollapsed, status }) {
     const { allTask, updateDBTasks, setChange, change } = useAuth();
     const [isEdit, setIsEdit] = useState(false);
     const [localTask, setLocalTask] = useState();
@@ -61,6 +61,23 @@ export default function CollapseTask({ task, id, isCollapsed }) {
         updateDBTasks();
         setChange(!change);
     };
+
+    const footerButtons = (
+        <>
+            {isEdit ? (
+                <ButtonModal
+                    onClick={() => handleEditConfirm(id)}
+                    type="confirm"
+                >
+                    CONFIRMAR
+                </ButtonModal>
+            ) : (
+                <ButtonModal type="alert" onClick={() => setIsEdit(true)}>
+                    EDITAR
+                </ButtonModal>
+            )}
+        </>
+    );
 
     if (localTask !== undefined) {
         return (
@@ -127,6 +144,7 @@ export default function CollapseTask({ task, id, isCollapsed }) {
                         ) : (
                             <>
                                 <Checkbox
+                                    disabled={status === "done" && true}
                                     type="checkbox"
                                     id={`content${id}`}
                                     checked={content.checked}
@@ -179,18 +197,7 @@ export default function CollapseTask({ task, id, isCollapsed }) {
                         )}
                     </ShowDate>
                 )}
-                {isEdit ? (
-                    <ButtonModal
-                        onClick={() => handleEditConfirm(id)}
-                        type="confirm"
-                    >
-                        CONFIRMAR
-                    </ButtonModal>
-                ) : (
-                    <ButtonModal type="alert" onClick={() => setIsEdit(true)}>
-                        EDITAR
-                    </ButtonModal>
-                )}
+                {status === "todo" && footerButtons}
             </InfoModal>
         );
     }
