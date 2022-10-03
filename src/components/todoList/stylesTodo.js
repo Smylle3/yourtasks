@@ -46,7 +46,6 @@ export const TaskList = styled.div`
     display: flex;
     flex-direction: column-reverse;
     height: 100%;
-    gap: 1em;
     @media (max-width: 930px) {
         padding: 0 0 1em 0;
     }
@@ -62,40 +61,6 @@ export const Task = styled.section`
     border-radius: 5px;
 `
 
-export const TaskContent = styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: .5em 0 .5em 1em;
-    cursor: pointer;
-`
-
-export const TitleTask = styled.h3`
-    margin: 0;
-    padding: 0;
-    width: 50%;
-`
-
-export const DateTask = styled.p`
-    margin: 0;
-    padding: 0;
-    width: 50%;
-`
-
-export const CheckButton = styled.button`
-    border: 0 none;
-    border-radius: 5px;
-    padding: .5em;
-    margin-right: .5em;
-    background-color: transparent;
-    transition: all .5s;
-    cursor: pointer;
-    :hover, :active{
-        background-color: #000;
-        color: #fff;
-    }
-`
-
 export const SpinDiv = styled.div`
     width: 100%;
     min-height: 100vh;
@@ -103,3 +68,4 @@ export const SpinDiv = styled.div`
     align-items: center;
     justify-content: center;
 `
+

@@ -17,6 +17,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
+    const [change, setChange] = useState(false);
     const [user, setUser] = useState(null);
     const [currentPage, setCurrentPage] = useState(window.location.pathname);
     const [allTaskDone, setAllTaskDone] = useState([]);
@@ -112,7 +113,9 @@ export const AuthProvider = ({ children }) => {
         task,
         setTask,
         setIsDone,
-        updateDBTasks
+        updateDBTasks,
+        change,
+        setChange
     };
 
     return (

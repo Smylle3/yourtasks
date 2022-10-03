@@ -1,59 +1,54 @@
 import React, { useState } from "react";
 import moment from "moment";
-import { Empty } from "antd";
+import { Collapse, Empty } from "antd";
 import { useAuth } from "context/authContext";
-import { DeleteFilled } from "@ant-design/icons";
-import {
-    CheckButton,
-    DateTask,
-    Task,
-    TaskContent,
-    TaskList,
-    TitleTask,
-} from "../stylesTodo";
-import InfosTask from "../modais/infosTask";
+import { CaretRightOutlined } from "@ant-design/icons";
+import { TaskList } from "../stylesTodo";
+import CollapsePanel from "antd/lib/collapse/CollapsePanel";
+import CollapseTask from "../modais/collapseTask";
+import CollapseHeader from "components/collapseHeader/collapseHeader";
+import { TimePassed } from "functions/timePassed";
+import "../styles.css";
 
 export default function Done() {
-    const { allTaskDone, setAllTaskDone } = useAuth();
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [taskObject, setTaskObject] = useState(null);
-
-    const modalFunction = (id) => {
-        setTaskObject(id);
-        setModalVisible(true);
-    };
-
-    const handleDelete = (id) => {
-        allTaskDone.splice(id, 1);
-        setAllTaskDone((arr) => [...arr]);
-    };
+    const { allTaskDone } = useAuth();
+    const [isCollapsed, setIsCollapsed] = useState([]);
 
     if (allTaskDone.length > 0) {
         return (
             <TaskList>
-                {allTaskDone.map((task, id) => (
-                    <Task key={id}>
-                        <TaskContent onClick={() => modalFunction(id)}>
-                            <TitleTask>{task.title}</TitleTask>
-                            <DateTask>
-                                {moment(task.endDate ? task.endDate : task.date)
-                                    .startOf("ss")
-                                    .fromNow()}
-                            </DateTask>
-                        </TaskContent>
-                        <CheckButton onClick={() => handleDelete(id)}>
-                            <DeleteFilled />
-                        </CheckButton>
-                    </Task>
-                ))}
-
-                <InfosTask
-                    isModalVisible={isModalVisible}
-                    setModalVisible={setModalVisible}
-                    taskObject={taskObject}
-                    setTaskObject={setTaskObject}
-                    taskIsDone={true}
-                />
+                <Collapse
+                    className="my-collapse"
+                    expandIcon={({ isActive }) => (
+                        <CaretRightOutlined rotate={isActive ? 90 : 0} />
+                    )}
+                    onChange={(e) => setIsCollapsed(e)}
+                >
+                    {allTaskDone.map((task, id) => (
+                        <CollapsePanel
+                            header={<CollapseHeader id={id} status="done" />}
+                            key={id}
+                            style={{
+                                marginTop: "1em",
+                                border: `1px solid ${
+                                    TimePassed(
+                                        moment(task.date, "YYYYMMDD").fromNow()
+                                    )
+                                        ? "rgb(202, 46, 46)"
+                                        : "rgb(68, 204, 63)"
+                                }`,
+                                borderRadius: "5px",
+                            }}
+                        >
+                            <CollapseTask
+                                task={task}
+                                id={id}
+                                isCollapsed={isCollapsed}
+                                status="done"
+                            />
+                        </CollapsePanel>
+                    ))}
+                </Collapse>
             </TaskList>
         );
     } else {

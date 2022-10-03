@@ -34,9 +34,6 @@ export const InputGroup = styled.div`
     transition: all .5em;
 `
 
-export const ChecklistGroup = styled.div`
-`
-
 export const ChecklistContent = styled.div`
     padding: .5em 1em;
     gap: 1em;
