@@ -22,3 +22,11 @@
     width: 100%;
     background-color: #8080801a;
 }
+
+.my-collapse {
+    margin-top: 1em;
+    overflow: hidden;
+    background: transparent;
+    border: 0px;
+    border-radius: 5px;
+}
