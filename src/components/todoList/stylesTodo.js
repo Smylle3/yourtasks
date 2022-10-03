@@ -46,7 +46,6 @@ export const TaskList = styled.div`
     display: flex;
     flex-direction: column-reverse;
     height: 100%;
-    gap: 1em;
     @media (max-width: 930px) {
         padding: 0 0 1em 0;
     }
@@ -76,17 +75,12 @@ export const TitleTask = styled.h3`
     width: 50%;
 `
 
-export const DateTask = styled.p`
-    margin: 0;
-    padding: 0;
-    width: 50%;
-`
+
 
 export const CheckButton = styled.button`
     border: 0 none;
     border-radius: 5px;
-    padding: .5em;
-    margin-right: .5em;
+    padding: 0 5px;
     background-color: transparent;
     transition: all .5s;
     cursor: pointer;
@@ -102,4 +96,28 @@ export const SpinDiv = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+`
+
+export const Extra = styled.header`
+    display: flex;
+    width: 100%;
+`
+
+export const TitleCollapse = styled.p`
+    margin: 0;
+    width: 33%;
+`
+
+export const DateTask = styled.p`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    width: 33%;
+`
+
+export const ButtonGroupCollapse = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    width: 33%;
 `
