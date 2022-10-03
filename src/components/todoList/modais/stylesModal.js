@@ -34,9 +34,6 @@ export const InputGroup = styled.div`
     transition: all .5em;
 `
 
-export const ChecklistGroup = styled.div`
-`
-
 export const ChecklistContent = styled.div`
     padding: .5em 1em;
     gap: 1em;
@@ -111,27 +108,3 @@ export const ButtonFooterGroup = styled.footer`
     flex-direction: row;
     justify-content: space-between;
 ` 
-
-export const Extra = styled.header`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-`
-
-export const DateTask = styled.p`
-    margin: 0;
-    padding: 0;
-`
-
-export const CheckButton = styled.button`
-    border: 0 none;
-    border-radius: 5px;
-    padding: 0 5px;
-    background-color: transparent;
-    transition: all .5s;
-    cursor: pointer;
-    :hover, :active{
-        background-color: #000;
-        color: #fff;
-    }
-`
