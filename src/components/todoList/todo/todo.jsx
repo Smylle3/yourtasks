@@ -13,6 +13,7 @@ import "../styles.css";
 export default function Todo() {
     const { allTask } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState([]);
+    const status = "todo";
 
     if (allTask.length > 0) {
         return (
@@ -26,7 +27,7 @@ export default function Todo() {
                 >
                     {allTask.map((task, id) => (
                         <CollapsePanel
-                            header={<CollapseHeader id={id} />}
+                            header={<CollapseHeader id={id} status={status} />}
                             key={id}
                             style={{
                                 marginTop: "1em",
@@ -44,7 +45,7 @@ export default function Todo() {
                                 task={task}
                                 id={id}
                                 isCollapsed={isCollapsed}
-                                status="todo"
+                                status={status}
                             />
                         </CollapsePanel>
                     ))}
