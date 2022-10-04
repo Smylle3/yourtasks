@@ -11,11 +11,18 @@ import moment from "moment";
 import { useAuth } from "context/authContext";
 
 export default function CollapseHeader({ id, status }) {
-    const { allTask, setAllTask, allTaskDone, setIsDone } = useAuth();
+    const { allTask, setAllTask, allTaskDone, setAllTaskDone, setIsDone } =
+        useAuth();
 
     const handleDelete = (id) => {
-        allTask.splice(id, 1);
-        setAllTask((arr) => [...arr]);
+        if (status === "todo") {
+            allTask.splice(id, 1);
+            setAllTask((arr) => [...arr]);
+        }
+        if (status === "done") {
+            allTaskDone.splice(id, 1);
+            setAllTaskDone((arr) => [...arr]);
+        }
     };
 
     return (
@@ -35,7 +42,9 @@ export default function CollapseHeader({ id, status }) {
                 </DateTask>
             ) : (
                 <DateTask>
-                    {moment(allTaskDone[id]?.endDate && allTaskDone[id]?.endDate)
+                    {moment(
+                        allTaskDone[id]?.endDate && allTaskDone[id]?.endDate
+                    )
                         .startOf("ss")
                         .fromNow()}
                 </DateTask>

@@ -13,6 +13,7 @@ import "../styles.css";
 export default function Done() {
     const { allTaskDone } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState([]);
+    const status = "done"
 
     if (allTaskDone.length > 0) {
         return (
@@ -26,7 +27,7 @@ export default function Done() {
                 >
                     {allTaskDone.map((task, id) => (
                         <CollapsePanel
-                            header={<CollapseHeader id={id} status="done" />}
+                            header={<CollapseHeader id={id} status={status} />}
                             key={id}
                             style={{
                                 marginTop: "1em",
@@ -44,7 +45,7 @@ export default function Done() {
                                 task={task}
                                 id={id}
                                 isCollapsed={isCollapsed}
-                                status="done"
+                                status={status}
                             />
                         </CollapsePanel>
                     ))}
