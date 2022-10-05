@@ -51,16 +51,6 @@ export const TaskList = styled.div`
     }
 `
 
-export const Task = styled.section`
-    display: flex;
-    align-items: center;
-
-    box-sizing: border-box;
-
-    border: 1px solid ${props => props.border};
-    border-radius: 5px;
-`
-
 export const SpinDiv = styled.div`
     width: 100%;
     min-height: 100vh;
@@ -69,3 +59,16 @@ export const SpinDiv = styled.div`
     justify-content: center;
 `
 
+export const TasksUnit = styled.div`
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid ${props => props.border};
+    border-radius: 5px;
+`
+
+export const TaskGroup = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`

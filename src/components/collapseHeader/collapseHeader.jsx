@@ -51,11 +51,21 @@ export default function CollapseHeader({ id, status }) {
             )}
             <ButtonGroupCollapse>
                 {status === "todo" && (
-                    <CheckButton onClick={() => setIsDone(id)}>
+                    <CheckButton
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsDone(id);
+                        }}
+                    >
                         <CheckOutlined />
                     </CheckButton>
                 )}
-                <CheckButton onClick={() => handleDelete(id)}>
+                <CheckButton
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(id);
+                    }}
+                >
                     <DeleteFilled />
                 </CheckButton>
             </ButtonGroupCollapse>
