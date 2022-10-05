@@ -3,7 +3,7 @@ import moment from "moment";
 import { Collapse, Empty } from "antd";
 import { useAuth } from "context/authContext";
 import { CaretRightOutlined } from "@ant-design/icons";
-import { TaskList, TasksUnit } from "../stylesTodo";
+import { TaskGroup, TaskList, TasksUnit } from "../stylesTodo";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import CollapseTask from "../modais/collapseTask";
 import CollapseHeader from "components/collapseHeader/collapseHeader";
@@ -29,13 +29,19 @@ export default function Done() {
         return (
             <TaskList>
                 {isMobile ? (
-                    <>
+                    <TaskGroup>
                         {allTaskDone.map((task, id) => (
-                            <TasksUnit key={id} onClick={() => openModal(id)}>
+                            <TasksUnit
+                                key={id}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    openModal(id);
+                                }}
+                            >
                                 <CollapseHeader id={id} status={status} />
                             </TasksUnit>
                         ))}
-                    </>
+                    </TaskGroup>
                 ) : (
                     <Collapse
                         className="my-collapse"
