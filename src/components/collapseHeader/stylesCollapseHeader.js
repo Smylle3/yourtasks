@@ -3,6 +3,10 @@ import styled from "styled-components"
 export const Extra = styled.header`
     display: flex;
     width: 100%;
+
+    @media (max-width: 930px) {
+        padding: .5em 1em;
+    }
 `
 
 export const TitleCollapse = styled.p`
