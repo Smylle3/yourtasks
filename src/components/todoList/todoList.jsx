@@ -15,6 +15,7 @@ import {
 } from "./stylesTodo";
 import "moment/locale/pt-br";
 import MyCarousel from "components/myCarousel/myCarousel";
+import SortIconDropdown from "components/dropdowns/sortIconDropdown";
 
 export default function TodoList() {
     const { user } = useAuth();
@@ -24,6 +25,7 @@ export default function TodoList() {
         return (
             <TodoPage>
                 <ContainerMobile>
+                    <SortIconDropdown />
                     <MyCarousel setDoneTab={setDoneTab}>
                         <Todo />
                         <Done />
@@ -31,6 +33,7 @@ export default function TodoList() {
                     <MenuPlus />
                 </ContainerMobile>
                 <ContainerDesktop>
+                    <SortIconDropdown />
                     <TodoHeader>
                         <SelectTabButton
                             borderSelect={doneTab === 0 ? "black" : "white"}
