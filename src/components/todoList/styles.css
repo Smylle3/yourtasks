@@ -30,3 +30,9 @@
     border: 0px;
     border-radius: 5px;
 }
+
+@media (max-width: 930px){
+    .my-collapse{
+        display: none;
+    }
+}

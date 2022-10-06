@@ -17,13 +17,24 @@ export const TodoPage = styled.main`
     }
 `
 
+export const ContainerDesktop = styled.div`
+    @media (max-width: 930px){
+        display: none;
+    }
+`
+
+export const ContainerMobile = styled.div`
+    @media (min-width: 931px){
+        display: none;
+    }
+`
+
 export const TodoHeader = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     height: auto;
-    margin-bottom: 2em;
     @media (max-width: 930px) {
         justify-content: center;
     }
@@ -71,4 +82,8 @@ export const TaskGroup = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1em;
+
+    @media (min-width: 931px) {
+        display: none;
+    }
 `

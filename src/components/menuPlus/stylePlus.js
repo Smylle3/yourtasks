@@ -15,7 +15,9 @@ export const PlusButton = styled.button`
     }
 
     @media (max-width: 930px) {
-        align-self: center;
-        justify-self: center;
+        position: fixed;
+        bottom: 7em;
+        left: 50%;
+        right: 50%;
     }
 `
