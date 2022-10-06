@@ -1,6 +1,6 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
-import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
+import PriorityDropdown from "components/dropdowns/priorityDropdown";
 import { useAuth } from "context/authContext";
 import React, { useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
@@ -65,6 +65,8 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
             description: "",
             checkList: [],
             date: "",
+            endDate: "",
+            priority: 1,
         });
         setModalVisible(false);
     }
