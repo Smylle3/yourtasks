@@ -6,6 +6,13 @@ export const InfoModal = styled.div`
     gap: 1em;
 `
 
+export const HeaderModal = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    cursor: pointer;
+`
+
 export const ModalInput = styled.input`
     outline: 0;
     border-bottom: 1px solid #8080805f;
