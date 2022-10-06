@@ -23,12 +23,12 @@ import {
     handleDescription,
     handleEditConfirm,
 } from "functions/tasksEdit";
-import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
+import PriorityDropdown from "components/dropdowns/priorityDropdown";
 import { priorityColor, priorityText } from "functions/setPriority";
 import {
     ContainerPriority,
     DotPriority,
-} from "components/priorityDropdown/stylesPriority";
+} from "components/dropdowns/stylesDropdown";
 
 export default function ModalTask({
     isModalVisible,
