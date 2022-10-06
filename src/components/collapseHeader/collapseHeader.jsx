@@ -12,6 +12,7 @@ import {
 } from "./stylesCollapseHeader";
 import moment from "moment";
 import { useAuth } from "context/authContext";
+import { priorityColor, priorityText } from "functions/setPriority";
 
 export default function CollapseHeader({ id, status }) {
     const { allTask, setAllTask, allTaskDone, setAllTaskDone, setIsDone } =
@@ -54,8 +55,20 @@ export default function CollapseHeader({ id, status }) {
             )}
             <ButtonGroupCollapse>
                 <Priority>
-                    <TextPriority color="rgb(252, 104, 104)">Alta</TextPriority>
-                    <DotPriority color="rgb(252, 104, 104)" />
+                    <TextPriority
+                        color={priorityColor(
+                            status === "todo" ? allTask[id] : allTaskDone[id]
+                        )}
+                    >
+                        {priorityText(
+                            status === "todo" ? allTask[id] : allTaskDone[id]
+                        )}
+                    </TextPriority>
+                    <DotPriority
+                        color={priorityColor(
+                            status === "todo" ? allTask[id] : allTaskDone[id]
+                        )}
+                    />
                 </Priority>
                 {status === "todo" && (
                     <CheckButton
