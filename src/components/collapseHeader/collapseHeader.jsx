@@ -4,7 +4,10 @@ import {
     ButtonGroupCollapse,
     CheckButton,
     DateTask,
+    DotPriority,
     Extra,
+    Priority,
+    TextPriority,
     TitleCollapse,
 } from "./stylesCollapseHeader";
 import moment from "moment";
@@ -50,6 +53,10 @@ export default function CollapseHeader({ id, status }) {
                 </DateTask>
             )}
             <ButtonGroupCollapse>
+                <Priority>
+                    <TextPriority color="rgb(252, 104, 104)">Alta</TextPriority>
+                    <DotPriority color="rgb(252, 104, 104)" />
+                </Priority>
                 {status === "todo" && (
                     <CheckButton
                         onClick={(e) => {

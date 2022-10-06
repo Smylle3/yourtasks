@@ -40,3 +40,27 @@ export const CheckButton = styled.button`
         color: #fff;
     }
 `
+
+export const Priority = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    gap: .5em;
+    margin-right: 1em;
+
+`
+
+export const DotPriority = styled.div`
+    height: 7px;
+    width: 7px;
+    background-color: ${props=>props.color};
+    border-radius: 50%;
+`
+
+export const TextPriority = styled.p`
+    margin: 0;
+    color: ${props=>props.color};
+    @media (max-width: 931px) {
+        display: none;
+    }
+`
