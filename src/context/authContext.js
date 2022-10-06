@@ -28,8 +28,8 @@ export const AuthProvider = ({ children }) => {
         checkList: [],
         date: "",
         endDate: "",
+        priority: 0
     });
-
     useEffect(() => {
         if (user && user.uid !== undefined) {
             updateDBTasks();
