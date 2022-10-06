@@ -5,11 +5,11 @@ import {
     doc,
     updateDoc,
     getDoc,
-    setDoc,
-    //onSnapshot
+    setDoc
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { CurrentDate } from "functions/timePassed";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext({});
 
@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     const [change, setChange] = useState(false);
     const [user, setUser] = useState(null);
     const [currentPage, setCurrentPage] = useState(window.location.pathname);
+    const [typeSort, setTypeSort] = useState(Cookies.get("sort"));
     const [allTaskDone, setAllTaskDone] = useState([]);
     const [allTask, setAllTask] = useState([]);
     const [task, setTask] = useState({
@@ -28,13 +29,43 @@ export const AuthProvider = ({ children }) => {
         checkList: [],
         date: "",
         endDate: "",
-        priority: 0
+        priority: 1
     });
     useEffect(() => {
         if (user && user.uid !== undefined) {
             updateDBTasks();
         }
     }, [allTask.length, allTaskDone.length]);
+
+    const setDate = (a, b) => {
+        a = new Date(a.date.split(" ")[0])
+        b = new Date(b.date.split(" ")[0])
+        return a - b
+    }
+
+    useEffect(() => {
+        const TaskSorted = allTask
+        if (typeSort === undefined) {
+            Cookies.set("sort", "priority", { expires: 360 })
+            setTypeSort("priority")
+        }
+        else {
+            switch (typeSort) {
+                case "priority":
+                    TaskSorted.sort((a, b) => b.priority - a.priority)
+                    break;
+                case "name":
+                    TaskSorted.sort((a, b) => a.title.localeCompare(b.title))
+                    break;
+                case "endDate":
+                    TaskSorted.sort(setDate)
+                    break;
+                default:
+                    break;
+            }
+        }
+        setChange(!change)
+    }, [allTask, typeSort]);
 
     useEffect(() => {
         setCurrentPage(window.location.pathname);
@@ -50,7 +81,6 @@ export const AuthProvider = ({ children }) => {
         ) {
             navigate("/");
         }
-        if (user && user.uid) realTimeUpdate();
     }, [user]);
 
     /*FIREBASE SPACE*/
@@ -83,17 +113,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const realTimeUpdate = async () => {
-        /* const docRef = doc(db, `usersTasks/${user.uid}`);
-        try {
-            onSnapshot(docRef, (doc) => {
-                setAllTask(doc.data().allTasks);
-                setAllTaskDone(doc.data().allTasksDone);
-            });
-        } catch (error) {
-            console.log(error)
-        } */
-    };
     /*FIREBASE SPACE*/
     const setIsDone = (id) => {
         if (id === -1) return;
@@ -115,7 +134,9 @@ export const AuthProvider = ({ children }) => {
         setIsDone,
         updateDBTasks,
         change,
-        setChange
+        setChange,
+        typeSort,
+        setTypeSort
     };
 
     return (
