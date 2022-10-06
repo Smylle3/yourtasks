@@ -9,6 +9,7 @@ export default function MyCarousel({ setDoneTab, children }) {
             display: "flex",
             flexDirection: "column-reverse",
             minHeight: "70vh",
+            marginBottom: "3em"
         },
     };
 
