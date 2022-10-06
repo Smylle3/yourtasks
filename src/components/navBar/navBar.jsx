@@ -14,7 +14,7 @@ import { BsListCheck, BsClock } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import { userOptionsContent } from "components/myPopoversContent/myPopoversContent";
 
-import logo from "../../assets/logo192.png";
+import logo from "../../assets/logo192.svg";
 
 export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);

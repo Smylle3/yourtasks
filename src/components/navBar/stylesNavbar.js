@@ -33,6 +33,7 @@ export const ImageLogo = styled.section`
 
 export const ImgLogo = styled.img`
     width: 2em;
+    margin-right: .5em;
 `
 
 export const ButtonNav = styled.button`
