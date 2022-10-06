@@ -81,6 +81,6 @@ export default function Done() {
             </TaskList>
         );
     } else {
-        return <Empty />;
+        return <Empty style={{marginTop: "5em"}} />;
     }
 }
