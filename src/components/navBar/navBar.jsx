@@ -6,13 +6,13 @@ import {
     ContainerNavBar,
     ImageLogo,
     ImgLogo,
+    LabelP,
     UserButtonNav,
 } from "./stylesNavbar";
 import { useAuth } from "context/authContext";
 import { BsListCheck, BsClock } from "react-icons/bs";
 import { AiOutlineUser } from "react-icons/ai";
 import { userOptionsContent } from "components/myPopoversContent/myPopoversContent";
-import useMobile from "functions/useMobile";
 
 import logo from "../../assets/logo192.png";
 
@@ -20,7 +20,6 @@ export default function NavBar() {
     const [page, setPage] = useState(window.location.pathname);
     const { user } = useAuth();
     const navigate = useNavigate();
-    const isMobile = useMobile();
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -36,21 +35,21 @@ export default function NavBar() {
             <ContainerNavBar>
                 <ImageLogo>
                     <ImgLogo alt="logo" src={logo} />
-                    {!isMobile && <>YOURTASKS</>}
+                    <LabelP>YOURTASKS</LabelP>
                 </ImageLogo>
                 <ButtonNav
                     selected={page === "/" ? "black" : "white"}
                     onClick={() => navigate("/")}
                 >
                     <BsListCheck />
-                    {!isMobile && <>Todo</>}
+                    <LabelP>Todo</LabelP>
                 </ButtonNav>
                 <ButtonNav
                     selected={page === "/pomodoro" ? "black" : "white"}
                     onClick={() => navigate("/pomodoro")}
                 >
                     <BsClock />
-                    {!isMobile && <>Pomodoro</>}
+                    <LabelP>Pomodoro</LabelP>
                 </ButtonNav>
                 <Popover
                     content={userOptionsContent(setVisible)}
@@ -61,7 +60,7 @@ export default function NavBar() {
                 >
                     <UserButtonNav>
                         <AiOutlineUser className="icon" />
-                        {!isMobile && user.displayName}
+                        <LabelP>{user.displayName}</LabelP>
                     </UserButtonNav>
                 </Popover>
             </ContainerNavBar>

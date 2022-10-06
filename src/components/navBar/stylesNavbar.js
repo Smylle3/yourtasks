@@ -69,3 +69,11 @@ export const UserButtonNav = styled.button`
         color: #fff;
     }
 `
+
+export const LabelP = styled.p`
+    margin: 0;
+
+    @media (max-width: 930px){
+        display: none;
+    }
+`
