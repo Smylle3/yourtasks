@@ -24,6 +24,8 @@
 }
 
 .my-collapse {
+    display: flex;
+    flex-direction: column;
     margin-top: 1em;
     overflow: hidden;
     background: transparent;
