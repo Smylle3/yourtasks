@@ -211,7 +211,6 @@ export default function ModalTask({
                     visible={isModalVisible}
                     onCancel={handleCancel}
                     footer={null}
-                    width={300}
                     closable={false}
                     style={{ cursor: "default" }}
                 >
