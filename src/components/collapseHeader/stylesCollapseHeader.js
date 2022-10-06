@@ -35,9 +35,15 @@ export const CheckButton = styled.button`
     background-color: transparent;
     transition: all .5s;
     cursor: pointer;
-    :hover, :active{
+    :active{
         background-color: #000;
         color: #fff;
+    }
+    @media (min-width: 931px){
+        :hover{
+            background-color: #000;
+            color: #fff;
+        }   
     }
 `
 
