@@ -1,5 +1,17 @@
 import styled from "styled-components";
 
+export const ContainerMenuPlus = styled.header`
+
+@media (max-width: 930px) {
+        display: flex;
+        justify-content: center;
+        position: fixed;
+        bottom: 7em;
+        right: 1em;
+        left: 1em;
+    }
+`
+
 export const PlusButton = styled.button`
     cursor: pointer;
     min-width: 3em;
@@ -12,12 +24,5 @@ export const PlusButton = styled.button`
 
     :active {
         box-shadow: 0 0 0 0 transparent;
-    }
-
-    @media (max-width: 930px) {
-        position: fixed;
-        bottom: 7em;
-        left: 50%;
-        right: 50%;
     }
 `
