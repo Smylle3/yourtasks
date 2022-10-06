@@ -9,12 +9,14 @@ import {
     Checkbox,
     ChecklistContent,
     ChecklistInput,
+    HeaderModal,
     IconsModal,
     InfoModal,
     LabelModal,
     ModalInput,
     ShowDate,
 } from "./stylesModal";
+import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
 
 export default function CollapseTask({ task, id, isCollapsed, status }) {
     const { allTask, updateDBTasks, setChange, change } = useAuth();
@@ -82,20 +84,28 @@ export default function CollapseTask({ task, id, isCollapsed, status }) {
     if (localTask !== undefined) {
         return (
             <InfoModal>
-                <ModalInput
-                    disabled={!isEdit}
-                    placeholder="Título..."
-                    onChange={(e) =>
-                        setLocalTask((prevState) => ({
-                            ...prevState,
-                            title: e.target.value,
-                        }))
-                    }
-                    value={localTask.title}
-                    type="2em"
-                    isEdit="1px"
-                    border={isEdit ? "#8080805f" : null}
-                />
+                <HeaderModal>
+                    <ModalInput
+                        disabled={!isEdit}
+                        placeholder="Título..."
+                        onChange={(e) =>
+                            setLocalTask((prevState) => ({
+                                ...prevState,
+                                title: e.target.value,
+                            }))
+                        }
+                        value={localTask.title}
+                        type="2em"
+                        isEdit="1px"
+                        border={isEdit ? "#8080805f" : null}
+                    />
+                    {isEdit && (
+                        <PriorityDropdown
+                            localTask={localTask}
+                            setLocalTask={setLocalTask}
+                        />
+                    )}
+                </HeaderModal>
                 <TextareaAutosize
                     disabled={!isEdit}
                     className="desc-task"

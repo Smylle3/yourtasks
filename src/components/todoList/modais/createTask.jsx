@@ -1,5 +1,6 @@
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import { DatePicker, message, Modal } from "antd";
+import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
 import { useAuth } from "context/authContext";
 import React, { useState } from "react";
 import TextareaAutosize from "react-autosize-textarea/lib";
@@ -9,6 +10,7 @@ import {
     ButtonModal,
     ChecklistContent,
     ChecklistInput,
+    HeaderModal,
     InfoModal,
     InputGroup,
     ModalInput,
@@ -70,7 +72,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
     function editItem(value, index) {
         task.checkList[index].text = value;
         setChange(!change);
-    };
+    }
 
     return (
         <Modal
@@ -81,19 +83,22 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
             style={{ cursor: "default" }}
         >
             <InfoModal>
-                <ModalInput
-                    autoFocus
-                    placeholder="Título..."
-                    onChange={(e) =>
-                        setTask((prevState) => ({
-                            ...prevState,
-                            title: e.target.value,
-                        }))
-                    }
-                    value={task.title}
-                    type="2em"
-                    border={"#8080805f"}
-                />
+                <HeaderModal>
+                    <ModalInput
+                        autoFocus
+                        placeholder="Título..."
+                        onChange={(e) =>
+                            setTask((prevState) => ({
+                                ...prevState,
+                                title: e.target.value,
+                            }))
+                        }
+                        value={task.title}
+                        type="2em"
+                        border={"#8080805f"}
+                    />
+                    <PriorityDropdown localTask={task} setLocalTask={setTask} />
+                </HeaderModal>
                 <TextareaAutosize
                     onChange={(e) =>
                         setTask((prevState) => ({
@@ -150,7 +155,9 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                                 <ChecklistContent key={id}>
                                     <>{id + 1}</>
                                     <ModalInput
-                                        onChange={(e) => editItem(e.target.value, id)}
+                                        onChange={(e) =>
+                                            editItem(e.target.value, id)
+                                        }
                                         placeholder={task.checkList[id].text}
                                         value={task.checkList[id].text}
                                     />

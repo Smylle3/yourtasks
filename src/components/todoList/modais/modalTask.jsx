@@ -15,6 +15,7 @@ import {
     ShowDate,
     InfoModal,
     ButtonModal,
+    HeaderModal,
 } from "./stylesModal";
 import {
     editItem,
@@ -22,6 +23,12 @@ import {
     handleDescription,
     handleEditConfirm,
 } from "functions/tasksEdit";
+import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
+import { priorityColor, priorityText } from "functions/setPriority";
+import {
+    ContainerPriority,
+    DotPriority,
+} from "components/priorityDropdown/stylesPriority";
 
 export default function ModalTask({
     isModalVisible,
@@ -215,20 +222,38 @@ export default function ModalTask({
                     style={{ cursor: "default" }}
                 >
                     <InfoModal>
-                        <ModalInput
-                            disabled={!isEdit}
-                            placeholder={allTask[id].title}
-                            onChange={(e) =>
-                                setLocalTask((prevState) => ({
-                                    ...prevState,
-                                    title: e.target.value,
-                                }))
-                            }
-                            value={localTask.title}
-                            type="2em"
-                            isEdit="1px"
-                            border={isEdit ? "#8080805f" : null}
-                        />
+                        <HeaderModal>
+                            <ModalInput
+                                disabled={!isEdit}
+                                placeholder={allTask[id].title}
+                                onChange={(e) =>
+                                    setLocalTask((prevState) => ({
+                                        ...prevState,
+                                        title: e.target.value,
+                                    }))
+                                }
+                                value={localTask.title}
+                                type="2em"
+                                isEdit="1px"
+                                border={isEdit ? "#8080805f" : null}
+                            />
+                            {isEdit ? (
+                                <PriorityDropdown
+                                    localTask={localTask}
+                                    setLocalTask={setLocalTask}
+                                />
+                            ) : (
+                                <ContainerPriority
+                                    color={priorityColor(localTask)}
+                                >
+                                    <DotPriority
+                                        color={priorityColor(localTask)}
+                                    />
+                                    {priorityText(localTask)}
+                                </ContainerPriority>
+                            )}
+                        </HeaderModal>
+
                         {detailDescription()}
                         {listDescription()}
                         {dateDescription()}
@@ -278,11 +303,17 @@ export default function ModalTask({
                     style={{ cursor: "default" }}
                 >
                     <InfoModal>
-                        <ModalInput
-                            disabled
-                            value={localTask.title}
-                            type="2em"
-                        />
+                        <HeaderModal>
+                            <ModalInput
+                                disabled
+                                value={localTask.title}
+                                type="2em"
+                            />
+                            <ContainerPriority color={priorityColor(localTask)}>
+                                <DotPriority color={priorityColor(localTask)} />
+                                {priorityText(localTask)}
+                            </ContainerPriority>
+                        </HeaderModal>
                         {detailDescription()}
                         {listDescription(true)}
                         {dateDescription(true)}
