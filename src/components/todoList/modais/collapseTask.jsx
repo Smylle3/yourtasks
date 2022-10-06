@@ -16,7 +16,7 @@ import {
     ModalInput,
     ShowDate,
 } from "./stylesModal";
-import PriorityDropdown from "components/priorityDropdown/priorityDropdown";
+import PriorityDropdown from "components/dropdowns/priorityDropdown";
 
 export default function CollapseTask({ task, id, isCollapsed, status }) {
     const { allTask, updateDBTasks, setChange, change } = useAuth();
