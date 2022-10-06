@@ -80,8 +80,11 @@ export const TasksUnit = styled.div`
 
 export const TaskGroup = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 1em;
+    overflow-y: scroll;
+    height: 76vh;
+    padding-top: 1em;
 
     @media (min-width: 931px) {
         display: none;
