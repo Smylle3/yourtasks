@@ -16,6 +16,8 @@ import {
     ModalInput,
     SimpleButton,
 } from "./stylesModal";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 
 export default function CreateTask({ isModalVisible, setModalVisible }) {
     const { task, setTask, setAllTask } = useAuth();
@@ -26,6 +28,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
         text: "",
         checked: false,
     });
+    const [value, setValue] = useState('');
 
     const handleCancel = () => {
         setTask({
@@ -101,18 +104,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                     />
                     <PriorityDropdown localTask={task} setLocalTask={setTask} />
                 </HeaderModal>
-                <TextareaAutosize
-                    onChange={(e) =>
-                        setTask((prevState) => ({
-                            ...prevState,
-                            description: e.target.value,
-                        }))
-                    }
-                    value={task.description}
-                    className="desc-task"
-                    placeholder="Descrição..."
-                    rows={3}
-                />
+                <ReactQuill theme="snow" readOnly value={value} onChange={setValue} />
                 <ButtonGroup>
                     <SimpleButton
                         onClick={() => {
