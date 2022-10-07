@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "context/authContext";
 import { DatePicker, Modal } from "antd";
 import moment from "moment";
-import TextareaAutosize from "react-autosize-textarea/lib";
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import {
     ChecklistInput,
@@ -29,6 +28,7 @@ import {
     ContainerPriority,
     DotPriority,
 } from "components/dropdowns/stylesDropdown";
+import TextEditor from "components/textEditor/textEditor";
 
 export default function ModalTask({
     isModalVisible,
@@ -60,19 +60,7 @@ export default function ModalTask({
     };
 
     const detailDescription = () => (
-        <TextareaAutosize
-            disabled={!isEdit}
-            className="desc-task"
-            placeholder={localTask?.description}
-            onChange={(e) => {
-                setLocalTask((prevState) => ({
-                    ...prevState,
-                    description: e.target.value,
-                }));
-            }}
-            value={localTask?.description}
-            rows={2}
-        />
+        <TextEditor task={localTask} setTask={setLocalTask} isEdit={isEdit} />
     );
 
     const listDescription = (isFinish) => (

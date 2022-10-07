@@ -3,7 +3,6 @@ import { DatePicker, message, Modal } from "antd";
 import PriorityDropdown from "components/dropdowns/priorityDropdown";
 import { useAuth } from "context/authContext";
 import React, { useState } from "react";
-import TextareaAutosize from "react-autosize-textarea/lib";
 import {
     ButtonFooterGroup,
     ButtonGroup,
@@ -16,6 +15,7 @@ import {
     ModalInput,
     SimpleButton,
 } from "./stylesModal";
+import TextEditor from "components/textEditor/textEditor";
 
 export default function CreateTask({ isModalVisible, setModalVisible }) {
     const { task, setTask, setAllTask } = useAuth();
@@ -101,18 +101,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                     />
                     <PriorityDropdown localTask={task} setLocalTask={setTask} />
                 </HeaderModal>
-                <TextareaAutosize
-                    onChange={(e) =>
-                        setTask((prevState) => ({
-                            ...prevState,
-                            description: e.target.value,
-                        }))
-                    }
-                    value={task.description}
-                    className="desc-task"
-                    placeholder="Descrição..."
-                    rows={3}
-                />
+                <TextEditor task={task} setTask={setTask} isEdit={true}/>
                 <ButtonGroup>
                     <SimpleButton
                         onClick={() => {
