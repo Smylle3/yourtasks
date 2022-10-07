@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "context/authContext";
 import moment from "moment";
-import TextareaAutosize from "react-autosize-textarea/lib";
 import { DatePicker, message } from "antd";
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import {
@@ -17,6 +16,7 @@ import {
     ShowDate,
 } from "./stylesModal";
 import PriorityDropdown from "components/dropdowns/priorityDropdown";
+import TextEditor from "components/textEditor/textEditor";
 
 export default function CollapseTask({ task, id, isCollapsed, status }) {
     const { allTask, updateDBTasks, setChange, change } = useAuth();
@@ -106,19 +106,7 @@ export default function CollapseTask({ task, id, isCollapsed, status }) {
                         />
                     )}
                 </HeaderModal>
-                <TextareaAutosize
-                    disabled={!isEdit}
-                    className="desc-task"
-                    onChange={(e) => {
-                        setLocalTask((prevState) => ({
-                            ...prevState,
-                            description: e.target.value,
-                        }));
-                    }}
-                    placeholder="Descrição..."
-                    value={localTask?.description}
-                    rows={2}
-                />
+                <TextEditor task={localTask} setTask={setLocalTask} isEdit={isEdit} />
                 {isEdit && (
                     <ChecklistInput onSubmit={(e) => e.preventDefault()}>
                         <ModalInput

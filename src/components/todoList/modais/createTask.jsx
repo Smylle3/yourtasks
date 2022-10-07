@@ -3,7 +3,6 @@ import { DatePicker, message, Modal } from "antd";
 import PriorityDropdown from "components/dropdowns/priorityDropdown";
 import { useAuth } from "context/authContext";
 import React, { useState } from "react";
-import TextareaAutosize from "react-autosize-textarea/lib";
 import {
     ButtonFooterGroup,
     ButtonGroup,
@@ -16,8 +15,7 @@ import {
     ModalInput,
     SimpleButton,
 } from "./stylesModal";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
+import TextEditor from "components/textEditor/textEditor";
 
 export default function CreateTask({ isModalVisible, setModalVisible }) {
     const { task, setTask, setAllTask } = useAuth();
@@ -28,7 +26,6 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
         text: "",
         checked: false,
     });
-    const [value, setValue] = useState('');
 
     const handleCancel = () => {
         setTask({
@@ -104,7 +101,7 @@ export default function CreateTask({ isModalVisible, setModalVisible }) {
                     />
                     <PriorityDropdown localTask={task} setLocalTask={setTask} />
                 </HeaderModal>
-                <ReactQuill theme="snow" readOnly value={value} onChange={setValue} />
+                <TextEditor task={task} setTask={setTask} isEdit={true}/>
                 <ButtonGroup>
                     <SimpleButton
                         onClick={() => {
