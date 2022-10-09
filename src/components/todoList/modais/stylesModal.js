@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const InfoModal = styled.div`
     display: flex;
     flex-direction: column;
+    gap: 1em;
 `
 
 export const HeaderModal = styled.div`
@@ -32,7 +33,7 @@ export const ChecklistInput = styled.form`
     gap: 1em;
     justify-content: space-between;
     box-sizing: border-box;
-    margin-bottom: 1em;
+    display: ${props => props.isEdit ? "flex" : "none"};
 `
 
 export const InputGroup = styled.div`
@@ -51,6 +52,10 @@ export const ChecklistContent = styled.div`
     border-radius: 5px;background-color: #8080801a;
 `
 
+export const ChecklistGroup = styled.div`
+    display: ${props => props.hasList > 0 ? "inline" : "none"};
+`
+
 export const Checkbox = styled.input`
 
 `
@@ -65,7 +70,6 @@ export const ButtonModal = styled.button`
     border-radius: 5px;
     outline: 0;
     padding: .5em 1em;
-    margin-top: 1em;
     transition: all .4s;
     font-weight: 500;
     cursor: pointer;
@@ -84,7 +88,6 @@ export const ShowDate = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-    margin-top: 1em;
 `
 
 export const IconsModal = styled.div`
@@ -98,6 +101,7 @@ export const ButtonGroup = styled.div`
 `
 
 export const SimpleButton = styled.button`
+    display: ${props => props.status !== "create" ? "none" : "flex"};
     border: 0 none;
     border-bottom: 1px solid #fff;
     outline: 0;
