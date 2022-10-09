@@ -9,14 +9,18 @@ export default function DateComp({ isEdit, status, localTask, setLocalTask }) {
             {isEdit ? (
                 <DatePicker
                     className="date-picker"
+                    defaultValue={
+                        localTask.date.length > 0 &&
+                        moment(localTask.date, "YYYY/MM/DD, h:mm")
+                    }
                     showTime={{ format: "HH:mm" }}
                     format="YYYY-MM-DD HH:mm"
-                    onChange={(ev, e) =>
+                    onChange={(ev, e) => {
                         setLocalTask((prevState) => ({
                             ...prevState,
                             date: e,
-                        }))
-                    }
+                        }));
+                    }}
                 />
             ) : (
                 <ShowDate>
