@@ -33,15 +33,18 @@ export const DotPriority = styled.div`
 export const SortIcon = styled.button`
     position: fixed;
 
-    border-radius: 50px;
-    border: 0;
-    background-color: rgba(0, 0, 0, .2);
-    transition: all .2s;
-    z-index: 100;
     cursor: pointer;
+    min-width: 3em;
+    min-height: 3em;
+    border-radius: 50%;
+    border: 0 none;
+    box-shadow: 3px 3px 15px -5px black;
+    background-color: transparent;
+    transition: .3s;
+    z-index: 100;
 
     :active {
-        background-color: #fff;
+        box-shadow: 0 0 0 0 transparent;
     }
     @media (max-width: 930px){
         left: 1em;
