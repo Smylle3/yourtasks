@@ -5,7 +5,6 @@ import "react-quill/dist/quill.bubble.css";
 import EditorToolbar, { formats, modules } from "./editorToolbar";
 
 export default function TextEditor({ task, setTask, isEdit }) {
-    console.log(isEdit);
     switch (isEdit) {
         case true:
             return (
