@@ -17,7 +17,7 @@ import "moment/locale/pt-br";
 import MyCarousel from "components/myCarousel/myCarousel";
 import SortIconDropdown from "components/dropdowns/sortIconDropdown";
 
-export default function TodoList() {
+export default function HomePage() {
     const { user } = useAuth();
     const [doneTab, setDoneTab] = useState(0);
 
