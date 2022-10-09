@@ -3,6 +3,7 @@ import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import {
     Checkbox,
     ChecklistContent,
+    ChecklistGroup,
     ChecklistInput,
     IconsModal,
     LabelModal,
@@ -40,67 +41,72 @@ export default function CheckList({ isEdit, status, localTask }) {
 
     return (
         <>
-            {isEdit && (
-                <ChecklistInput onSubmit={(e) => e.preventDefault()}>
-                    <ModalInput
-                        onChange={(e) => {
-                            setSimpleDescription({
-                                text: e.target.value,
-                                checked: false,
-                            });
-                        }}
-                        onKeyDown={(e) => handleDescription(e.code)}
-                        placeholder="Add novo item"
-                        value={simpleDescription.text}
-                        type="18px"
-                        border="#8080805f"
-                        autoFocus
-                    />
-                    <CheckOutlined
-                        onClick={() => handleDescription("Enter")}
-                        className="check-icon"
-                    />
-                </ChecklistInput>
-            )}
-            {localTask.checkList?.map((content, id) => (
-                <ChecklistContent key={id}>
-                    <>{id + 1}</>
+            <ChecklistInput
+                isEdit={isEdit}
+                onSubmit={(e) => e.preventDefault()}
+            >
+                <ModalInput
+                    onChange={(e) => {
+                        setSimpleDescription({
+                            text: e.target.value,
+                            checked: false,
+                        });
+                    }}
+                    onKeyDown={(e) => handleDescription(e.code)}
+                    placeholder="Add novo item"
+                    value={simpleDescription.text}
+                    type="18px"
+                    border="#8080805f"
+                    autoFocus
+                />
+                <CheckOutlined
+                    onClick={() => handleDescription("Enter")}
+                    className="check-icon"
+                />
+            </ChecklistInput>
+            <ChecklistGroup hasList={localTask.checkList.length}>
+                {localTask.checkList?.map((content, id) => (
+                    <ChecklistContent key={id}>
+                        <>{id + 1}</>
 
-                    {isEdit ? (
-                        <ModalInput
-                            placeholder={content.text}
-                            onChange={(e) => editItem(e.target.value, id)}
-                            value={localTask?.checkList[id].text}
-                        />
-                    ) : (
-                        <>
-                            <Checkbox
-                                disabled={status === "done" && true}
-                                type="checkbox"
-                                id={`content${id}`}
-                                checked={content.checked}
-                                onChange={(e) => handleChangeCheck(content, e)}
+                        {isEdit ? (
+                            <ModalInput
+                                placeholder={content.text}
+                                onChange={(e) => editItem(e.target.value, id)}
+                                value={localTask?.checkList[id].text}
                             />
-                            <LabelModal
-                                htmlFor={`content${id}`}
-                                checked={content.checked}
+                        ) : (
+                            <>
+                                <Checkbox
+                                    disabled={status === "done" && true}
+                                    type="checkbox"
+                                    id={`content${id}`}
+                                    checked={content.checked}
+                                    onChange={(e) =>
+                                        handleChangeCheck(content, e)
+                                    }
+                                />
+                                <LabelModal
+                                    htmlFor={`content${id}`}
+                                    checked={content.checked}
+                                >
+                                    {content.text}
+                                </LabelModal>
+                            </>
+                        )}
+                        {isEdit && (
+                            <IconsModal
+                                onClick={() => {
+                                    localTask.checkList.splice(id, 1);
+                                    setChange(!change);
+                                }}
                             >
-                                {content.text}
-                            </LabelModal>
-                        </>
-                    )}
-                    {isEdit && (
-                        <IconsModal
-                            onClick={() => {
-                                localTask.checkList.splice(id, 1);
-                                setChange(!change);
-                            }}
-                        >
-                            <DeleteFilled />
-                        </IconsModal>
-                    )}
-                </ChecklistContent>
-            ))}
+                                <DeleteFilled />
+                            </IconsModal>
+                        )}
+                    </ChecklistContent>
+                ))}
+            </ChecklistGroup>
         </>
     );
 }

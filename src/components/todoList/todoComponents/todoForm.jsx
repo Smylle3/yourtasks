@@ -147,6 +147,7 @@ export default function TodoForm({
             />
             {status === "create" && (
                 <SimpleButton
+                    status={status}
                     onClick={() => {
                         setLocalTask((prevState) => ({
                             ...prevState,
@@ -168,20 +169,20 @@ export default function TodoForm({
                 status={status}
                 localTask={localTask}
             />
-            {status === "create" && (
-                <SimpleButton
-                    onClick={() =>
-                        setHasProps((prevState) => ({
-                            ...prevState,
-                            date: !hasProps.date,
-                        }))
-                    }
-                >
-                    {hasProps.date
-                        ? `Não definir data para conclusão`
-                        : `Clique para definir uma data para a conclusão`}
-                </SimpleButton>
-            )}
+            <SimpleButton
+                status={status}
+                onClick={() =>
+                    setHasProps((prevState) => ({
+                        ...prevState,
+                        date: !hasProps?.date,
+                    }))
+                }
+            >
+                {hasProps?.date
+                    ? `Não definir data para conclusão`
+                    : `Clique para definir uma data para a conclusão`}
+            </SimpleButton>
+
             <DateComp
                 isEdit={status === "create" ? hasProps.date : isEdit}
                 status={status}
