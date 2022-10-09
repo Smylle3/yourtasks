@@ -7,7 +7,7 @@ import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import { CaretRightOutlined } from "@ant-design/icons";
 import { TaskGroup, TaskList, TasksUnit } from "../stylesTodo";
 import CollapseTask from "../modais/collapseTask";
-import CollapseHeader from "components/collapseHeader/collapseHeader";
+import CollapseHeader from "components/todoList/todoComponents/collapseHeader/collapseHeader";
 import "../styles.css";
 import ModalTask from "../modais/modalTask";
 
@@ -66,8 +66,8 @@ export default function Todo() {
                             <CollapseTask
                                 task={task}
                                 id={id}
-                                isCollapsed={isCollapsed}
                                 status={status}
+                                isCollapsed={isCollapsed}
                             />
                         </CollapsePanel>
                     ))}

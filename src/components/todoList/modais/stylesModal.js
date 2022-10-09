@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const InfoModal = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1em;
 `
 
 export const HeaderModal = styled.div`
@@ -33,6 +32,7 @@ export const ChecklistInput = styled.form`
     gap: 1em;
     justify-content: space-between;
     box-sizing: border-box;
+    margin-bottom: 1em;
 `
 
 export const InputGroup = styled.div`
@@ -65,6 +65,7 @@ export const ButtonModal = styled.button`
     border-radius: 5px;
     outline: 0;
     padding: .5em 1em;
+    margin-top: 1em;
     transition: all .4s;
     font-weight: 500;
     cursor: pointer;
@@ -83,6 +84,7 @@ export const ShowDate = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 5px;
+    margin-top: 1em;
 `
 
 export const IconsModal = styled.div`

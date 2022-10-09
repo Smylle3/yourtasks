@@ -6,7 +6,7 @@ import { CaretRightOutlined } from "@ant-design/icons";
 import { TaskGroup, TaskList, TasksUnit } from "../stylesTodo";
 import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import CollapseTask from "../modais/collapseTask";
-import CollapseHeader from "components/collapseHeader/collapseHeader";
+import CollapseHeader from "components/todoList/todoComponents/collapseHeader/collapseHeader";
 import { TimePassed } from "functions/timePassed";
 import "../styles.css";
 import ModalTask from "../modais/modalTask";
