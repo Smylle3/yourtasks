@@ -13,7 +13,7 @@ import {
     InfoModal,
     ModalInput,
     SimpleButton,
-} from "../modais/stylesModal";
+} from "./stylesModal";
 import CheckList from "./checkList";
 import DateComp from "./dateComp";
 

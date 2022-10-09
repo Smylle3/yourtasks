@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAuth } from "context/authContext";
 import { CheckOutlined, DeleteFilled } from "@ant-design/icons";
 import {
     Checkbox,
@@ -8,8 +9,7 @@ import {
     IconsModal,
     LabelModal,
     ModalInput,
-} from "../modais/stylesModal";
-import { useAuth } from "context/authContext";
+} from "./stylesModal";
 
 export default function CheckList({ isEdit, status, localTask }) {
     const { change, setChange, updateDBTasks } = useAuth();

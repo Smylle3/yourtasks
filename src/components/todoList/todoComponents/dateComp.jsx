@@ -1,7 +1,7 @@
 import { DatePicker } from "antd";
 import moment from "moment";
 import React from "react";
-import { ShowDate } from "../modais/stylesModal";
+import { ShowDate } from "./stylesModal";
 
 export default function DateComp({ isEdit, status, localTask, setLocalTask }) {
     return (
